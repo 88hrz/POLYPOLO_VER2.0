@@ -27,9 +27,12 @@ public class Admin_View extends javax.swing.JFrame {
        
         menuName.setText("| Trang Chủ");
         
-        QLNX nhapXuat = new QLNX();
+//        QLNX nhapXuat = new QLNX();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(nhapXuat).setVisible(true);
+        QLSP qlsp = new QLSP();
         jGUIForms.removeAll();
-        jGUIForms.add(nhapXuat).setVisible(true);
+        jGUIForms.add(qlsp).setVisible(true);
     }
 
     
@@ -97,7 +100,7 @@ public class Admin_View extends javax.swing.JFrame {
 
         logo.setFont(new java.awt.Font("Montserrat ExtraBold", 3, 20)); // NOI18N
         logo.setForeground(new java.awt.Color(255, 255, 255));
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user-polo.png"))); // NOI18N
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PNG/user-polo.png"))); // NOI18N
         logo.setText("PolyPolo");
         verticalLayout.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 50));
 
@@ -109,7 +112,7 @@ public class Admin_View extends javax.swing.JFrame {
         txtUser_ID.setEnabled(false);
         verticalLayout.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 30, 120, 20));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user-icon20.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PNG/user-icon20.png"))); // NOI18N
         verticalLayout.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 40, 40));
 
         bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 80));
@@ -544,7 +547,7 @@ public class Admin_View extends javax.swing.JFrame {
         
         menuName.setText("| Khách Hàng");
 
-        KHACHHANG khachHang = new KHACHHANG();
+        QLKHACHHANG khachHang = new QLKHACHHANG();
         jGUIForms.removeAll();
         jGUIForms.add(khachHang).setVisible(true);
     }//GEN-LAST:event_khachHangMouseClicked

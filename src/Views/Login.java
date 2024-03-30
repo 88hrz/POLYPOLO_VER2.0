@@ -5,8 +5,9 @@
 package Views;
 
 import Models.User;
-//import Services.UserService;
+import Services.UserService;
 import Utils.QRScanner;
+import Utils.SVGImage;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import java.io.File;
@@ -18,8 +19,8 @@ import javax.swing.JOptionPane;
  * @author X1
  */
 public class Login extends javax.swing.JFrame {
-//    UserService uService = new UserService();
-    
+    UserService uService = new UserService();
+    SVGImage svgSet = new SVGImage();
     public static String dataStatic;
 
     /**
@@ -30,7 +31,15 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         txtID.requestFocus();
         setLocationRelativeTo(null);
-        
+        setSVGICon();
+    }
+    
+    void setSVGICon(){
+        lblUser.setIcon(svgSet.createSVGIcon("Images/SVG/login-user.svg", 20, 20));
+        lblPass.setIcon(svgSet.createSVGIcon("Images/SVG/login-pass.svg", 20, 20));
+        btnScanQR.setIcon(svgSet.createSVGIcon("Images/SVG/login-qr.svg", 12, 12));
+        btnGoogleLogin.setIcon(svgSet.createSVGIcon("Images/SVG/login-gg.svg", 12, 12));
+        lblCopyright.setIcon(svgSet.createSVGIcon("Images/SVG/login-copyright.svg", 13, 13));
     }
     
     //VALIDATOR
@@ -84,7 +93,7 @@ public class Login extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         chkShowHide = new javax.swing.JCheckBox();
         btnScanQR = new javax.swing.JButton();
-        copyright = new javax.swing.JLabel();
+        lblCopyright = new javax.swing.JLabel();
         btnGoogleLogin = new javax.swing.JButton();
         txtOR = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -93,8 +102,8 @@ public class Login extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         btnforgotPass = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
-        user = new javax.swing.JLabel();
-        pass = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
+        lblPass = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -130,7 +139,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        btnScanQR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login-qr.png"))); // NOI18N
         btnScanQR.setText("SCAN QR");
         btnScanQR.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -138,12 +146,10 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        copyright.setFont(new java.awt.Font("Montserrat Medium", 0, 10)); // NOI18N
-        copyright.setForeground(new java.awt.Color(102, 102, 102));
-        copyright.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login-copyright.png"))); // NOI18N
-        copyright.setText("2024 | POLYPOLO");
+        lblCopyright.setFont(new java.awt.Font("Montserrat Medium", 0, 10)); // NOI18N
+        lblCopyright.setForeground(new java.awt.Color(102, 102, 102));
+        lblCopyright.setText("2024 | POLYPOLO");
 
-        btnGoogleLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login-gg.png"))); // NOI18N
         btnGoogleLogin.setText("GOOGLE");
 
         txtOR.setFont(new java.awt.Font("Montserrat Medium", 0, 11)); // NOI18N
@@ -157,10 +163,6 @@ public class Login extends javax.swing.JFrame {
         btnforgotPass.setFont(new java.awt.Font("Poppins", 0, 9)); // NOI18N
         btnforgotPass.setForeground(new java.awt.Color(102, 102, 102));
         btnforgotPass.setText("FORGOT PASSWORD");
-
-        user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login-user20.png"))); // NOI18N
-
-        pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login-pass24.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -176,7 +178,7 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtOR, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnScanQR))
+                            .addComponent(btnScanQR, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,47 +189,46 @@ public class Login extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(pass)
-                                .addGap(23, 23, 23))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(user)
-                                .addGap(23, 23, 23)))
+                        .addGap(3, 3, 3)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(chkShowHide)
-                            .addComponent(txtPasscode)
-                            .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(lblPass)
+                                .addGap(23, 23, 23)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chkShowHide)
+                                    .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(lblUser)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPasscode)
+                                    .addComponent(txtID))))))
                 .addContainerGap(33, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(copyright)
+                        .addComponent(lblCopyright)
                         .addGap(128, 128, 128))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117))))
+                        .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(129, 129, 129))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(109, 115, Short.MAX_VALUE)
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(user)))
-                .addGap(18, 18, 18)
+                    .addComponent(lblUser)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtPasscode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pass, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(lblPass, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addComponent(chkShowHide)
                         .addGap(18, 18, 18)
@@ -250,11 +251,11 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(copyright)
+                .addComponent(lblCopyright)
                 .addGap(19, 19, 19))
         );
 
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login-logo.png"))); // NOI18N
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PNG/login-logo.png"))); // NOI18N
         logo.setText("jLabel10");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -292,27 +293,27 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
         // LOGIN
-//        if (validateLogin()) {
-//            String userID = txtID.getText();
-//            String passCode = txtPasscode.getText();
-//            Boolean check = uService.checkLogin(userID, passCode);
-//
-//            if (check) {
-//                User u = new User();
-//                u.setUserName(txtID.getText().trim());
-//                u.setRole(uService.getListByUserId(userID).getRole());
-//
-//                dataStatic = txtID.getText();
-//                JOptionPane.showMessageDialog(this,"Đăng nhập thành công!");
-//                
-//                Admin_View mainView = new Admin_View(u);
-//                mainView.setVisible(true);
-//                this.dispose();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!");
-//                clearForm();
-//            }
-//        }
+        if (validateLogin()) {
+            String userID = txtID.getText();
+            String passCode = txtPasscode.getText();
+            Boolean check = uService.checkLogin(userID, passCode);
+
+            if (check) {
+                User u = new User();
+                u.setUserName(txtID.getText().trim());
+                u.setRole(uService.getListByUserId(userID).getRole());
+
+                dataStatic = txtID.getText();
+                JOptionPane.showMessageDialog(this,"Đăng nhập thành công!","POLYPOLO thông báo", 0);
+                
+                Admin_View mainView = new Admin_View(u);
+                mainView.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                clearForm();
+            }
+        }
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void chkShowHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkShowHideMouseClicked
@@ -330,43 +331,43 @@ public class Login extends javax.swing.JFrame {
 
     private void btnScanQRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnScanQRMouseClicked
         // SCAN QR
-//        JFileChooser fileChooser = new JFileChooser();
-//        
-//        int result = fileChooser.showOpenDialog(this);
-//        if (result == JFileChooser.APPROVE_OPTION) {
-//            try {
-//                File selectedFile = fileChooser.getSelectedFile();
-//                String imageFile = selectedFile.getAbsolutePath();
-//                String qrContent = QRScanner.scanQR(imageFile);
-//
-//                if (qrContent != null) {
-//                    String[] loginInfo = qrContent.split(":");
-//                    String userID = loginInfo[0];
-//                    String password = loginInfo[1];
-//
-//                    Boolean check = uService.checkLogin(userID, password);
-//                    if (check) {
-//                        User u = new User();
-//                        u.setUserName(userID.trim());
-//                        u.setRole(uService.getListByUserId(userID).getRole());
-//
-//                        dataStatic = userID;
-//                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!","POLYPOLO thông báo", 0);
-//                        Admin_View mainView = new Admin_View(u);
-//                        mainView.setVisible(true);
-//                        this.dispose();
-//                    } else {
-//                        JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!","POLYPOLO thông báo", ERROR);
-//                        clearForm();
-//                    }
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Ảnh không đúng định dạng!","POLYPOLO thông báo", ERROR);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi khi xử lý mã QR!","POLYPOLO thông báo", ERROR);
-//            }
-//        }
+        JFileChooser fileChooser = new JFileChooser();
+        
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                File selectedFile = fileChooser.getSelectedFile();
+                String imageFile = selectedFile.getAbsolutePath();
+                String qrContent = QRScanner.scanQR(imageFile);
+
+                if (qrContent != null) {
+                    String[] loginInfo = qrContent.split(":");
+                    String userID = loginInfo[0];
+                    String password = loginInfo[1];
+
+                    Boolean check = uService.checkLogin(userID, password);
+                    if (check) {
+                        User u = new User();
+                        u.setUserName(userID.trim());
+                        u.setRole(uService.getListByUserId(userID).getRole());
+
+                        dataStatic = userID;
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!","POLYPOLO thông báo", JOptionPane.PLAIN_MESSAGE);
+                        Admin_View mainView = new Admin_View(u);
+                        mainView.setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                        clearForm();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ảnh không đúng định dạng!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi khi xử lý mã QR!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnScanQRMouseClicked
 
     /**
@@ -395,7 +396,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton btnScanQR;
     private javax.swing.JButton btnforgotPass;
     private javax.swing.JCheckBox chkShowHide;
-    private javax.swing.JLabel copyright;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -403,12 +403,13 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JLabel lblCopyright;
+    private javax.swing.JLabel lblPass;
+    private javax.swing.JLabel lblUser;
     private javax.swing.JLabel login;
     private javax.swing.JLabel logo;
-    private javax.swing.JLabel pass;
     private javax.swing.JTextField txtID;
     private javax.swing.JLabel txtOR;
     private javax.swing.JPasswordField txtPasscode;
-    private javax.swing.JLabel user;
     // End of variables declaration//GEN-END:variables
 }

@@ -85,7 +85,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Icons/user-polo.png"/>
+                  <Image iconType="3" name="/Images/PNG/user-polo.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="PolyPolo"/>
               </Properties>
@@ -124,7 +124,7 @@
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Icons/user-icon20.png"/>
+                  <Image iconType="3" name="/Images/PNG/user-icon20.png"/>
                 </Property>
               </Properties>
               <Constraints>

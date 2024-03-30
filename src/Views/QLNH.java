@@ -380,7 +380,7 @@ public class QLNH extends javax.swing.JInternalFrame {
 
     private void btnUpdate2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdate2MouseClicked
         // UPDATE
-        KHACHHANG_update kh = new KHACHHANG_update();
+        QLKHACHHANG_update kh = new QLKHACHHANG_update();
         kh.setVisible(true);
     }//GEN-LAST:event_btnUpdate2MouseClicked
 

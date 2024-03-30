@@ -4,9 +4,16 @@
  */
 package Views;
 
+import Services.SanPhamService;
 import Utils.SVGImage;
+import ViewModels.SanPhamViewModel;
 import java.awt.Color;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -14,6 +21,8 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class QLSP extends javax.swing.JInternalFrame {
     SVGImage svgSet = new SVGImage();
+    SanPhamService spService = new SanPhamService();
+    DecimalFormat format = new DecimalFormat("#,###");
     /**
      * Creates new form QLSANPHAM
      */
@@ -23,16 +32,40 @@ public class QLSP extends javax.swing.JInternalFrame {
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         setButtonIcon();
+        loadTable(spService.getListSPVM());
         
     }
 
     void setButtonIcon() {
-        btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/add.svg", 15, 15));
-        btnUpdate.setIcon(svgSet.createSVGIcon("Images/SVG/update.svg", 15, 15));
+        btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/add.svg", 20, 20));
+        btnUpdate.setIcon(svgSet.createSVGIcon("Images/SVG/update.svg", 20, 20));
         btnHidden.setIcon(svgSet.createSVGIcon("Images/SVG/w-view-fill.svg", 15, 15));
-//        btnView.setIcon(svgSet.createSVGIcon("Images/SVG/view-ls-filled.svg", 15, 15));
-        btnImport.setIcon(svgSet.createSVGIcon("Images/SVG/g-excel.svg", 15, 15));
-        btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 15, 15));
+        btnImport.setIcon(svgSet.createSVGIcon("Images/SVG/g-excel.svg", 20, 20));
+        btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 20, 20));
+        btnHidden.setIcon(svgSet.createSVGIcon("Images/SVG/hide-regular.svg", 20, 20));
+        btnViewHide.setIcon(svgSet.createSVGIcon("Images/SVG/b-hidels.svg", 20, 20));
+    }
+    
+    void loadTable(ArrayList<SanPhamViewModel> ls){
+        DefaultTableModel model = (DefaultTableModel) tblSP.getModel();
+        model.setRowCount(0);
+        for (SanPhamViewModel sp : ls) {
+            String giaN = format.format(sp.getGiaN());
+            String giaB = format.format(sp.getGiaB());
+            
+            model.addRow(new Object[]{
+                sp.getIdSP(), sp.getTenSP(), sp.getDanhMuc(), sp.getNhanHang()
+                    , sp.getMauSac(), sp.getKichCo(), sp.getChatLieu()
+                    , giaN, giaB, sp.getTrangT(), sp.getSoL(), sp.getKhoHang()
+            });
+        }
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        TableColumnModel columnModel = tblSP.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     /**
@@ -46,19 +79,19 @@ public class QLSP extends javax.swing.JInternalFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        btnExport = new javax.swing.JButton();
         btnImport = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        tblSPCT1 = new javax.swing.JTable();
+        tblSP = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnHidden = new javax.swing.JButton();
-        btnViewHidden = new javax.swing.JButton();
+        btnViewHide = new javax.swing.JButton();
         jComboBox2 = new javax.swing.JComboBox<>();
         jTextField5 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
-        btnViewHidden1 = new javax.swing.JButton();
+        btnDetails = new javax.swing.JButton();
+        btnExport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         txtMaDanhMuc = new javax.swing.JTextField();
@@ -95,18 +128,15 @@ public class QLSP extends javax.swing.JInternalFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1090, 630));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnExport.setText("EXPORT");
-        jPanel1.add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(928, 477, 104, -1));
-
         btnImport.setText("IMPORT");
         btnImport.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnImportMouseClicked(evt);
             }
         });
-        jPanel1.add(btnImport, new org.netbeans.lib.awtextra.AbsoluteConstraints(771, 477, 104, -1));
+        jPanel1.add(btnImport, new org.netbeans.lib.awtextra.AbsoluteConstraints(774, 480, 120, 40));
 
-        tblSPCT1.setModel(new javax.swing.table.DefaultTableModel(
+        tblSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null, null, null},
@@ -114,17 +144,17 @@ public class QLSP extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã SP", "Tên SP", "Danh Mục", "Nhãn Hàng", "Kích Cỡ", "Màu Sắc", "Chất Liệu", "Giá Nhập", "Giá Bán", "Trạng Thái", "Số Lượng", "Khu Vực Kho"
+                "ID SP", "Tên SP", "Danh Mục", "Nhãn Hàng", "Màu Sắc", "Kích Cỡ", "Chất Liệu", "Giá Nhập", "Giá Bán", "Trạng Thái", "Số Lượng", "Kho Hàng"
             }
         ));
-        tblSPCT1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblSP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblSPCT1MouseClicked(evt);
+                tblSPMouseClicked(evt);
             }
         });
-        jScrollPane5.setViewportView(tblSPCT1);
+        jScrollPane5.setViewportView(tblSP);
 
-        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 85, 1015, 380));
+        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 85, 1040, 380));
 
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         jPanel5.setAlignmentX(1.0F);
@@ -145,22 +175,27 @@ public class QLSP extends javax.swing.JInternalFrame {
         });
 
         btnHidden.setText("ẨN");
-
-        btnViewHidden.setText("DS ẨN");
-        btnViewHidden.addActionListener(new java.awt.event.ActionListener() {
+        btnHidden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewHiddenActionPerformed(evt);
+                btnHiddenActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả" }));
+        btnViewHide.setText("DS ẨN");
+        btnViewHide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewHideActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả", "Danh Mục", "Nhãn Hàng", "Màu Sắc", "Kích Cỡ", "Chất Liệu", "Kho Hàng" }));
 
         jButton4.setText("SEARCH");
 
-        btnViewHidden1.setText("LOAD");
-        btnViewHidden1.addActionListener(new java.awt.event.ActionListener() {
+        btnDetails.setText("XEM");
+        btnDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewHidden1ActionPerformed(evt);
+                btnDetailsActionPerformed(evt);
             }
         });
 
@@ -170,34 +205,25 @@ public class QLSP extends javax.swing.JInternalFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnHidden, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnViewHidden, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnHidden, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnViewHidden1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addComponent(btnViewHide, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnHidden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewHidden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnViewHidden1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -205,9 +231,23 @@ public class QLSP extends javax.swing.JInternalFrame {
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(10, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnViewHide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnHidden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
+        jComboBox2.getAccessibleContext().setAccessibleName("Tất Cả\n");
+
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1040, 60));
+
+        btnExport.setText("EXPORT");
+        jPanel1.add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 480, 130, 40));
 
         jTabbedPane1.addTab("Thông Tin Sản Phẩm", jPanel1);
 
@@ -406,14 +446,14 @@ public class QLSP extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Danh Mục", jPanel2);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1060, 550));
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1050, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblSPCT1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPCT1MouseClicked
+    private void tblSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tblSPCT1MouseClicked
+    }//GEN-LAST:event_tblSPMouseClicked
 
     private void btnThemDMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemDMMouseClicked
         //ADD DM
@@ -487,13 +527,9 @@ public class QLSP extends javax.swing.JInternalFrame {
         sp.setVisible(true);
     }//GEN-LAST:event_btnUpdateMouseClicked
 
-    private void btnViewHiddenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewHiddenActionPerformed
+    private void btnViewHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewHideActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewHiddenActionPerformed
-
-    private void btnViewHidden1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewHidden1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewHidden1ActionPerformed
+    }//GEN-LAST:event_btnViewHideActionPerformed
 
     private void btnImportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnImportMouseClicked
         // IMPORT
@@ -501,19 +537,27 @@ public class QLSP extends javax.swing.JInternalFrame {
         sp.setVisible(true);
     }//GEN-LAST:event_btnImportMouseClicked
 
+    private void btnHiddenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHiddenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHiddenActionPerformed
+
+    private void btnDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDetailsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAnDM;
     private javax.swing.JButton btnClearDM;
+    private javax.swing.JButton btnDetails;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnHidden;
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnSuaDM;
     private javax.swing.JButton btnThemDM;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnViewHidden;
-    private javax.swing.JButton btnViewHidden1;
+    private javax.swing.JButton btnViewHide;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox2;
@@ -533,7 +577,7 @@ public class QLSP extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rdoDMConHang;
     private javax.swing.JRadioButton rdoDMHethang;
     private javax.swing.JTable tblDanhMuc;
-    private javax.swing.JTable tblSPCT1;
+    private javax.swing.JTable tblSP;
     private javax.swing.JTextField txtMaDanhMuc;
     private javax.swing.JTextField txtSearchDM;
     private javax.swing.JTextField txtTenDanhMuc;

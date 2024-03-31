@@ -4,6 +4,12 @@
  */
 package Views;
 
+import Views.QLNH.QLNH;
+import Views.QLCustomer.QLKHACHHANG;
+import Views.QLNS.QLNS;
+import Views.QLTT.QLTT;
+import Views.QLTK.QLTK;
+import Views.QLSP.QLSP;
 import Models.User;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
@@ -86,6 +92,7 @@ public class Admin_View extends javax.swing.JFrame {
         lblSanPham3 = new javax.swing.JLabel();
         jGUIForms = new javax.swing.JDesktopPane();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1100, 690));
 
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -106,14 +113,14 @@ public class Admin_View extends javax.swing.JFrame {
 
         lbl_UserID.setFont(new java.awt.Font("Montserrat Medium", 1, 12)); // NOI18N
         lbl_UserID.setText("stallion");
-        verticalLayout.add(lbl_UserID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 30, 60, 20));
+        verticalLayout.add(lbl_UserID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 30, 60, 20));
 
         txtUser_ID.setBackground(new java.awt.Color(224, 224, 224));
         txtUser_ID.setEnabled(false);
-        verticalLayout.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 30, 120, 20));
+        verticalLayout.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 30, 120, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PNG/user-icon20.png"))); // NOI18N
-        verticalLayout.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 40, 40));
+        verticalLayout.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 20, 40, 40));
 
         bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 80));
 
@@ -438,7 +445,7 @@ public class Admin_View extends javax.swing.JFrame {
             .addGap(0, 630, Short.MAX_VALUE)
         );
 
-        bg.add(jGUIForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 1090, 630));
+        bg.add(jGUIForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, -1, 630));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -583,7 +590,7 @@ public class Admin_View extends javax.swing.JFrame {
         khachHang.setBackground(DefaultColor);
         taiKhoan.setBackground(DefaultColor);
         
-        QLTHONGKE tk = new QLTHONGKE();
+        QuanLyThongKe tk = new QuanLyThongKe();
         jGUIForms.removeAll();
         jGUIForms.add(tk).setVisible(true);
     }//GEN-LAST:event_thongKeMouseClicked
@@ -617,7 +624,7 @@ public class Admin_View extends javax.swing.JFrame {
         khachHang.setBackground(DefaultColor);
         taiKhoan.setBackground(DefaultColor);
         
-        KHOHANG khoHang = new KHOHANG();
+        QuanLyKhoHang khoHang = new QuanLyKhoHang();
         jGUIForms.removeAll();
         jGUIForms.add(khoHang).setVisible(true);
     }//GEN-LAST:event_khoHangMouseClicked

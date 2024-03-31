@@ -4,7 +4,7 @@
  */
 package Views.QLNH;
 
-import Views.QLCustomer.QLKHACHHANG_update;
+import Views.QLKH.QLKHACHHANG_update;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**

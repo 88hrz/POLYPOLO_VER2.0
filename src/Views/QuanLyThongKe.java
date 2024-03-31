@@ -4,22 +4,256 @@
  */
 package Views;
 
+import Services.HoaDonService;
+import Services.ThongKeService;
+import ViewModels.HD_GioHangViewModel;
+import ViewModels.HD_HoaDonViewModel;
+import ViewModels.ThongKeViewDoanhThu;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.chart.ui.RectangleInsets;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
  * @author X1
  */
 public class QuanLyThongKe extends javax.swing.JInternalFrame {
+    HoaDonService hdsv = new HoaDonService();
+    ThongKeService tksv = new ThongKeService();
+    DecimalFormat formatter = new DecimalFormat("#,###");
 
     /**
      * Creates new form TK
      */
     public QuanLyThongKe() {
         initComponents();
-        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        loadData(hdsv.getListHoaDon());
+        ThongKe();
+        loadCboNam(tksv.showYear());
+        loadCboNamBieuDO(tksv.showYear());
+        loadDT(tksv.getListDoanhThu());
+        loadDataBieuDo(jpanelBieuDo, 0);
+    }
+
+    //LOAD
+    void loadCboNam(ArrayList<Integer> ls) {
+        DefaultComboBoxModel cbomodel = (DefaultComboBoxModel) cboNam.getModel();
+        cbomodel.removeAllElements();
+
+        for (Integer year : ls) {
+            cbomodel.addElement(year);
+        }
+    }
+    ///Load CBO năm cho BieuDo
+
+    void loadCboNamBieuDO(ArrayList<Integer> ls) {
+        DefaultComboBoxModel cbomodel = (DefaultComboBoxModel) cboNam2.getModel();
+        cbomodel.removeAllElements();
+
+        for (Integer year : ls) {
+            cbomodel.addElement(year);
+        }
+    }
+
+    void loadCboThangBieuDO(ArrayList<Integer> months) {
+        DefaultComboBoxModel cbomodel = (DefaultComboBoxModel) cboThang.getModel();
+        cbomodel.removeAllElements();
+
+        for (Integer month : months) {
+            cbomodel.addElement(month);
+        }
+    }
+
+    public void loadData(ArrayList<HD_HoaDonViewModel> listHD) {
+        DefaultTableModel model = (DefaultTableModel) tbDoanhThu.getModel();
+        model.setRowCount(0);
+        for (HD_HoaDonViewModel hd : listHD) {
+            String formattedthanhTien = formatter.format(hd.getTongTien());
+
+            model.addRow(new Object[]{
+                hd.getMaHD(),
+                hd.getTenNV(),
+                hd.getTenKH(),
+                hd.getNgayLap(),
+                hd.getPhuongThuc(),
+                formattedthanhTien
+            });
+        }
+    }
+
+    void loadTable(ArrayList<HD_GioHangViewModel> ls) {
+        DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
+        model.setRowCount(0);
+
+        for (HD_GioHangViewModel gioHang : ls) {
+            String formatdonGia = formatter.format(gioHang.getDonGia());
+            String formatthanhTien = formatter.format(gioHang.getThanhTien());
+
+            model.addRow(new Object[]{
+                gioHang.getMaSP(),
+                gioHang.getTenSP(),
+                gioHang.getMauSac(),
+                gioHang.getKichCo(),
+                gioHang.getSoLuong(),
+                formatdonGia,
+                formatthanhTien
+            });
+        }
+    }
+
+    public void ThongKe() {
+        lblTongDonHang.setText(String.valueOf(tksv.DonHang().getMaHD()));
+        lblSP.setText(String.valueOf(tksv.SPBan().getSoLuong()));
+        lblTreo1.setText(String.valueOf(tksv.Treo().getMaHD()));
+        lblHoaDonThanh1.setText(String.valueOf(tksv.TT().getMaHD()));
+        String tienHDThanh = formatter.format(tksv.TienThanh().getTongTien()) + "VND";
+        lblTienHoaDonThanh.setText(tienHDThanh);
+        String dtNgay = formatter.format(tksv.tongNgay().getTongTien()) + "VND";
+        lblTongDoanhThuNgay.setText(dtNgay);
+        String dtThang = formatter.format(tksv.tongThang().getTongTien()) + "VND";
+        lblTongDoanhThuThang.setText(dtThang);
+        String dtNam = formatter.format(tksv.tongNam().getTongTien()) + " VND";
+        lblTongDoanhThuNam.setText(dtNam);
+    }
+
+    ///LoadBangDoanhThu EM TẠO 1 ThongKeViewDoanhThu
+    void loadDT(ArrayList<ThongKeViewDoanhThu> ls) {
+        DefaultTableModel model = (DefaultTableModel) tbBangTheoThang.getModel();
+        model.setRowCount(0);
+        for (ThongKeViewDoanhThu l : ls) {
+            String formatTongTien = formatter.format(l.getTongTien());
+            model.addRow(new Object[]{
+                l.getThang(),
+                l.getSoLuong(),
+                formatTongTien
+            });
+        }
+    }
+
+    ///Biểu đồ theo nam, EM TẠO 1 ThongKeViewDoanhThu   ĐỂ LÀM BIỂU ĐỒ NÀY
+    ///Có thêm cả phần RES Với Service
+    public void loadDataBieuDo(JPanel jpnItem, int nam) {
+        DefaultCategoryDataset data = new DefaultCategoryDataset();
+
+        // Thêm dữ liệu vào dataset từ tháng 1 đến tháng 12
+        for (int thang = 1; thang <= 12; thang++) {
+            data.addValue(getTongTienTheoThang(thang), "Tổng tiền", String.valueOf(thang));
+        }
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "",
+                "Tháng", "Tổng tiền",
+                data, PlotOrientation.VERTICAL, false, true, false);
+
+        // Thay đổi màu của cột 
+        CategoryPlot plot = barChart.getCategoryPlot();
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setSeriesPaint(0, new Color(30, 144, 255));
+
+        // Thêm ghi chú cho trục x và y
+        plot.getDomainAxis().setLabelFont(new Font("Times New Roman", Font.BOLD, 15));
+        plot.getRangeAxis().setLabelFont(new Font("Times New Roman", Font.BOLD, 15));
+
+        // Thay đổi màu sắc và kiểu đồ thị
+        plot.setBackgroundPaint(Color.WHITE); // Đặt màu nền của biểu đồ thành màu trắng
+
+        plot.setRangeGridlinePaint(Color.BLACK);
+        plot.setDomainGridlinePaint(Color.BLACK);
+
+        // Thêm tiêu đề và cách lề trên
+        TextTitle title = new TextTitle("Biểu đồ thống kê số lượng bán hàng");
+        title.setFont(new Font("Times New Roman", Font.HANGING_BASELINE, 20));
+        title.setPadding(new RectangleInsets(5, 0, 0, 0));
+        barChart.setTitle(title);
+
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(jpnItem.getWidth(), jpnItem.getHeight()));
+
+        jpnItem.removeAll();
+        jpnItem.setLayout(new CardLayout());
+        jpnItem.add(chartPanel);
+        jpnItem.validate();
+        jpnItem.repaint();
+    }
+
+// Phương thức này trả về tổng tiền cho một tháng cụ thể
+    private double getTongTienTheoThang(int thang) {
+        Integer nam = (Integer) cboNam2.getSelectedItem();
+        ArrayList<ThongKeViewDoanhThu> listItem = tksv.getListByNam(nam);
+        if (listItem != null) {
+            for (ThongKeViewDoanhThu item : listItem) {
+                if (item.getThang() == thang) {
+                    return item.getTongTien();
+                }
+            }
+        }
+        return 0;
+    }
+
+// Biểu đồ lọc theo tháng
+    public void BieuDoThongKeTheoThang(JPanel jpnItem, Integer thang, Integer nam) {
+        ArrayList<ThongKeViewDoanhThu> ls = tksv.getListThongKeTheoThang(thang, nam);
+
+        DefaultCategoryDataset data = new DefaultCategoryDataset();
+        if (ls != null) {
+            for (ThongKeViewDoanhThu tk : ls) {
+                data.addValue(tk.getTongTien(), "", tk.getNgay());
+            }
+        }
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "",
+                "Tháng", "Tổng tiền",
+                data, PlotOrientation.VERTICAL, false, true, false);
+
+        // Thay đổi màu của cột 
+        CategoryPlot plot = barChart.getCategoryPlot();
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setSeriesPaint(0, new Color(255, 105, 180));
+
+        // Thêm ghi chú cho trục x và y
+        plot.getDomainAxis().setLabelFont(new Font("Times New Roman", Font.BOLD, 15));
+        plot.getRangeAxis().setLabelFont(new Font("Times New Roman", Font.BOLD, 15));
+
+        // Thay đổi màu sắc và kiểu đồ thị
+        plot.setBackgroundPaint(Color.WHITE); // Đặt màu nền của biểu đồ thành màu trắng
+
+        plot.setRangeGridlinePaint(Color.WHITE);
+        plot.setDomainGridlinePaint(Color.WHITE);
+
+        // Thêm tiêu đề và cách lề trên
+        TextTitle title = new TextTitle("Biểu đồ thống kê");
+        title.setFont(new Font("Times New Roman", Font.HANGING_BASELINE, 20));
+        title.setPadding(new RectangleInsets(5, 0, 0, 0));
+        barChart.setTitle(title);
+
+        ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new Dimension(jpnItem.getWidth(), jpnItem.getHeight()));
+
+        jpnItem.removeAll();
+        jpnItem.setLayout(new CardLayout());
+        jpnItem.add(chartPanel);
+        jpnItem.validate();
+        jpnItem.repaint();
     }
 
     /**
@@ -288,7 +522,7 @@ public class QuanLyThongKe extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblTienHoaDonThanh)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -637,21 +871,21 @@ public class QuanLyThongKe extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTimNgayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTimNgayMouseClicked
-//        java.util.Date utilDate = dcsTu.getDate();
-//        java.util.Date utillDate = dcsToi.getDate();
-//        ArrayList<HD_HoaDonViewModel> lisHG = tksv.TheoNgay(utilDate, utillDate);
-//        loadData(lisHG);
+        java.util.Date utilDate = dcsTu.getDate();
+        java.util.Date utillDate = dcsToi.getDate();
+        ArrayList<HD_HoaDonViewModel> lisHG = tksv.TheoNgay(utilDate, utillDate);
+        loadData(lisHG);
     }//GEN-LAST:event_btnTimNgayMouseClicked
 
     private void tbDoanhThuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDoanhThuMouseClicked
-//        Integer maHD = Integer.valueOf(tbDoanhThu.getValueAt(tbDoanhThu.getSelectedRow(), 0).toString());
-//        loadTable(hdsv.getListGioHangById(maHD));
+        Integer maHD = Integer.valueOf(tbDoanhThu.getValueAt(tbDoanhThu.getSelectedRow(), 0).toString());
+        loadTable(hdsv.getListGioHangById(maHD));
     }//GEN-LAST:event_tbDoanhThuMouseClicked
 
     private void cboNamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboNamMouseClicked
         // CLICK CBO
-//        Integer nam = (Integer) cboNam.getSelectedItem();
-//        loadDT(tksv.getListByNam(nam));
+        Integer nam = (Integer) cboNam.getSelectedItem();
+        loadDT(tksv.getListByNam(nam));
     }//GEN-LAST:event_cboNamMouseClicked
 
     private void cboNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNamActionPerformed
@@ -901,17 +1135,17 @@ public class QuanLyThongKe extends javax.swing.JInternalFrame {
 
     private void cboNam2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboNam2MouseClicked
 //        // TODO add your handling code here:
-//        Integer thang = (Integer) cboThang.getSelectedItem();
-//        Integer nam = (Integer) cboNam2.getSelectedItem();
-//        loadDataBieuDo(jpanelBieuDo, nam);
-//        loadCboThangBieuDO(tksv.showMonth(nam));
+        Integer thang = (Integer) cboThang.getSelectedItem();
+        Integer nam = (Integer) cboNam2.getSelectedItem();
+        loadDataBieuDo(jpanelBieuDo, nam);
+        loadCboThangBieuDO(tksv.showMonth(nam));
     }//GEN-LAST:event_cboNam2MouseClicked
 
     private void cboThangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboThangMouseClicked
 //        // TODO add your handling code here:
-//        Integer thang = (Integer) cboThang.getSelectedItem();
-//        Integer nam = (Integer) cboNam2.getSelectedItem();
-//        BieuDoThongKeTheoThang(jpanelBieuDo, thang, nam);
+        Integer thang = (Integer) cboThang.getSelectedItem();
+        Integer nam = (Integer) cboNam2.getSelectedItem();
+        BieuDoThongKeTheoThang(jpanelBieuDo, thang, nam);
     }//GEN-LAST:event_cboThangMouseClicked
 
 

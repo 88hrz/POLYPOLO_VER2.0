@@ -4,6 +4,7 @@
  */
 package Repositories;
 
+import Models.NhanSu;
 import Models.User;
 import ViewModels.UserViewModel;
 import java.sql.Connection;
@@ -20,6 +21,21 @@ import java.util.Date;
 public class UserRepository {
     
     DbConnection dbConnection;
+    
+    public String getName(String tenDN) {
+        String sql = "Select NhanVien.TenNhanVien from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung where TenDangNhap = '" + tenDN + "'";
+        NhanSu ns = new NhanSu();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ns.setTenNhanVien(rs.getString("TenNhanVien"));
+                return ns.getTenNhanVien();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
     public ArrayList<UserViewModel> filterByRoleAndGender(String vaiT, String gioiT){
         String sql = "SELECT * FROM NhanVien nv INNER JOIN NguoiDung nd ON nv.MaNguoiDung = nd.MaNguoiDung\n" +

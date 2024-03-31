@@ -4,16 +4,40 @@
  */
 package Views.QLSP;
 
+import Models.SanPham;
 import Services.SanPhamService;
+import Services.UserService;
 import Utils.SVGImage;
 import ViewModels.SanPhamViewModel;
+import Views.Login;
 import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -23,6 +47,8 @@ public class QLSP extends javax.swing.JInternalFrame {
     SVGImage svgSet = new SVGImage();
     SanPhamService spService = new SanPhamService();
     DecimalFormat format = new DecimalFormat("#,###");
+    UserService uService = new UserService();
+    
     /**
      * Creates new form QLSANPHAM
      */
@@ -67,7 +93,46 @@ public class QLSP extends javax.swing.JInternalFrame {
             columnModel.getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-
+    
+    //GETMODEL
+    public SanPham getModelSP(){
+        
+        SanPham sp = new SanPham();
+        
+        int pos = tblSP.getSelectedRow();
+        Integer idSP = (Integer) tblSP.getValueAt(pos, 0);
+        String tenSP = spService.getListViewModelByIdSP(idSP).getTenSP();
+        
+        String danhMuc = spService.getListViewModelByIdSP(idSP).getDanhMuc();
+        Integer maDM = spService.getIdByNameDanhMuc(danhMuc).getIdDM();
+        
+        Integer soL = spService.getListViewModelByIdSP(idSP).getSoL();
+        String trangT = spService.getListViewModelByIdSP(idSP).getTrangT();
+        Date ngayN = spService.getListViewModelByIdSP(idSP).getNgayNhap();
+        
+        String khoHang = spService.getListViewModelByIdSP(idSP).getKhoHang();
+        Integer maKho = spService.getIdByNameKhoHang(khoHang).getMaKho();
+        
+        Double giaNhap = spService.getListViewModelByIdSP(idSP).getGiaN();
+        Double giaBan = spService.getListViewModelByIdSP(idSP).getGiaB();
+        
+        String brand = spService.getListViewModelByIdSP(idSP).getNhanHang();
+        Integer brandID = spService.getIdByNameBrand(brand).getIdBrand();
+        
+        String tenMau = spService.getListViewModelByIdSP(idSP).getMauSac();
+        Integer maMau = spService.getIdByNameMauSac(tenMau).getIdMau();
+        
+        String tenSz = spService.getListViewModelByIdSP(idSP).getKichCo();
+        Integer maSz = spService.getIdByNameSz(tenSz).getIdSz();
+        
+        String chatL = spService.getListViewModelByIdSP(idSP).getChatLieu();
+        Integer chatLID = spService.getIdByNameChatLieu(chatL).getIdChatL();
+        
+        String imgPath = spService.getListViewModelByIdSP(idSP).getImg();
+        
+        sp = new SanPham(idSP, maDM, soL, maSz, maMau, chatLID, brandID, maKho, tenSP, trangT, imgPath, giaNhap, giaBan, ngayN);
+        return sp;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,8 +154,8 @@ public class QLSP extends javax.swing.JInternalFrame {
         btnViewHide = new javax.swing.JButton();
         cboSearch = new javax.swing.JComboBox<>();
         txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
-        btnDetails = new javax.swing.JButton();
+        btnLoad = new javax.swing.JButton();
+        btnUnhide = new javax.swing.JButton();
         btnExport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -175,6 +240,11 @@ public class QLSP extends javax.swing.JInternalFrame {
         });
 
         btnHidden.setText("ẨN");
+        btnHidden.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHiddenMouseClicked(evt);
+            }
+        });
         btnHidden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHiddenActionPerformed(evt);
@@ -182,6 +252,11 @@ public class QLSP extends javax.swing.JInternalFrame {
         });
 
         btnViewHide.setText("DS ẨN");
+        btnViewHide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnViewHideMouseClicked(evt);
+            }
+        });
         btnViewHide.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnViewHideActionPerformed(evt);
@@ -190,12 +265,27 @@ public class QLSP extends javax.swing.JInternalFrame {
 
         cboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả", " " }));
 
-        btnSearch.setText("SEARCH");
-
-        btnDetails.setText("XEM");
-        btnDetails.addActionListener(new java.awt.event.ActionListener() {
+        btnLoad.setText("LOAD");
+        btnLoad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoadMouseClicked(evt);
+            }
+        });
+        btnLoad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDetailsActionPerformed(evt);
+                btnLoadActionPerformed(evt);
+            }
+        });
+
+        btnUnhide.setText("BỎ ẨN");
+        btnUnhide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUnhideMouseClicked(evt);
+            }
+        });
+        btnUnhide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUnhideActionPerformed(evt);
             }
         });
 
@@ -209,36 +299,36 @@ public class QLSP extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnHidden, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnViewHide, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addComponent(cboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addComponent(btnUnhide, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(cboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(10, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnViewHide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHidden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnViewHide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUnhide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -247,6 +337,11 @@ public class QLSP extends javax.swing.JInternalFrame {
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1040, 60));
 
         btnExport.setText("EXPORT");
+        btnExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportMouseClicked(evt);
+            }
+        });
         jPanel1.add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 480, 130, 40));
 
         jTabbedPane1.addTab("Thông Tin Sản Phẩm", jPanel1);
@@ -452,7 +547,8 @@ public class QLSP extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPMouseClicked
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_tblSPMouseClicked
 
     private void btnThemDMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemDMMouseClicked
@@ -517,14 +613,48 @@ public class QLSP extends javax.swing.JInternalFrame {
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // ADD
-        QLSP_add sp = new QLSP_add();
-        sp.setVisible(true);
+        QLSP_add spAdd = new QLSP_add();
+        spAdd.setVisible(true);
+        loadTable(spService.getListSPVM());
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
         // UPDATE
-        QLSP_update sp = new QLSP_update();
-        sp.setVisible(true);
+        int pos = tblSP.getSelectedRow();
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để cập nhật!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            QLSP_update spUpdate = new QLSP_update();
+            spUpdate.setVisible(true);
+            spUpdate.pack();
+
+            Integer maSP = (Integer) tblSP.getValueAt(pos, 0);
+            spUpdate.txtID.setText(maSP.toString());
+            spUpdate.txtTen.setText((String) tblSP.getValueAt(pos, 1));
+            spUpdate.cboDanhMuc.setSelectedItem(tblSP.getValueAt(pos, 2));
+            spUpdate.cboNhanHang.setSelectedItem(tblSP.getValueAt(pos, 3));
+            spUpdate.cboMauSac.setSelectedItem(tblSP.getValueAt(pos, 4));
+            spUpdate.cboKichCo.setSelectedItem(tblSP.getValueAt(pos, 5));
+            spUpdate.cboChatLieu.setSelectedItem(tblSP.getValueAt(pos, 6));
+            spUpdate.txtGiaN.setText((String) tblSP.getValueAt(pos, 7));
+            spUpdate.txtGiaB.setText((String) tblSP.getValueAt(pos, 8));
+            spUpdate.txtSoL.setText(tblSP.getValueAt(pos, 10).toString());
+            spUpdate.cboKhoHang.setSelectedItem(tblSP.getValueAt(pos, 11));
+            
+            String trangT = (String) tblSP.getValueAt(pos, 9);
+            if ("Còn hàng".equals(trangT)) {
+                spUpdate.rdoCon.setSelected(true);
+            } else {
+                spUpdate.rdoHet.setSelected(true);
+            }
+            Date ngayN = spService.getListViewModelById(maSP).get(0).getNgayNhap();
+            spUpdate.dcsNgayNhap.setDate(ngayN);
+
+            String imgPath = spService.getListViewModelById(maSP).get(0).getImg();
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(imgPath).getImage().getScaledInstance(240, 340, Image.SCALE_SMOOTH));
+            spUpdate.lblImg.setIcon(imageIcon);
+        }
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnViewHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewHideActionPerformed
@@ -541,22 +671,302 @@ public class QLSP extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHiddenActionPerformed
 
-    private void btnDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsActionPerformed
+    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDetailsActionPerformed
+    }//GEN-LAST:event_btnLoadActionPerformed
+
+    private void btnLoadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMouseClicked
+        // XEM
+        loadTable(spService.getListSPVM());
+    }//GEN-LAST:event_btnLoadMouseClicked
+
+    private void btnHiddenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHiddenMouseClicked
+        // HIDE
+        int pos = tblSP.getSelectedRow();
+        if (pos >= 0) {
+            int result = JOptionPane.showConfirmDialog(this, "Bạn muốn ẩn sản phẩm không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                spService.hideSP(getModelSP());
+                JOptionPane.showMessageDialog(this, "Ẩn sản phẩm thành công!", "POLYPOLO thông báo", 0);
+                loadTable(spService.getListSPVM());
+            } else if (result == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn sản phẩm!", "POLYPOLO thông báo", 0);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm trên bảng để ẩn!", "POLYPOLO thông báo", 0);
+        }
+    }//GEN-LAST:event_btnHiddenMouseClicked
+
+    private void btnViewHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewHideMouseClicked
+        // HIDE LS
+        loadTable(spService.getListHide());
+    }//GEN-LAST:event_btnViewHideMouseClicked
+
+    private void btnUnhideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUnhideMouseClicked
+        // UNHIDE
+        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn bỏ ẩn sản phẩm không?", "POLYPOLO thông báo", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            int selectedRow = tblSP.getSelectedRow();
+            if (selectedRow != -1) {
+                Integer maSP = Integer.valueOf(tblSP.getModel().getValueAt(selectedRow, 0).toString());
+                SanPham sp = new SanPham();
+                sp.setMaSP(maSP);
+                if (spService.unhideSP(sp)) {
+                    JOptionPane.showMessageDialog(this, "Bỏ ẩn sản phẩm thành công!", "POLYPOLO thông báo", 0);
+                    loadTable(spService.getListSPVM());
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm từ bảng!", "POLYPOLO thông báo", 0);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Đã hủy thao tác bỏ ẩn sản phẩm!", "POLYPOLO thông báo", 0);
+        }
+    }//GEN-LAST:event_btnUnhideMouseClicked
+
+    private void btnUnhideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnhideActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUnhideActionPerformed
+
+    private void btnExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportMouseClicked
+        // EXPORT
+        try {
+            XSSFWorkbook workBook = new XSSFWorkbook();
+            XSSFSheet sheet = workBook.createSheet("Danh Sách Sản Phẩm POLYPOLO");
+            
+            //STYLE TITLE
+            XSSFRow titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Danh Sách Sản Phẩm POLYPOLO"); 
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,11)); 
+            XSSFFont font = workBook.createFont();
+            font.setFontHeightInPoints((short) 19);
+            font.setBold(true);
+            XSSFCellStyle style = workBook.createCellStyle();
+            style.setFont(font);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+            titleCell.setCellStyle(style);
+           
+            //DATE
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+            
+            SimpleDateFormat sdfHrs = new SimpleDateFormat("HH:mm:ss");
+            String currentTime = sdfHrs.format(new Date());
+            
+            XSSFRow dateRow = sheet.createRow(1);
+            org.apache.poi.ss.usermodel.Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày: " + currentDate + " | Giờ: " +currentTime);
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 11)); // Merge từ cột 0 đến 9
+            XSSFCellStyle dateStyle = workBook.createCellStyle();
+            dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+            dateCell.setCellStyle(dateStyle);
+            
+            //STYLE FONT
+            Font headerFont = workBook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 11);
+            
+            CellStyle headerStyle = workBook.createCellStyle();
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+            //ADD
+            XSSFRow row = null;
+            Cell cell = null;
+            row = sheet.createRow(3);
+
+            cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            Sheet s = cell.getSheet();
+            cell.setCellValue("Mã Sản Phẩm");
+            s.autoSizeColumn(1);
+
+            cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Tên Sản Phẩm");
+            
+            cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Danh Mục");
+            
+            cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Nhãn Hàng");
+
+            cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Màu Sắc");
+
+            cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Kích Cỡ");
+            
+            cell = row.createCell(7, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Chất Liệu");
+
+            cell = row.createCell(8, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Giá Nhập");
+
+            cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Giá Bán");
+
+            cell = row.createCell(10, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Trạng Thái");
+
+            cell = row.createCell(11, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Tồn Kho");
+            
+            cell = row.createCell(12, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Khu Vực Kho");
+
+            for (int i = 0; i < 13; i++) {
+                cell = row.getCell(i);
+                cell.setCellStyle(headerStyle);
+            }
+
+            ArrayList<SanPhamViewModel> ls = spService.getListSPVM();
+            for (int i = 0; i < ls.size(); i++) {
+                row = sheet.createRow(4 + i);
+
+                //STYLE FONT
+                CellStyle docuStyle = workBook.createCellStyle();
+                docuStyle.setAlignment(HorizontalAlignment.CENTER);
+                
+                CellStyle cellStyleFormatNumber = null;
+
+                if (cellStyleFormatNumber == null) {
+                    short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+                    Workbook workbook = row.getSheet().getWorkbook();
+                    cellStyleFormatNumber = workbook.createCellStyle();
+                    cellStyleFormatNumber.setDataFormat(format);
+                }
+
+                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(i + 1);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue("SP" + ls.get(i).getIdSP());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenSP());
+                s.autoSizeColumn(2);
+
+                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getDanhMuc());
+                s.autoSizeColumn(3);
+
+                cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getNhanHang());
+                s.autoSizeColumn(4);
+
+                cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getMauSac());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getKichCo());
+                cell.setCellStyle(docuStyle);   
+
+                cell = row.createCell(7, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getChatLieu());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(8, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getGiaN());
+                cell.setCellStyle(cellStyleFormatNumber);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(ls.get(i).getGiaB());
+                cell.setCellStyle(cellStyleFormatNumber);
+                cell.setCellStyle(docuStyle);
+                
+                cell = row.createCell(10, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTrangT());
+                s.autoSizeColumn(10);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(11, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getSoL());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(12, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(ls.get(i).getKhoHang());
+                s.autoSizeColumn(12);
+                cell.setCellStyle(docuStyle);
+            }
+            
+            //STYLE
+            CellStyle footerStyle = workBook.createCellStyle();
+            footerStyle.setFont(headerFont);
+            footerStyle.setAlignment(HorizontalAlignment.LEFT);
+            
+            //ROW CUỐI
+            int rowS = 5 + ls.size();
+
+            XSSFRow tongSPRow = sheet.createRow(rowS);
+            org.apache.poi.ss.usermodel.Cell tongSPCell = tongSPRow.createCell(1);
+
+            tongSPCell.setCellValue("Tổng Sản Phẩm:");
+            tongSPCell.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell tongSPCelll = tongSPRow.createCell(2);
+            tongSPCelll.setCellValue(ls.size());
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+
+            org.apache.poi.ss.usermodel.Cell ngX = tongSPRow.createCell(7);
+            ngX.setCellValue("Người Xuất:");
+            ngX.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell thongT = tongSPRow.createCell(8);
+            thongT.setCellValue(uService.getName(Login.dataStatic));
+            sheet.autoSizeColumn(7);
+            sheet.autoSizeColumn(8);
+            
+            String defaultCurrentDirectoryPath = "C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates";
+            JFileChooser fileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+            fileChooser.setDialogTitle("Chọn nơi lưu file");
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx", "xls");
+            fileChooser.addChoosableFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(null);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                String filePath = fileToSave.getAbsolutePath();
+                if (!filePath.endsWith(".xlsx")) {
+                    filePath += ".xlsx";
+                }
+
+            File file = new File(filePath);
+                try {
+                    FileOutputStream fis = new FileOutputStream(file);
+                    workBook.write(fis);
+                    fis.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+    }//GEN-LAST:event_btnExportMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAnDM;
     private javax.swing.JButton btnClearDM;
-    private javax.swing.JButton btnDetails;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnHidden;
     private javax.swing.JButton btnImport;
-    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnSuaDM;
     private javax.swing.JButton btnThemDM;
+    private javax.swing.JButton btnUnhide;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnViewHide;
     private javax.swing.JComboBox<String> cboSearch;

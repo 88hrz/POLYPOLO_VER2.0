@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="undecorated" type="boolean" value="true"/>
@@ -29,10 +33,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel1" min="-2" pref="618" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="jPanel1" alignment="0" pref="629" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -56,7 +57,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="0" width="990" height="90"/>
+              <AbsoluteConstraints x="0" y="0" width="990" height="100"/>
             </Constraint>
           </Constraints>
 
@@ -76,14 +77,14 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="330" y="40" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="320" y="50" width="-1" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel3">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="0" y="0" width="990" height="20"/>
+                  <AbsoluteConstraints x="0" y="0" width="-1" height="30"/>
                 </Constraint>
               </Constraints>
 
@@ -98,10 +99,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="btnClose" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btnClose" alignment="1" pref="30" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -124,7 +122,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="Th&#xf4;ng tin S&#x1ea3;n Ph&#x1ea9;m">
-                  <Font PropertyName="font" name="Segoe UI" size="16" style="3"/>
+                  <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
                   <Color PropertyName="color" blue="33" green="33" red="33" type="rgb"/>
                 </TitledBorder>
               </Border>
@@ -132,7 +130,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="320" y="110" width="660" height="480"/>
+              <AbsoluteConstraints x="310" y="130" width="660" height="480"/>
             </Constraint>
           </Constraints>
 
@@ -145,11 +143,11 @@
                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jLabel9" alignment="0" min="-2" pref="74" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtID" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cboDM" alignment="0" min="-2" pref="194" max="-2" attributes="0"/>
+                              <Component id="txtId" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cboDanhMuc" alignment="0" min="-2" pref="194" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel8" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
-                          <Component id="txtTen" alignment="0" min="-2" pref="241" max="-2" attributes="0"/>
+                          <Component id="txtTenSP" alignment="0" min="-2" pref="241" max="-2" attributes="0"/>
                           <Component id="jLabel10" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
                           <Component id="jLabel16" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
                           <Component id="cboKhoHang" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
@@ -161,16 +159,28 @@
                               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                               <Component id="rdoHet" min="-2" pref="98" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="dcsNgayNhap" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="dcsNgayN" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="77" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel11" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="txtGiaB" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLabel14" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
-                                  <Component id="txtGiaN" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="cboSz" min="-2" pref="154" max="-2" attributes="0"/>
+                                          <Component id="jLabel18" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                                          <Component id="jLabel20" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                                          <Component id="jLabel17" min="-2" pref="61" max="-2" attributes="0"/>
+                                          <Component id="jLabel21" min="-2" pref="75" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txtGiaB" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel14" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
+                                      <Component id="txtGiaN" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="27" pref="27" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -178,16 +188,11 @@
                                   <Component id="jLabel15" min="-2" pref="34" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="cboSz" min="-2" pref="154" max="-2" attributes="0"/>
-                          <Component id="jLabel18" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
-                          <Component id="jLabel20" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
-                          <Component id="jLabel17" min="-2" pref="61" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Component id="cboChatLieu" alignment="0" pref="205" max="32767" attributes="0"/>
                               <Component id="cboMau" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cboBrand" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jLabel23" alignment="0" min="-2" pref="74" max="-2" attributes="0"/>
-                          <Component id="cboMau1" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
@@ -201,14 +206,14 @@
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboDM" min="-2" pref="22" max="-2" attributes="0"/>
+                              <Component id="cboDanhMuc" min="-2" pref="22" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="txtID" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtId" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -227,57 +232,51 @@
                               </Group>
                           </Group>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                              <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtTenSP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboBrand" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtSoL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboSz" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rdoCon" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rdoHet" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboMau" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtTen" min="-2" max="-2" attributes="0"/>
-                          <Component id="cboMau1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dcsNgayN" min="-2" max="-2" attributes="0"/>
+                          <Component id="cboChatLieu" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtSoL" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="rdoCon" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="rdoHet" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="dcsNgayNhap" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboKhoHang" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cboSz" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cboMau" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cboChatLieu" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="cboKhoHang" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="357" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -329,12 +328,12 @@
                 <Property name="text" type="java.lang.String" value="K&#xed;ch c&#x1ee1;:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtID">
+            <Component class="javax.swing.JTextField" name="txtId">
               <Properties>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtTen">
+            <Component class="javax.swing.JTextField" name="txtTenSP">
             </Component>
             <Component class="javax.swing.JTextField" name="txtSoL">
             </Component>
@@ -345,7 +344,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtGiaB">
             </Component>
-            <Component class="javax.swing.JComboBox" name="cboDM">
+            <Component class="javax.swing.JComboBox" name="cboDanhMuc">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="0"/>
@@ -357,11 +356,17 @@
             </Component>
             <Component class="javax.swing.JRadioButton" name="rdoCon">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="buttonGroup1"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="C&#xf2;n s&#x1eb5;n"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="rdoHet">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="buttonGroup1"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="H&#x1ebf;t h&#xe0;ng"/>
               </Properties>
             </Component>
@@ -390,6 +395,16 @@
                 <Property name="text" type="java.lang.String" value="VND"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JComboBox" name="cboBrand">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
             <Component class="javax.swing.JLabel" name="jLabel20">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ch&#x1ea5;t Li&#x1ec7;u:"/>
@@ -404,6 +419,11 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel21">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nh&#xe3;n H&#xe0;ng:"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cboMau">
               <Properties>
@@ -420,7 +440,7 @@
                 <Property name="text" type="java.lang.String" value="Ng&#xe0;y Nh&#x1ead;p:"/>
               </Properties>
             </Component>
-            <Component class="com.toedter.calendar.JDateChooser" name="dcsNgayNhap">
+            <Component class="com.toedter.calendar.JDateChooser" name="dcsNgayN">
             </Component>
             <Component class="javax.swing.JComboBox" name="cboChatLieu">
               <Properties>
@@ -432,24 +452,9 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel23">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Nh&#xe3;n H&#xe0;ng:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="cboMau1">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="0"/>
-                </Property>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel5">
+        <Container class="javax.swing.JPanel" name="jPanel6">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -464,29 +469,40 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="50" y="540" width="230" height="50"/>
+              <AbsoluteConstraints x="20" y="550" width="270" height="50"/>
             </Constraint>
           </Constraints>
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnAdd" min="-2" pref="90" max="-2" attributes="0"/>
-                      <EmptySpace pref="36" max="32767" attributes="0"/>
-                      <Component id="btnCancel" min="-2" pref="90" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="20" max="32767" attributes="0"/>
+                      <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnCancel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnNew" min="-2" pref="53" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnAdd" pref="36" max="32767" attributes="0"/>
-                          <Component id="btnCancel" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="btnCancel" max="32767" attributes="0"/>
+                              <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="btnNew" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Component id="btnAdd" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -507,6 +523,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="H&#x1ee6;Y"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCancelMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnAdd">
               <Properties>
@@ -521,22 +540,22 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="T&#x1ea0;O"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnAddMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnNew">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Roboto" size="12" style="1"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnNewMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="btnUploadFoto">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&#x1ea2;NH"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnUploadFotoMouseClicked"/>
-          </Events>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="120" y="490" width="75" height="-1"/>
-            </Constraint>
-          </Constraints>
-        </Component>
         <Component class="javax.swing.JLabel" name="lblImg">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -547,9 +566,25 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="40" y="130" width="240" height="340"/>
+              <AbsoluteConstraints x="40" y="150" width="240" height="340"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnUploadFoto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x1ea2;NH"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnUploadFotoMouseClicked"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="120" y="510" width="75" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

@@ -5,7 +5,7 @@
 package Views;
 
 import Views.QLNH.QLNH;
-import Views.QLCustomer.QLKHACHHANG;
+import Views.QLKH.QLKHACHHANG;
 import Views.QLNS.QLNS;
 import Views.QLTT.QLTT;
 import Views.QLTK.QLTK;

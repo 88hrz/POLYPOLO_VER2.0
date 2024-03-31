@@ -4,8 +4,8 @@
  */
 package Views.QLNH;
 
-import Views.QLSP.QLSP_add;
 import Views.QLSP.QLSP_update;
+import Views.QLSP.QLSP_add;
 import Utils.SVGImage;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -440,13 +440,13 @@ public class QLNX extends javax.swing.JInternalFrame {
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // ADD
-        QLSP_add sp = new QLSP_add();
+        QLSP_update sp = new QLSP_update();
         sp.setVisible(true);
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
         // UPDATE
-        QLSP_update sp = new QLSP_update();
+        QLSP_add sp = new QLSP_add();
         sp.setVisible(true);
     }//GEN-LAST:event_btnUpdateMouseClicked
 

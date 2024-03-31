@@ -5,7 +5,7 @@
 package Views.QLNS;
 
 import Utils.SVGImage;
-import Views.QLCustomer.QLKHACHHANG_update;
+import Views.QLKH.QLKHACHHANG_update;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**

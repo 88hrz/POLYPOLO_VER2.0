@@ -4,6 +4,8 @@
  */
 package ViewModels;
 
+import java.util.Date;
+
 /**
  *
  * @author X1
@@ -12,10 +14,31 @@ public class SanPhamViewModel {
     private Integer idSP, soL;
     private String tenSP, danhMuc,nhanHang, mauSac, kichCo, chatLieu, trangT, khoHang;
     private Double giaN, giaB;
+    
+    private String img;
+    private Date ngayNhap;
 
     public SanPhamViewModel() {
     }
 
+    public SanPhamViewModel(Integer idSP, Integer soL, String tenSP, String danhMuc, String nhanHang, String mauSac, String kichCo, String chatLieu, String trangT, String khoHang, Double giaN, Double giaB, String img, Date ngayNhap) {
+        this.idSP = idSP;
+        this.soL = soL;
+        this.tenSP = tenSP;
+        this.danhMuc = danhMuc;
+        this.nhanHang = nhanHang;
+        this.mauSac = mauSac;
+        this.kichCo = kichCo;
+        this.chatLieu = chatLieu;
+        this.trangT = trangT;
+        this.khoHang = khoHang;
+        this.giaN = giaN;
+        this.giaB = giaB;
+        this.img = img;
+        this.ngayNhap = ngayNhap;
+    }
+
+    
     public SanPhamViewModel(Integer idSP, Integer soL, String tenSP, String danhMuc, String nhanHang, String mauSac, String kichCo, String chatLieu, String trangT, String khoHang, Double giaN, Double giaB) {
         this.idSP = idSP;
         this.soL = soL;
@@ -29,6 +52,22 @@ public class SanPhamViewModel {
         this.khoHang = khoHang;
         this.giaN = giaN;
         this.giaB = giaB;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Date getNgayNhap() {
+        return ngayNhap;
+    }
+
+    public void setNgayNhap(Date ngayNhap) {
+        this.ngayNhap = ngayNhap;
     }
 
     public Integer getIdSP() {

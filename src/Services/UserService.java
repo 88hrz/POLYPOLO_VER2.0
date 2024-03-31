@@ -16,6 +16,10 @@ import java.util.ArrayList;
 public class UserService {
     UserRepository userRepo = new UserRepository();
     
+    public String getName(String tenDN) {
+        return userRepo.getName(tenDN);
+    }
+    
     public ArrayList<UserViewModel> filterByRoleAndGender(String vaiT, String gioiT){
         return userRepo.filterByRoleAndGender(vaiT, gioiT);
     }

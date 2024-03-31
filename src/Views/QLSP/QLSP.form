@@ -224,18 +224,18 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnUpdate" min="-2" pref="95" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnDetails" min="-2" pref="95" max="-2" attributes="0"/>
+                          <Component id="btnLoad" min="-2" pref="95" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnHidden" min="-2" pref="95" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnViewHide" min="-2" pref="95" max="-2" attributes="0"/>
-                          <EmptySpace pref="67" max="32767" attributes="0"/>
-                          <Component id="cboSearch" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="txtSearch" min="-2" pref="191" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btnSearch" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="btnUnhide" min="-2" pref="95" max="-2" attributes="0"/>
+                          <EmptySpace pref="64" max="32767" attributes="0"/>
+                          <Component id="cboSearch" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtSearch" min="-2" pref="191" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -244,7 +244,6 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnSearch" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                               <Component id="txtSearch" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                               <Component id="cboSearch" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
@@ -253,11 +252,12 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="btnViewHide" max="32767" attributes="0"/>
                               <Component id="btnAdd" alignment="1" max="32767" attributes="0"/>
                               <Component id="btnUpdate" alignment="1" max="32767" attributes="0"/>
                               <Component id="btnHidden" max="32767" attributes="0"/>
-                              <Component id="btnDetails" alignment="1" max="32767" attributes="0"/>
+                              <Component id="btnLoad" alignment="1" max="32767" attributes="0"/>
+                              <Component id="btnViewHide" alignment="1" max="32767" attributes="0"/>
+                              <Component id="btnUnhide" alignment="1" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -286,6 +286,7 @@
                     <Property name="text" type="java.lang.String" value="&#x1ea8;N"/>
                   </Properties>
                   <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnHiddenMouseClicked"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHiddenActionPerformed"/>
                   </Events>
                 </Component>
@@ -294,6 +295,7 @@
                     <Property name="text" type="java.lang.String" value="DS &#x1ea8;N"/>
                   </Properties>
                   <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnViewHideMouseClicked"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewHideActionPerformed"/>
                   </Events>
                 </Component>
@@ -315,17 +317,22 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtSearch">
                 </Component>
-                <Component class="javax.swing.JButton" name="btnSearch">
+                <Component class="javax.swing.JButton" name="btnLoad">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="SEARCH"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JButton" name="btnDetails">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="XEM"/>
+                    <Property name="text" type="java.lang.String" value="LOAD"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDetailsActionPerformed"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnLoadMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLoadActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnUnhide">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="B&#x1ece; &#x1ea8;N"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnUnhideMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUnhideActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -334,6 +341,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="EXPORT"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExportMouseClicked"/>
+              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="920" y="480" width="130" height="40"/>

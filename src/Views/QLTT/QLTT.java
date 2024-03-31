@@ -52,28 +52,32 @@ public class QLTT extends javax.swing.JInternalFrame {
         setMinimumSize(new java.awt.Dimension(1090, 630));
         setPreferredSize(new java.awt.Dimension(1090, 630));
 
-        btnBrand.setText("Nhãn Hàng");
+        btnBrand.setFont(new java.awt.Font("Montserrat Medium", 0, 22)); // NOI18N
+        btnBrand.setText("  Nhãn Hàng");
         btnBrand.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnBrandMouseClicked(evt);
             }
         });
 
-        btnColor.setText("Màu Sắc");
+        btnColor.setFont(new java.awt.Font("Montserrat Medium", 0, 22)); // NOI18N
+        btnColor.setText("  Màu Sắc ");
         btnColor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnColorMouseClicked(evt);
             }
         });
 
-        btnSz.setText("Kích Cỡ");
+        btnSz.setFont(new java.awt.Font("Montserrat Medium", 0, 22)); // NOI18N
+        btnSz.setText("  Kích Cỡ");
         btnSz.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSzMouseClicked(evt);
             }
         });
 
-        btnMaterial.setText("Chất Liệu");
+        btnMaterial.setFont(new java.awt.Font("Montserrat Medium", 0, 22)); // NOI18N
+        btnMaterial.setText("  Chất Liệu");
         btnMaterial.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnMaterialMouseClicked(evt);

@@ -12,11 +12,6 @@ import Models.SP_MauSac;
 import Models.SP_NhanHang;
 import Models.SanPham;
 import Repositories.KhoHangRepo;
-import Repositories.SP_ChatLieuRepo;
-import Repositories.SP_DanhMucRepo;
-import Repositories.SP_MauSacRepo;
-import Repositories.SP_KichCoRepo;
-import Repositories.SP_NhanHangRepo;
 import Repositories.SanPhamRepository;
 import ViewModels.SanPhamViewModel;
 import java.util.ArrayList;
@@ -27,11 +22,6 @@ import java.util.ArrayList;
  */
 public class SanPhamService {
     SanPhamRepository spRepo = new SanPhamRepository();
-    SP_DanhMucRepo dmRepo = new SP_DanhMucRepo();
-    SP_MauSacRepo msRepo = new SP_MauSacRepo();
-    SP_ChatLieuRepo chatLRepo = new SP_ChatLieuRepo();
-    SP_KichCoRepo szRepo = new SP_KichCoRepo();
-    SP_NhanHangRepo brandRepo = new SP_NhanHangRepo();
     KhoHangRepo khRepo = new KhoHangRepo();
     
     //CHECK ID
@@ -42,19 +32,19 @@ public class SanPhamService {
         return spRepo.checkName(tenSP);
     }
     public boolean checkIdCat(Integer id) {
-        return dmRepo.checkIdCat(id);
+        return spRepo.checkIdCat(id);
     }
     public boolean checkIdColor(Integer id) {
-        return msRepo.checkIdColor(id);
+        return spRepo.checkIdColor(id);
     }
     public boolean checkIdSz(Integer id) {
-        return szRepo.checkIdSz(id);
+        return spRepo.checkIdSz(id);
     }
     public boolean checkIdBrand(Integer id) {
-        return brandRepo.checkIdBrand(id);
+        return spRepo.checkIdBrand(id);
     }
     public boolean checkIdChatL(Integer id) {
-        return chatLRepo.checkIdChatL(id);
+        return spRepo.checkIdChatL(id);
     }
     public boolean checkIdKho(Integer id) {
         return khRepo.checkIdKho(id);
@@ -75,19 +65,19 @@ public class SanPhamService {
         return spRepo.getListSPVM();
     }
     public ArrayList<SP_DanhMuc> getListDM(){
-        return dmRepo.getList();
+        return spRepo.getList();
     }
     public ArrayList<SP_ChatLieu> getListChatL(){
-        return chatLRepo.getList();
+        return spRepo.getListChatL();
     }
     public ArrayList<SP_MauSac> getListMauS(){
-        return msRepo.getList();
+        return spRepo.getListColor();
     }
     public ArrayList<SP_KichCo> getListSz(){
-        return szRepo.getList();
+        return spRepo.getListSz();
     }
     public ArrayList<SP_NhanHang> getListNH(){
-        return brandRepo.getList();
+        return spRepo.getListBrand();
     }
     public ArrayList<KhoHang> getListKhoHang(){
         return khRepo.getList();
@@ -109,19 +99,19 @@ public class SanPhamService {
     
     //GETMODEL
     public SP_DanhMuc getIdByNameDanhMuc(String name){
-        return dmRepo.getIdByName(name);
+        return spRepo.getIdByName(name);
     }
     public SP_ChatLieu getIdByNameChatLieu(String name){
-        return chatLRepo.getIdByName(name);
+        return spRepo.getIdByNameChatL(name);
     }
     public SP_KichCo getIdByNameSz(String name){
-        return szRepo.getIdByName(name);
+        return spRepo.getIdByNameSz(name);
     }
     public SP_MauSac getIdByNameMauSac(String name){
-        return msRepo.getIdByName(name);
+        return spRepo.getIdByNameColor(name);
     }
     public SP_NhanHang getIdByNameBrand(String name){
-        return brandRepo.getIdByName(name);
+        return spRepo.getIdByNameBrand(name);
     }
     public ArrayList<SanPhamViewModel> getListViewModelById(Integer id) {
         return spRepo.getListViewModelById(id);
@@ -153,7 +143,7 @@ public class SanPhamService {
     
     //THUOCTINH
     public String addColor(SP_MauSac color) {
-        Boolean check = msRepo.addColor(color);
+        Boolean check = spRepo.addColor(color);
         if (check) {
             return "Thêm thuộc tính màu sắc mới thành công!";
         } else {
@@ -161,7 +151,7 @@ public class SanPhamService {
         }
     }
     public String addBrand(SP_NhanHang brand) {
-        Boolean check = brandRepo.addBrand(brand);
+        Boolean check = spRepo.addBrand(brand);
         if (check) {
             return "Thêm nhãn hàng mới thành công!";
         } else {
@@ -169,7 +159,7 @@ public class SanPhamService {
         }
     }
     public String addMaterial(SP_ChatLieu material) {
-        Boolean check = chatLRepo.addMaterial(material);
+        Boolean check = spRepo.addMaterial(material);
         if (check) {
             return "Thêm thuộc tính chất liệu mới thành công!";
         } else {
@@ -177,7 +167,7 @@ public class SanPhamService {
         }
     }
     public String addSz(SP_KichCo sz) {
-        Boolean check = szRepo.addSz(sz);
+        Boolean check = spRepo.addSz(sz);
         if (check) {
             return "Thêm thuộc tính kích cỡ mới thành công!";
         } else {
@@ -185,7 +175,7 @@ public class SanPhamService {
         }
     }
     public String addCat(SP_DanhMuc danhMuc) {
-        Boolean check = dmRepo.addCat(danhMuc);
+        Boolean check = spRepo.addCat(danhMuc);
         if (check) {
             return "Thêm danh mục mới thành công!";
         } else {
@@ -194,7 +184,7 @@ public class SanPhamService {
     }
     
     public String updateBrand(SP_NhanHang brand) {
-        Boolean check = brandRepo.updateBrand(brand);
+        Boolean check = spRepo.updateBrand(brand);
         if (check) {
             return "Cập nhật thương hiệu thành công!";
         }else{
@@ -202,7 +192,7 @@ public class SanPhamService {
         }
     }
     public String updateMaterial(SP_ChatLieu material) {
-        Boolean check = chatLRepo.updateMaterial(material);
+        Boolean check = spRepo.updateMaterial(material);
         if (check) {
             return "Cập nhật chất liệu thành công!";
         }else{
@@ -210,7 +200,7 @@ public class SanPhamService {
         }
     }
     public String updateDanhMuc(SP_DanhMuc danhMuc) {
-        Boolean check = dmRepo.updateDanhMuc(danhMuc);
+        Boolean check = spRepo.updateDanhMuc(danhMuc);
         if (check) {
             return "Cập nhật danh mục thành công!";
         }else{
@@ -218,7 +208,7 @@ public class SanPhamService {
         }
     }
     public String updateSize(SP_KichCo sz) {
-        Boolean check = szRepo.updateSize(sz);
+        Boolean check = spRepo.updateSize(sz);
         if (check) {
             return "Cập nhật kích cỡ thành công!";
         }else{
@@ -226,7 +216,7 @@ public class SanPhamService {
         }
     }
     public String updateMauSac(SP_MauSac color) {
-        Boolean check = msRepo.updateMauSac(color);
+        Boolean check = spRepo.updateMauSac(color);
         if (check) {
             return "Cập nhật màu sắc thành công!";
         }else{
@@ -235,7 +225,7 @@ public class SanPhamService {
     }
     
     public String hideBrand(SP_NhanHang brand) {
-        Boolean check = brandRepo.hideBrand(brand);
+        Boolean check = spRepo.hideBrand(brand);
         if (check) {
             return "Ẩn thương hiệu thành công!";
         }else{
@@ -243,7 +233,7 @@ public class SanPhamService {
         }
     }
     public String hideMaterial(SP_ChatLieu material) {
-        Boolean check = chatLRepo.hideMaterial(material);
+        Boolean check = spRepo.hideMaterial(material);
         if (check) {
             return "Ẩn chất liệu thành công!";
         }else{
@@ -251,7 +241,7 @@ public class SanPhamService {
         }
     }
     public String hideDanhMuc(SP_DanhMuc danhMuc) {
-        Boolean check = dmRepo.hideDanhMuc(danhMuc);
+        Boolean check = spRepo.hideDanhMuc(danhMuc);
         if (check) {
             return "Ẩn danh mục thành công!";
         }else{
@@ -259,7 +249,7 @@ public class SanPhamService {
         }
     }
     public String hideSize(SP_KichCo sz) {
-        Boolean check = szRepo.hideSize(sz);
+        Boolean check = spRepo.hideSize(sz);
         if (check) {
             return "Ẩn kích cỡ thành công!";
         }else{
@@ -267,7 +257,7 @@ public class SanPhamService {
         }
     }
     public String hideMauSac(SP_MauSac color) {
-        Boolean check = msRepo.hideMauSac(color);
+        Boolean check = spRepo.hideMauSac(color);
         if (check) {
             return "Ẩn màu sắc thành công!";
         }else{
@@ -276,7 +266,7 @@ public class SanPhamService {
     }
     
     public String unhideBrand(SP_NhanHang brand) {
-        Boolean check = brandRepo.unhideBrand(brand);
+        Boolean check = spRepo.unhideBrand(brand);
         if (check) {
             return "Bỏ ẩn thương hiệu thành công!";
         }else{
@@ -284,7 +274,7 @@ public class SanPhamService {
         }
     }
     public String unhideMaterial(SP_ChatLieu material) {
-        Boolean check = chatLRepo.unhideMaterial(material);
+        Boolean check = spRepo.unhideMaterial(material);
         if (check) {
             return "Bỏ ẩn chất liệu thành công!";
         }else{
@@ -292,7 +282,7 @@ public class SanPhamService {
         }
     }
     public String unhideDanhMuc(SP_DanhMuc danhMuc) {
-        Boolean check = dmRepo.unhideDanhMuc(danhMuc);
+        Boolean check = spRepo.unhideDanhMuc(danhMuc);
         if (check) {
             return "Bỏ ẩn danh mục thành công!";
         }else{
@@ -300,7 +290,7 @@ public class SanPhamService {
         }
     }
     public String unhideSize(SP_KichCo sz) {
-        Boolean check = szRepo.unhideSize(sz);
+        Boolean check = spRepo.unhideSize(sz);
         if (check) {
             return "Bỏ ẩn kích cỡ thành công!";
         }else{
@@ -308,7 +298,7 @@ public class SanPhamService {
         }
     }
     public String unhideMauSac(SP_MauSac color) {
-        Boolean check = msRepo.unhideMauSac(color);
+        Boolean check = spRepo.unhideMauSac(color);
         if (check) {
             return "Bỏ ẩn màu sắc thành công!";
         }else{
@@ -317,18 +307,34 @@ public class SanPhamService {
     }
     
     public ArrayList<SP_NhanHang> getBrandHide(){
-        return brandRepo.getListHide();
+        return spRepo.getListHideBrand();
     }
     public ArrayList<SP_ChatLieu> getMaterialHide(){
-        return chatLRepo.getListHide();
+        return spRepo.getListHideChatL();
     }
     public ArrayList<SP_DanhMuc> getCatHide(){
-        return dmRepo.getListHide();
+        return spRepo.getListHideDM();
     }
     public ArrayList<SP_KichCo> getSzHide(){
-        return szRepo.getListHide();
+        return spRepo.getListHideSz();
     }
     public ArrayList<SP_MauSac> getColorHide(){
-        return msRepo.getListHide();
+        return spRepo.getListHideColor();
+    }
+    
+    public ArrayList<SP_NhanHang> searchByNameNH(String name){
+        return spRepo.searchByNameBrand(name);
+    }
+    public ArrayList<SP_ChatLieu> searchByNameMaterial(String name){
+        return spRepo.searchByNameChatL(name);
+    }
+    public ArrayList<SP_DanhMuc> searchByNameDanhMuc(String name){
+        return spRepo.searchByName(name);
+    }
+    public ArrayList<SP_KichCo> searchByNameSz(String name){
+        return spRepo.searchByNameSz(name);
+    }
+    public ArrayList<SP_MauSac> searchByNameColor(String name){
+        return spRepo.searchByNameColor(name);
     }
 }

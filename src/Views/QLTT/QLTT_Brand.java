@@ -280,6 +280,11 @@ public class QLTT_Brand extends javax.swing.JFrame {
         getContentPane().add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 88, -1));
 
         btnSearchBrand.setText("SEARCH");
+        btnSearchBrand.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSearchBrandMouseClicked(evt);
+            }
+        });
         getContentPane().add(btnSearchBrand, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 220, 83, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 630, 20));
 
@@ -381,6 +386,14 @@ public class QLTT_Brand extends javax.swing.JFrame {
             txtTenBrand.setText(brandName);
         }
     }//GEN-LAST:event_tblBrandMouseClicked
+
+    private void btnSearchBrandMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchBrandMouseClicked
+        // SEARCH
+        String name = txtSearchBrand.getText().trim();
+        ArrayList<SP_NhanHang> ls = spService.searchByNameNH(name);
+        loadTable(ls);
+        txtSearchBrand.setText("");
+    }//GEN-LAST:event_btnSearchBrandMouseClicked
 
     /**
      * @param args the command line arguments

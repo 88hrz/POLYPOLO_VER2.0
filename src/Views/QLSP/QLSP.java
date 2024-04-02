@@ -11,6 +11,7 @@ import Utils.SVGImage;
 import ViewModels.SanPhamViewModel;
 import Views.Login;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,10 +22,13 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
@@ -59,12 +63,15 @@ public class QLSP extends javax.swing.JInternalFrame {
         ui.setNorthPane(null);
         setButtonIcon();
         loadTable(spService.getListSPVM());
+        adjustWidths(tblSP);
         
     }
 
     void setButtonIcon() {
         btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/add.svg", 20, 20));
         btnUpdate.setIcon(svgSet.createSVGIcon("Images/SVG/update.svg", 20, 20));
+        btnLoad.setIcon(svgSet.createSVGIcon("Images/SVG/reload.svg", 18, 18));
+        btnUnhide.setIcon(svgSet.createSVGIcon("Images/SVG/unhide.svg", 18, 18));
         btnHidden.setIcon(svgSet.createSVGIcon("Images/SVG/w-view-fill.svg", 15, 15));
         btnImport.setIcon(svgSet.createSVGIcon("Images/SVG/g-excel.svg", 20, 20));
         btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 20, 20));
@@ -91,6 +98,28 @@ public class QLSP extends javax.swing.JInternalFrame {
         TableColumnModel columnModel = tblSP.getColumnModel();
         for (int i = 0; i < columnModel.getColumnCount(); i++) {
             columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
+    void adjustWidths(JTable table) {
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            TableColumn tableColumn = table.getColumnModel().getColumn(column);
+
+            int preferredWidth = tableColumn.getMinWidth();
+            int maxWidth = tableColumn.getMaxWidth();
+
+            for (int row = 0; row < table.getRowCount(); row++) {
+                TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+                Component c = table.prepareRenderer(cellRenderer, row, column);
+                int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
+                preferredWidth = Math.max(preferredWidth, width);
+
+                if (preferredWidth >= maxWidth) {
+                    preferredWidth = maxWidth;
+                    break;
+                }
+            }
+            tableColumn.setPreferredWidth(preferredWidth);
         }
     }
     
@@ -209,7 +238,7 @@ public class QLSP extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID SP", "Tên SP", "Danh Mục", "Nhãn Hàng", "Màu Sắc", "Kích Cỡ", "Chất Liệu", "Giá Nhập", "Giá Bán", "Trạng Thái", "Số Lượng", "Kho Hàng"
+                "ID SP", "Tên SP", "Danh Mục", "Nhãn Hàng", "Màu Sắc", "Size", "Chất Liệu", "Giá Nhập", "Giá Bán", "Trạng Thái", "Tồn", "Kho Hàng"
             }
         ));
         tblSP.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -547,8 +576,7 @@ public class QLSP extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSPMouseClicked
-        
-        
+    
     }//GEN-LAST:event_tblSPMouseClicked
 
     private void btnThemDMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemDMMouseClicked
@@ -615,7 +643,6 @@ public class QLSP extends javax.swing.JInternalFrame {
         // ADD
         QLSP_add spAdd = new QLSP_add();
         spAdd.setVisible(true);
-        loadTable(spService.getListSPVM());
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked

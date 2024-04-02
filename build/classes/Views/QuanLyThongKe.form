@@ -35,7 +35,7 @@
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="0" width="1080" height="600"/>
+          <AbsoluteConstraints x="10" y="10" width="1070" height="590"/>
         </Constraint>
       </Constraints>
 
@@ -80,7 +80,7 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="22" max="32767" attributes="0"/>
+                              <EmptySpace pref="12" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="btnTimNgay" min="-2" pref="88" max="-2" attributes="0"/>
                                   <Component id="jTabbedPane2" min="-2" pref="1032" max="-2" attributes="0"/>
@@ -462,7 +462,7 @@
                                   <Component id="lblTienHoaDonThanh" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="55" max="32767" attributes="0"/>
+                          <EmptySpace pref="54" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

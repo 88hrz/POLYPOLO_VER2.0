@@ -11,6 +11,7 @@ import Views.QLTT.QLTT;
 import Views.QLTK.QLTK;
 import Views.QLSP.QLSP;
 import Models.User;
+import Views.QLBH.QLBH;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -33,12 +34,17 @@ public class Admin_View extends javax.swing.JFrame {
        
         menuName.setText("| Trang Chủ");
         
-//        QLNX nhapXuat = new QLNX();
+//        QuanLyThongKe tk = new QuanLyThongKe();
 //        jGUIForms.removeAll();
-//        jGUIForms.add(nhapXuat).setVisible(true);
-        QLSP qlsp = new QLSP();
+//        jGUIForms.add(tk).setVisible(true);
+        
+        QLNH nhapXuat = new QLNH();
         jGUIForms.removeAll();
-        jGUIForms.add(qlsp).setVisible(true);
+        jGUIForms.add(nhapXuat).setVisible(true);
+
+//        QLSP qlsp = new QLSP();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(qlsp).setVisible(true);
     }
 
     
@@ -497,9 +503,9 @@ public class Admin_View extends javax.swing.JFrame {
         
         menuName.setText("| Bán Hàng");
         
-//        QuanLyBanHang banHang = new QuanLyBanHang();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(banHang).setVisible(true);
+        QLBH banHang = new QLBH();
+        jGUIForms.removeAll();
+        jGUIForms.add(banHang).setVisible(true);
     }//GEN-LAST:event_banHangMouseClicked
 
     private void sanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sanPhamMouseClicked

@@ -10,10 +10,11 @@ import ViewModels.HD_GioHangViewModel;
 import Models.HoaDon;
 import Models.HoaDonChiTiet;
 import Models.MyReceipts;
+import Models.NhanSu;
+import Models.SanPhamChiTiet;
 //import Models.NhanSu;
 //import Models.SanPhamChiTiet;
-import Repositories.SP_DanhMucRepo;
-//import Repositories.NhanSuRepo;
+import Repositories.NhanSuRepo;
 import Repositories.SanPhamRepository;
 import ViewModels.HD_HoaDonViewModel;
 import ViewModels.HD_InvoiceViewModel;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class HoaDonService {
     HoaDonRepository hdRepo = new HoaDonRepository();
     SanPhamRepository spRepo = new SanPhamRepository();
-    SP_DanhMucRepo dmRepo = new SP_DanhMucRepo();
+    NhanSuRepo nsRepo = new NhanSuRepo();
     
     //EXPORT 
     public ArrayList<MyReceipts> getMyReceipts(){
@@ -64,7 +65,7 @@ public class HoaDonService {
     }
     //GETCBO_DM
     public ArrayList<SP_DanhMuc> getListDM(){
-        return dmRepo.getList();
+        return spRepo.getList();
     }
     public ArrayList<HD_SanPhamViewModel> getListByDanhMuc(String dm) {
         return hdRepo.getListByDanhMuc(dm);
@@ -77,13 +78,13 @@ public class HoaDonService {
 //    public SanPhamChiTiet getIdSP(String name){
 //        return spRepo.getName(name);
 //    }
-//    public SanPhamChiTiet getById(Integer id){
-//        return spRepo.getListById(id);
-//    }
-//    //GET tenv
-//    public ArrayList<NhanSu> getListTenNV(){
-//        return nsRepo.getListTenNV();
-//    } 
+    public SanPhamChiTiet getById(Integer id){
+        return spRepo.getListById(id);
+    }
+    //GET tenv
+    public ArrayList<NhanSu> getListTenNV(){
+        return nsRepo.getListTenNV();
+    } 
     //GETLIST VIEW MODEL
     public ArrayList<HD_HoaDonViewModel> getListByTrangThai(String trangThai){
         return hdRepo.getListByTrangThai(trangThai);
@@ -107,10 +108,10 @@ public class HoaDonService {
     public ArrayList<HD_SanPhamViewModel> getListById(Integer id){
         return hdRepo.getListById(id);
     }
-//    //GETNAME
-//    public NhanSu getIdByName(String name){
-//        return nsRepo.getIdByName(name);
-//    }
+    //GETNAME
+    public NhanSu getIdByName(String name){
+        return nsRepo.getIdByName(name);
+    }
    //GETLIST BY ID
     public HoaDon getListByID(Integer id){
         return hdRepo.getListByID(id);

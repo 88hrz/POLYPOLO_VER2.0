@@ -217,6 +217,21 @@ public class MyValidate {
             }
         }
     }
+
+    public Boolean validEmail(JTextField jEmail, String msg, StringBuilder stb) {
+        String email = jEmail.getText();
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        if (email.matches(emailRegex)) {
+            return true;
+        } else {
+            if (stb != null) {
+                jEmail.setBackground(Color.YELLOW);
+                stb.append(msg).append("\n");
+            }
+            return false;
+        }
+    }
     
     public Boolean isNumberGreater(JTextField txt, String msg, StringBuilder stb, int type, int min) {
         if (!isNumber(txt, stb, msg, type)) {

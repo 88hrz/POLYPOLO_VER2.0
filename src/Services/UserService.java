@@ -19,6 +19,9 @@ public class UserService {
     public String getName(String tenDN) {
         return userRepo.getName(tenDN);
     }
+    public String getTenDN(String tenDN) {
+        return userRepo.getTenDN(tenDN);
+    }
     
     public ArrayList<UserViewModel> filterByRoleAndGender(String vaiT, String gioiT){
         return userRepo.filterByRoleAndGender(vaiT, gioiT);

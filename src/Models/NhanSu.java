@@ -4,6 +4,8 @@
  */
 package Models;
 
+import java.util.Date;
+
 /**
  *
  * @author Admin
@@ -11,10 +13,10 @@ package Models;
 public class NhanSu {
     private String tenNhanVien;
     private String gioiTinh;
-    private String ngaySinh;
     private String soDienThoai;
     private String diaChi;
     private Integer maNguoiDung, maNhanVien;
+    private Date ngayS;
 
     public NhanSu() {
     }
@@ -23,6 +25,18 @@ public class NhanSu {
         this.tenNhanVien = tenNhanVien;
         this.maNhanVien = maNhanVien;
     }
+
+    public NhanSu(String tenNhanVien, String gioiTinh, String soDienThoai, String diaChi, Integer maNguoiDung, Integer maNhanVien, Date ngayS) {
+        this.tenNhanVien = tenNhanVien;
+        this.gioiTinh = gioiTinh;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
+        this.maNguoiDung = maNguoiDung;
+        this.maNhanVien = maNhanVien;
+        this.ngayS = ngayS;
+    }
+
+    
 
     public NhanSu(String tenNhanVien, String gioiTinh, String soDienThoai, String diaChi, Integer maNguoiDung, Integer maNhanVien) {
         this.tenNhanVien = tenNhanVien;
@@ -49,14 +63,14 @@ public class NhanSu {
         this.maNhanVien = maNhanVien;
     }
 
-    public NhanSu( String tenNhanVien, String gioiTinh, String ngaySinh, String soDienThoai, String diaChi, Integer maNguoiDung) {
-        this.tenNhanVien = tenNhanVien;
-        this.gioiTinh = gioiTinh;
-        this.ngaySinh = ngaySinh;
-        this.soDienThoai = soDienThoai;
-        this.diaChi = diaChi;
-        this.maNguoiDung = maNguoiDung;
-    }
+//    public NhanSu( String tenNhanVien, String gioiTinh, String ngaySinh, String soDienThoai, String diaChi, Integer maNguoiDung) {
+//        this.tenNhanVien = tenNhanVien;
+//        this.gioiTinh = gioiTinh;
+//        this.ngaySinh = ngaySinh;
+//        this.soDienThoai = soDienThoai;
+//        this.diaChi = diaChi;
+//        this.maNguoiDung = maNguoiDung;
+//    }
 
 
     public String getTenNhanVien() {
@@ -75,13 +89,13 @@ public class NhanSu {
         this.gioiTinh = gioiTinh;
     }
 
-    public String getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(String ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
+//    public String getNgaySinh() {
+//        return ngaySinh;
+//    }
+//
+//    public void setNgaySinh(String ngaySinh) {
+//        this.ngaySinh = ngaySinh;
+//    }
 
     public String getSoDienThoai() {
         return soDienThoai;
@@ -105,6 +119,14 @@ public class NhanSu {
 
     public void setMaNguoiDung(Integer maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
+    }
+
+    public Date getNgayS() {
+        return ngayS;
+    }
+
+    public void setNgayS(Date ngayS) {
+        this.ngayS = ngayS;
     }
 
     

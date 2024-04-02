@@ -36,6 +36,22 @@ public class UserRepository {
         }
         return null;
     }
+    public String getTenDN(String tenDN) {
+        String sql = "Select NguoiDung.TenDangNhap from NhanVien inner join NguoiDung on NhanVien.MaNguoiDung = NguoiDung.MaNguoiDung where TenDangNhap = '" + tenDN + "'";
+        User u = new User();
+        try (Connection conn = DbConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                u.setUserName(rs.getString("TenDangNhap"));
+                return u.getUserName();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Loi";
+    }
     
     public ArrayList<UserViewModel> filterByRoleAndGender(String vaiT, String gioiT){
         String sql = "SELECT * FROM NhanVien nv INNER JOIN NguoiDung nd ON nv.MaNguoiDung = nd.MaNguoiDung\n" +

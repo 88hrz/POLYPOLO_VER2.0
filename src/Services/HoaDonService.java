@@ -81,10 +81,10 @@ public class HoaDonService {
     public SanPhamChiTiet getById(Integer id){
         return spRepo.getListById(id);
     }
-    //GET tenv
-    public ArrayList<NhanSu> getListTenNV(){
-        return nsRepo.getListTenNV();
-    } 
+//    //GET tenv
+//    public ArrayList<NhanSu> getListTenNV(){
+//        return nsRepo.getListTenNV();
+//    } 
     //GETLIST VIEW MODEL
     public ArrayList<HD_HoaDonViewModel> getListByTrangThai(String trangThai){
         return hdRepo.getListByTrangThai(trangThai);

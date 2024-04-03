@@ -10,6 +10,7 @@ import Utils.SVGImage;
 import Validator.MyValidate;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,6 +34,8 @@ public class QLNH_NCC_add extends javax.swing.JFrame {
         btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 20, 20));
         btnNew.setIcon(svgSet.createSVGIcon("Images/SVG/clean.svg", 20, 20));
         btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
     
     //GETMODEL
@@ -273,7 +276,7 @@ public class QLNH_NCC_add extends javax.swing.JFrame {
 
     private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
         // CANCEL
-        JOptionPane.showMessageDialog(this, "Đã hủy thao tác cập nhật nhà cung cấp!", "POLYPOLO thông báo", JOptionPane.CANCEL_OPTION);
+        JOptionPane.showMessageDialog(this, "Đã hủy thao tác thêm nhà cung cấp!", "POLYPOLO thông báo", JOptionPane.CANCEL_OPTION);
         this.dispose();
     }//GEN-LAST:event_btnCancelMouseClicked
 

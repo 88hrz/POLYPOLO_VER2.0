@@ -43,6 +43,32 @@ public class NhanSuRepo {
         return ns;
     }
     
+    public ArrayList<NhanSu> searchByName(String name){
+        String sql = "SELECT * FROM NhanVien WHERE Deleted !=1 AND TenNhanVien = ?";
+        ArrayList<NhanSu> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maNV = rs.getInt("MaNhanVien");
+                Integer maNguoiDung = rs.getInt("MaNguoiDung");
+                String tenNV = rs.getString("TenNhanVien");
+                String gioiTinh = rs.getString("GioiTinh");
+                Date ngayS = rs.getDate("NgaySinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                
+                NhanSu ns = new NhanSu(tenNV, gioiTinh, soDT, diaChi, maNguoiDung, maNV, ngayS);
+                ls.add(ns);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
     public ArrayList<NhanSu> getListNS(){
         String sql = "SELECT * FROM NhanVien WHERE Deleted !=1";
         ArrayList<NhanSu> ls = new ArrayList<>();
@@ -190,28 +216,28 @@ public class NhanSuRepo {
 //        return list;
 //    }
 
-    public NhanSu getAll() {
-        String sql = "SELECT * FROM NhanVien";
-        NhanSu ns = new NhanSu();
-
-        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String tenNV = rs.getString("TenNhanVien");
-                String gioiTinh = rs.getString("GioiTinh");
-                String soDT = rs.getString("SoDienThoai");
-                String ngaySinh = rs.getString("NgaySinh");
-                String diaChi = rs.getString("DiaChi");
-                Integer maNguoiDung = rs.getInt("MaNguoiDung");
-
-                ns = new NhanSu(tenNV, gioiTinh, ngaySinh, soDT, diaChi, maNguoiDung);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ns;
-    }
+//    public NhanSu getAll() {
+//        String sql = "SELECT * FROM NhanVien";
+//        NhanSu ns = new NhanSu();
+//
+//        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                String tenNV = rs.getString("TenNhanVien");
+//                String gioiTinh = rs.getString("GioiTinh");
+//                String soDT = rs.getString("SoDienThoai");
+//                String ngaySinh = rs.getString("NgaySinh");
+//                String diaChi = rs.getString("DiaChi");
+//                Integer maNguoiDung = rs.getInt("MaNguoiDung");
+//
+//                ns = new NhanSu(tenNV, gioiTinh, ngaySinh, soDT, diaChi, maNguoiDung);
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return ns;
+//    }
 
     public Boolean AddNew(NhanSu sp) {
         String sql = " INSERT INTO NhanVien(MaNguoiDung,TenNhanVien,GioiTinh,SoDienThoai,DiaChi) VALUES(?,?,?,?,?) ";

@@ -37,11 +37,6 @@ public class NCCService {
         return nccRepo.checkName(name);
     }
     
-    //SEARCH
-    public ArrayList<NCC> searchByName(String name){
-        return nccRepo.searchByName(name);
-    }
-    
     //CRUD
     public String addNCC(NCC ncc) {
         Boolean check = nccRepo.addNCC(ncc);

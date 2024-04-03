@@ -329,7 +329,7 @@ public class SanPhamService {
         return spRepo.searchByNameChatL(name);
     }
     public ArrayList<SP_DanhMuc> searchByNameDanhMuc(String name){
-        return spRepo.searchByName(name);
+        return spRepo.searchByNameDM(name);
     }
     public ArrayList<SP_KichCo> searchByNameSz(String name){
         return spRepo.searchByNameSz(name);

@@ -6,6 +6,8 @@ package Views.QLNH;
 
 import Utils.SVGImage;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 
 /**
  *
@@ -13,12 +15,21 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
  */
 public class QLNH_details extends javax.swing.JFrame {
     SVGImage svgSet = new SVGImage();
+    
     /**
      * Creates new form QLTT_Brand
      */
     public QLNH_details() {
         initComponents();
         setLocationRelativeTo(null);
+        setSVGIcon();
+    }
+    
+    void setSVGIcon() {
+        btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 19, 19));
+        btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
 
 
@@ -37,20 +48,24 @@ public class QLNH_details extends javax.swing.JFrame {
         txtTenTT = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblNhapDetails = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        btnClose = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
-        txtMaTT1 = new javax.swing.JTextField();
-        txtTenTT1 = new javax.swing.JTextField();
+        txtNgayLap = new javax.swing.JTextField();
+        txtNCC = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel28 = new javax.swing.JLabel();
-        txtTenTT2 = new javax.swing.JTextField();
+        txtTenNV = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        txtMaTT2 = new javax.swing.JTextField();
+        txtMaPhieu = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
-        btnCancel_B = new javax.swing.JButton();
-        btnViewHide = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        btnExport = new javax.swing.JButton();
+        jLabel30 = new javax.swing.JLabel();
+        txtTong = new javax.swing.JTextField();
 
         btnEdit.setBackground(new java.awt.Color(255, 220, 11));
         btnEdit.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
@@ -64,9 +79,13 @@ public class QLNH_details extends javax.swing.JFrame {
         jLabel23.setText("Tên Thuộc Tính:");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(996, 554));
+        setMinimumSize(new java.awt.Dimension(996, 554));
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(996, 554));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblNhapDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null, null},
@@ -74,92 +93,133 @@ public class QLNH_details extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã SP", "Danh Mục", "Brand", "Kích Cỡ", "Màu Sắc", "Chất Liệu", "Giá Nhập", "Số Lượng", "Thuế", "Tổng Tiền"
+                "STT", "Mã SP", "Danh Mục", "Brand", "Màu Sắc", "Kích Cỡ", "Chất Liệu", "Giá Nhập", "Số Lượng", "Thuế", "Tổng Tiền"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblNhapDetails);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 870, 239));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 950, 250));
 
-        jPanel2.setBackground(new java.awt.Color(220, 117, 28));
+        jPanel2.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel2.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("THÔNG TIN NHẬP HÀNG");
 
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCloseMouseClicked(evt);
+            }
+        });
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 938, Short.MAX_VALUE)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnClose, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(270, 270, 270)
+                .addGap(325, 325, 325)
                 .addComponent(jLabel2)
-                .addContainerGap(342, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(22, 22, 22))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 110));
 
         jLabel25.setText("Mã Phiếu:");
-        getContentPane().add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 86, 88, -1));
+        getContentPane().add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 88, -1));
 
-        txtMaTT1.setEnabled(false);
-        getContentPane().add(txtMaTT1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 110, 140, -1));
+        txtNgayLap.setEnabled(false);
+        getContentPane().add(txtNgayLap, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 150, 140, -1));
 
-        txtTenTT1.setEnabled(false);
-        txtTenTT1.addActionListener(new java.awt.event.ActionListener() {
+        txtNCC.setEnabled(false);
+        txtNCC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTenTT1ActionPerformed(evt);
+                txtNCCActionPerformed(evt);
             }
         });
-        getContentPane().add(txtTenTT1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 210, -1));
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 880, 10));
+        getContentPane().add(txtNCC, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, 210, -1));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 950, 10));
 
         jLabel28.setText("Tên Nhân Viên:");
-        getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 88, 20));
+        getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 88, 20));
 
-        txtTenTT2.setEnabled(false);
-        getContentPane().add(txtTenTT2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 210, -1));
+        txtTenNV.setEnabled(false);
+        getContentPane().add(txtTenNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 210, -1));
 
         jLabel27.setText("Nhà Cung Cấp:");
-        getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 88, 20));
+        getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 88, 20));
 
-        txtMaTT2.setEnabled(false);
-        getContentPane().add(txtMaTT2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 140, -1));
+        txtMaPhieu.setEnabled(false);
+        getContentPane().add(txtMaPhieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 100, -1));
 
         jLabel29.setText("Ngày Lập:");
-        getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 80, 88, 20));
+        getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, 88, 20));
 
-        btnCancel_B.setBackground(new java.awt.Color(204, 0, 51));
-        btnCancel_B.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        btnCancel_B.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancel_B.setText("HỦY");
-        getContentPane().add(btnCancel_B, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 450, 90, 30));
+        btnCancel.setBackground(new java.awt.Color(204, 0, 51));
+        btnCancel.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancel.setText("QUAY LẠI");
+        getContentPane().add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 490, 100, 40));
 
-        btnViewHide.setText("EXPORT");
-        btnViewHide.addActionListener(new java.awt.event.ActionListener() {
+        btnExport.setText("EXPORT");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewHideActionPerformed(evt);
+                btnExportActionPerformed(evt);
             }
         });
-        getContentPane().add(btnViewHide, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 450, 90, 30));
+        getContentPane().add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 490, 110, 40));
+
+        jLabel30.setText("Tổng:");
+        getContentPane().add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 120, 88, 20));
+
+        txtTong.setEnabled(false);
+        getContentPane().add(txtTong, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 150, 120, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtTenTT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenTT1ActionPerformed
+    private void txtNCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNCCActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTenTT1ActionPerformed
+    }//GEN-LAST:event_txtNCCActionPerformed
 
-    private void btnViewHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewHideActionPerformed
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnViewHideActionPerformed
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
+        // CLOSE
+        this.dispose();
+    }//GEN-LAST:event_btnCloseMouseClicked
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCloseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,9 +242,10 @@ public class QLNH_details extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancel_B;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnClose;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton btnViewHide;
+    private javax.swing.JButton btnExport;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
@@ -192,15 +253,18 @@ public class QLNH_details extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblNhapDetails;
+    public javax.swing.JTextField txtMaPhieu;
     private javax.swing.JTextField txtMaTT;
-    private javax.swing.JTextField txtMaTT1;
-    private javax.swing.JTextField txtMaTT2;
+    public javax.swing.JTextField txtNCC;
+    public javax.swing.JTextField txtNgayLap;
+    public javax.swing.JTextField txtTenNV;
     private javax.swing.JTextField txtTenTT;
-    private javax.swing.JTextField txtTenTT1;
-    private javax.swing.JTextField txtTenTT2;
+    public javax.swing.JTextField txtTong;
     // End of variables declaration//GEN-END:variables
 }

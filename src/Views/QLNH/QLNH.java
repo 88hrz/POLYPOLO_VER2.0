@@ -5,6 +5,7 @@
 package Views.QLNH;
 
 import Models.NCC;
+import Models.NhanSu;
 import Services.NCCService;
 import Services.PhieuNhapService;
 import Services.UserService;
@@ -18,6 +19,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,11 +31,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -47,27 +52,31 @@ public class QLNH extends javax.swing.JInternalFrame {
     NCCService nccService = new NCCService();
     SVGImage svgSet = new SVGImage();
     UserService uService = new UserService();
+    NCCService nccservice = new NCCService();
     PhieuNhapService pnService = new PhieuNhapService();
     DecimalFormat formatter = new DecimalFormat("#,###");
     
     /**
      * Creates new form A_NHAPHANG
      */
-    
+
     public QLNH() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
         setButtonIcon();
+        loadCboNV(pnService.getListNS());
+        loadCboNCC(nccservice.getList());
         loadTable(nccService.getList());
         adjustWidths(tblNCC);
         loadTableNhapHang(pnService.getListPN());
+        adjustWidths(tblNhapHang);
     }
     
     void setButtonIcon() {
         btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/add.svg", 19, 19));
-        btnUpdate.setIcon(svgSet.createSVGIcon("Images/SVG/update.svg", 19, 19));
+        btnXem.setIcon(svgSet.createSVGIcon("Images/SVG/update.svg", 19, 19));
         btnLoad.setIcon(svgSet.createSVGIcon("Images/SVG/reload.svg", 18, 18));
         btnHide.setIcon(svgSet.createSVGIcon("Images/SVG/delete.svg", 18, 18));
         btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 19, 19));
@@ -80,6 +89,32 @@ public class QLNH extends javax.swing.JInternalFrame {
     }
     
     //LOADTABLE
+    void loadCboNV(ArrayList<NhanSu> ls) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboTenNV.getModel();
+        HashSet<String> nvSet = new HashSet<>();
+
+        for (NhanSu pn : ls) {
+            String nv = pn.getTenNhanVien();
+            if (!nvSet.contains(nv)) {
+                model.addElement(nv);
+                nvSet.add(nv);
+            }
+        }
+    }
+    
+    void loadCboNCC(ArrayList<NCC> ls) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNCC.getModel();
+        HashSet<String> nccSet = new HashSet<>();
+
+        for (NCC tenNCC : ls) {
+            String ncc = tenNCC.getTenNCC();
+            if (!nccSet.contains(ncc)) {
+                model.addElement(ncc);
+                nccSet.add(ncc);
+            }
+        }
+    }
+    
     void loadTable(ArrayList<NCC> ls){
         DefaultTableModel model = (DefaultTableModel) tblNCC.getModel();
         model.setRowCount(0);
@@ -163,7 +198,7 @@ public class QLNH extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
+        btnXem = new javax.swing.JButton();
         btnHide = new javax.swing.JButton();
         btnExport = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -171,16 +206,16 @@ public class QLNH extends javax.swing.JInternalFrame {
         btnLoad = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cboNCC = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cboTenNV = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        dcsFrom = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        dcsTo = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtGiaF = new javax.swing.JTextField();
+        txtGiaT = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhapHang = new javax.swing.JTable();
@@ -221,16 +256,21 @@ public class QLNH extends javax.swing.JInternalFrame {
             }
         });
 
-        btnUpdate.setText("SỬA");
-        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnXem.setText("XEM");
+        btnXem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseClicked(evt);
+                btnXemMouseClicked(evt);
             }
         });
 
         btnHide.setText("XÓA");
 
         btnExport.setText("EXPORT");
+        btnExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportMouseClicked(evt);
+            }
+        });
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportActionPerformed(evt);
@@ -259,7 +299,7 @@ public class QLNH extends javax.swing.JInternalFrame {
                 .addGap(15, 15, 15)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnXem, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -283,7 +323,7 @@ public class QLNH extends javax.swing.JInternalFrame {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnLoad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHide, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnXem, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
@@ -294,7 +334,19 @@ public class QLNH extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Nhà Cung Cấp:");
 
+        cboNCC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cboNCCMouseClicked(evt);
+            }
+        });
+
         jLabel2.setText("Nhân Viên:");
+
+        cboTenNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cboTenNVMouseClicked(evt);
+            }
+        });
 
         jLabel3.setText("Khoảng Giá (VND):");
 
@@ -311,22 +363,22 @@ public class QLNH extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboNCC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cboTenNV, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtGiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtGiaT, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dcsFrom, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                            .addComponent(dcsTo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
@@ -337,25 +389,25 @@ public class QLNH extends javax.swing.JInternalFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboNCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(16, 16, 16)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dcsFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dcsTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGiaF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGiaT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
@@ -370,9 +422,14 @@ public class QLNH extends javax.swing.JInternalFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Mã Phiếu", "Nhà Cung Cấp", "Nhân Viên", "Ngày Lập", "Tổng Tiền"
+                "ID", "Nhà Cung Cấp", "Nhân Viên", "Ngày Lập", "Tổng Tiền"
             }
         ));
+        tblNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblNhapHangMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblNhapHang);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(422, 103, 650, 450));
@@ -521,11 +578,25 @@ public class QLNH extends javax.swing.JInternalFrame {
         nh.setVisible(true);
     }//GEN-LAST:event_btnAddMouseClicked
 
-    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+    private void btnXemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXemMouseClicked
         // CHECK DETAILS
-        QLNH_details nh = new QLNH_details();
-        nh.setVisible(true);
-    }//GEN-LAST:event_btnUpdateMouseClicked
+        int pos = tblNhapHang.getSelectedRow();
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn phiếu để xem chi tiết!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            QLNH_details nh = new QLNH_details();
+            nh.setVisible(true);
+            nh.pack();
+            
+            Integer idP = Integer.valueOf(tblNhapHang.getValueAt(pos, 0).toString());
+            nh.txtMaPhieu.setText(idP.toString());
+            nh.txtNCC.setText(tblNhapHang.getValueAt(pos, 1).toString());
+            nh.txtTenNV.setText(tblNhapHang.getValueAt(pos, 2).toString());
+            nh.txtNgayLap.setText(tblNhapHang.getValueAt(pos, 3).toString());
+            nh.txtTong.setText(tblNhapHang.getValueAt(pos, 4).toString());
+        }
+    }//GEN-LAST:event_btnXemMouseClicked
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         // TODO add your handling code here:
@@ -569,13 +640,13 @@ public class QLNH extends javax.swing.JInternalFrame {
         // DELETE
         int pos = tblNCC.getSelectedRow();
         if (pos >= 0) {
-            int result = JOptionPane.showConfirmDialog(this, "Bạn muốn xóa nhà cung cấp không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
+            int result = JOptionPane.showConfirmDialog(this, "Bạn muốn xóa nhà cung cấp?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 nccService.hideNCC(getModel());
                 JOptionPane.showMessageDialog(this, "Xóa nhà cung cấp thành công!", "POLYPOLO thông báo", 0);
                 loadTable(nccService.getList());
             } else if (result == JOptionPane.NO_OPTION) {
-                JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa nhà cung cấp!", "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa!", "POLYPOLO thông báo", 0);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp trên bảng để xóa!", "POLYPOLO thông báo", 0);
@@ -746,6 +817,8 @@ public class QLNH extends javax.swing.JInternalFrame {
                 workBook.close();
                 outputStream.close();
 
+                JOptionPane.showInternalMessageDialog(this, "Đã xuất danh sách thành công!", "POLYPOLO thông báo", 0);
+                
                 File file = new File(filePath);
                 try {
                     FileOutputStream fis = new FileOutputStream(file);
@@ -760,16 +833,210 @@ public class QLNH extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JOptionPane.showInternalMessageDialog(this, "Đã xuất danh sách thành công!", "POLYPOLO thông báo", 0);
     }//GEN-LAST:event_btnExportNCCMouseClicked
 
     private void btnLoadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMouseClicked
-        // TODO add your handling code here:
+        // RELOAD
+        loadTableNhapHang(pnService.getListPN());
     }//GEN-LAST:event_btnLoadMouseClicked
 
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLoadActionPerformed
+
+    private void btnExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportMouseClicked
+        // EXPORT
+        try {
+            XSSFWorkbook workBook = new XSSFWorkbook();
+            XSSFSheet sheet = workBook.createSheet("Danh Sách Nhập Hàng POLYPOLO");
+            
+            //STYLE TITLE
+            XSSFRow titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Danh Sách Nhập Hàng POLYPOLO"); 
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,8)); 
+            XSSFFont font = workBook.createFont();
+            font.setFontHeightInPoints((short) 19);
+            font.setBold(true);
+            XSSFCellStyle style = workBook.createCellStyle();
+            style.setFont(font);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+            titleCell.setCellStyle(style);
+           
+            //DATE
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+            
+            SimpleDateFormat sdfHrs = new SimpleDateFormat("HH:mm:ss");
+            String currentTime = sdfHrs.format(new Date());
+            
+            XSSFRow dateRow = sheet.createRow(1);
+            org.apache.poi.ss.usermodel.Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày: " + currentDate + " | Giờ: " +currentTime);
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 8)); // Merge từ cột 0 đến 9
+            XSSFCellStyle dateStyle = workBook.createCellStyle();
+            dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+            dateCell.setCellStyle(dateStyle);
+            
+            //STYLE FONT
+            Font headerFont = workBook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 11);
+            
+            CellStyle headerStyle = workBook.createCellStyle();
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+            //ADD
+            XSSFRow row = null;
+            Cell cell = null;
+            row = sheet.createRow(3);
+
+            cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            Sheet s = cell.getSheet();
+            cell.setCellValue("Mã Phiếu");
+            s.autoSizeColumn(1);
+
+            cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Nhà Cung Cấp");
+            
+            cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Nhân Viên");
+            
+            cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Ngày Tạo");
+
+            cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Tổng Đơn");
+
+            for (int i = 0; i < 13; i++) {
+                cell = row.getCell(i);
+                cell.setCellStyle(headerStyle);
+            }
+
+            ArrayList<PhieuNhapViewModel> ls = pnService.getListPN();
+            for (int i = 0; i < ls.size(); i++) {
+                row = sheet.createRow(4 + i);
+
+                //STYLE FONT
+                CellStyle docuStyle = workBook.createCellStyle();
+                docuStyle.setAlignment(HorizontalAlignment.CENTER);
+                
+                CellStyle cellStyleFormatNumber = null;
+
+                if (cellStyleFormatNumber == null) {
+                    short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+                    Workbook workbook = row.getSheet().getWorkbook();
+                    cellStyleFormatNumber = workbook.createCellStyle();
+                    cellStyleFormatNumber.setDataFormat(format);
+                }
+
+                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(i + 1);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue("PN" + ls.get(i).getMaPhieu());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenNCC());
+                s.autoSizeColumn(2);
+
+                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenNV());
+                s.autoSizeColumn(3);
+
+                cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getNgayL());
+                s.autoSizeColumn(4);
+
+                cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTongDon());
+                cell.setCellStyle(cellStyleFormatNumber);
+                cell.setCellStyle(docuStyle);
+            }
+            
+            //STYLE
+            CellStyle footerStyle = workBook.createCellStyle();
+            footerStyle.setFont(headerFont);
+            footerStyle.setAlignment(HorizontalAlignment.LEFT);
+            
+            //ROW CUỐI
+            int rowS = 5 + ls.size();
+
+            XSSFRow tongSPRow = sheet.createRow(rowS);
+            org.apache.poi.ss.usermodel.Cell tongSPCell = tongSPRow.createCell(1);
+
+            tongSPCell.setCellValue("Tổng Đơn:");
+            tongSPCell.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell tongSPCelll = tongSPRow.createCell(2);
+            tongSPCelll.setCellValue(ls.size());
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+
+            org.apache.poi.ss.usermodel.Cell ngX = tongSPRow.createCell(7);
+            ngX.setCellValue("Người Xuất:");
+            ngX.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell thongT = tongSPRow.createCell(8);
+            thongT.setCellValue(uService.getName(Login.dataStatic));
+            sheet.autoSizeColumn(7);
+            sheet.autoSizeColumn(8);
+            
+            String defaultCurrentDirectoryPath = "C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates";
+            JFileChooser fileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+            fileChooser.setDialogTitle("Chọn nơi lưu file");
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx", "xls");
+            fileChooser.addChoosableFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(null);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                String filePath = fileToSave.getAbsolutePath();
+                if (!filePath.endsWith(".xlsx")) {
+                    filePath += ".xlsx";
+                }
+
+            File file = new File(filePath);
+                try {
+                    FileOutputStream fis = new FileOutputStream(file);
+                    workBook.write(fis);
+                    fis.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+            } else {
+                JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportMouseClicked
+
+    private void cboNCCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboNCCMouseClicked
+        // SEARCH NCC
+        String name = cboNCC.getSelectedItem().toString();
+        ArrayList<PhieuNhapViewModel> ls = pnService.searchByNameNCC(name);
+        loadTableNhapHang(ls);
+    }//GEN-LAST:event_cboNCCMouseClicked
+
+    private void cboTenNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboTenNVMouseClicked
+        // SEARCH NV
+        String name = cboTenNV.getSelectedItem().toString();
+        ArrayList<PhieuNhapViewModel> ls = pnService.searchByNameNV(name);
+        loadTableNhapHang(ls);
+    }//GEN-LAST:event_cboTenNVMouseClicked
+
+    private void tblNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhapHangMouseClicked
+        // CLICK
+    }//GEN-LAST:event_tblNhapHangMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -781,15 +1048,15 @@ public class QLNH extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnHideNCC;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnLoadNCC;
-    private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnUpdateNCC;
+    private javax.swing.JButton btnXem;
+    private javax.swing.JComboBox<String> cboNCC;
+    private javax.swing.JComboBox<String> cboTenNV;
+    private com.toedter.calendar.JDateChooser dcsFrom;
+    private com.toedter.calendar.JDateChooser dcsTo;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -805,10 +1072,10 @@ public class QLNH extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTable tblNCC;
     private javax.swing.JTable tblNhapHang;
+    private javax.swing.JTextField txtGiaF;
+    private javax.swing.JTextField txtGiaT;
     private javax.swing.JTextField txtSearchNCC;
     // End of variables declaration//GEN-END:variables
 }

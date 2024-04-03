@@ -10,6 +10,7 @@ import Utils.SVGImage;
 import Validator.MyValidate;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,6 +35,8 @@ public class QLNH_NCC_update extends javax.swing.JFrame {
         btnEdit.setIcon(svgSet.createSVGIcon("Images/SVG/w-edit.svg", 20, 20));
         btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 20, 20));
         btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
     
     //GETMODEL

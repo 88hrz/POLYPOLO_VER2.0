@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -38,6 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class QLSP_add extends javax.swing.JFrame {
     SVGImage svgSet = new SVGImage();
     SanPhamService spService = new SanPhamService();
+    
     
     /**
      * Creates new form SP
@@ -57,6 +59,7 @@ public class QLSP_add extends javax.swing.JFrame {
         btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 20, 20));
         btnNew.setIcon(svgSet.createSVGIcon("Images/SVG/clean.svg", 20, 20));
         btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
     }
 
     void loadData(){
@@ -66,7 +69,11 @@ public class QLSP_add extends javax.swing.JFrame {
         loadCboMau(spService.getListMauS());
         loadCboSz(spService.getListSz());
         loadCboChatL(spService.getListChatL()); 
+        //BO GÓCC
+    //    setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 30, 30));
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
+    
     
     //<editor-fold defaultstate="collapsed" desc=" LOAD ">
     void loadCboDM(ArrayList<SP_DanhMuc> ls) {
@@ -204,6 +211,7 @@ public class QLSP_add extends javax.swing.JFrame {
         txtId.setBackground(Color.white);
         txtSoL.setBackground(Color.white);
         rdoCon.setSelected(true);
+        lblImg.setIcon(null);
     }
     /**
      * This method is called from within the constructor to initialize the form.

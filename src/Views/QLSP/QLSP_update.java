@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -57,6 +58,8 @@ public class QLSP_update extends javax.swing.JFrame {
         btnEdit.setIcon(svgSet.createSVGIcon("Images/SVG/w-edit.svg", 20, 20));
         btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 20, 20));
         btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
     //</editor-fold>
     

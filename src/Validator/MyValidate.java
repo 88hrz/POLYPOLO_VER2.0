@@ -128,7 +128,7 @@ public class MyValidate {
 
         if (selectedDate.isBefore(currentDate)) {
             calendar.setBackground(Color.yellow);
-            stb.append(msg).append("Ngày tạo hóa đơn phải từ hôm nay trở đi!").append("\n");
+            stb.append(msg).append("Ngày tạo không hợp lệ!").append("\n");
             return false;
         }
 

@@ -45,6 +45,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -88,13 +89,15 @@ public class QLNH_add extends javax.swing.JFrame {
     }
     
     void setButtonIcon() {
-        btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/add-y.svg", 20, 20));
+        btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/add-p.svg", 17, 17));
         btnUpdate.setIcon(svgSet.createSVGIcon("Images/SVG/update.svg", 20, 20));
-        btnClear.setIcon(svgSet.createSVGIcon("Images/SVG/clean.svg", 20, 20));
-        btnPrint.setIcon(svgSet.createSVGIcon("Images/SVG/noti-pdf.svg", 18, 18));
+        btnClear.setIcon(svgSet.createSVGIcon("Images/SVG/clean.svg", 17, 17));
+        btnPrint.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 18, 18));
         btnDelete.setIcon(svgSet.createSVGIcon("Images/SVG/delete.svg", 15, 15));
         btnAddPhieu.setIcon(svgSet.createSVGIcon("Images/SVG/add.svg", 20, 20));
-        btnNhapHang.setIcon(svgSet.createSVGIcon("Images/SVG/add-sp.svg", 20, 20));
+        btnNhapHang.setIcon(svgSet.createSVGIcon("Images/SVG/add-sp.svg", 25, 25));
+        btnScan.setIcon(svgSet.createSVGIcon("Images/SVG/barcode.svg", 17, 17));
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
     
     //<editor-fold defaultstate="collapsed" desc=" LOAD ">
@@ -252,6 +255,32 @@ public class QLNH_add extends javax.swing.JFrame {
     }
     
     //MYVALIDATE
+    public Boolean validateSearch(){
+        StringBuilder stb = new StringBuilder();
+        MyValidate v = new MyValidate();
+        
+        v.isEmpty(txtSearch, stb, "Vui lòng nhập tên SP cần tìm!");
+        if (stb.length() > 0) {
+            JOptionPane.showMessageDialog(this, stb);
+            return false;
+        } else {
+            return true;
+        } 
+    }
+    public Boolean validateForm(){
+        StringBuilder stb = new StringBuilder();
+        MyValidate v = new MyValidate();
+        
+        v.isDateSelected(dcsNgayNhap, stb, "");
+        v.isDateValid(dcsNgayNhap, stb, "Ngày nhập không hợp lệ!");
+        
+        if (stb.length() > 0) {
+            JOptionPane.showMessageDialog(this, stb);
+            return false;
+        } else {
+            return true;
+        } 
+    }
     public Boolean validateSP(){
         StringBuilder stb = new StringBuilder();
         MyValidate v = new MyValidate();
@@ -273,6 +302,7 @@ public class QLNH_add extends javax.swing.JFrame {
     
     //CLEAR FORM
     void clearFormSP(){
+        txtSearch.setBackground(Color.white);
         txtGiaNhap.setText("");
         txtSoL.setText("");
         txtThue.setText("");
@@ -300,10 +330,11 @@ public class QLNH_add extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSP = new javax.swing.JTable();
-        btnUpdate3 = new javax.swing.JButton();
+        btnScan = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtMaSP = new javax.swing.JTextField();
@@ -372,10 +403,17 @@ public class QLNH_add extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblSP);
 
-        btnUpdate3.setText("QUÉT");
-        btnUpdate3.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnScan.setText("QUÉT");
+        btnScan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnUpdate3MouseClicked(evt);
+                btnScanMouseClicked(evt);
+            }
+        });
+
+        btnSearch.setText("SEARCH");
+        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSearchMouseClicked(evt);
             }
         });
 
@@ -383,29 +421,34 @@ public class QLNH_add extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnUpdate3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(btnScan, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(15, 15, 15))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnUpdate3)
+                .addComponent(btnScan, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 15, 380, 290));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 15, 380, 300));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông Tin Sản Phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 14))); // NOI18N
 
@@ -544,7 +587,8 @@ public class QLNH_add extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(204, 0, 51));
         jLabel14.setText("TỔNG TIỀN:");
 
-        btnNhapHang.setText("NHẬP HÀNG");
+        btnNhapHang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnNhapHang.setText("  NHẬP HÀNG");
         btnNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnNhapHangMouseClicked(evt);
@@ -723,9 +767,9 @@ public class QLNH_add extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnUpdate3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdate3MouseClicked
+    private void btnScanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnScanMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnUpdate3MouseClicked
+    }//GEN-LAST:event_btnScanMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // DELETE
@@ -815,13 +859,15 @@ public class QLNH_add extends javax.swing.JFrame {
 
     private void btnAddPhieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddPhieuMouseClicked
         // ADD
-        JOptionPane.showMessageDialog(this, pnService.addPhieu(getModel()));
-        PhieuNhap pnNew = pnService.getModel();
+        if (validateForm()) {
+            JOptionPane.showMessageDialog(this, pnService.addPhieu(getModel()));
+            PhieuNhap pnNew = pnService.getModel();
 
-        if (pnNew != null) {
-            loadDataToForm(pnNew);
-        } else {
-            JOptionPane.showMessageDialog(this, "Không thể lấy thông tin phiếu nhập mới nhất!");
+            if (pnNew != null) {
+                loadDataToForm(pnNew);
+            } else {
+                JOptionPane.showMessageDialog(this, "Không thể lấy thông tin phiếu nhập mới nhất!");
+            }
         }
     }//GEN-LAST:event_btnAddPhieuMouseClicked
 
@@ -832,6 +878,8 @@ public class QLNH_add extends javax.swing.JFrame {
 
     private void btnNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNhapHangMouseClicked
         // NHAPHANG
+        Integer idP = Integer.valueOf(txtMaPhieu.getText());
+        JOptionPane.showMessageDialog(this, pnService.heh(idP), "POLYPOLO thông báo", 0);
     }//GEN-LAST:event_btnNhapHangMouseClicked
 
     private void btnPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPrintMouseClicked
@@ -1034,6 +1082,16 @@ public class QLNH_add extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblNhapHangMouseClicked
 
+    private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
+        // SEARCH
+        if (validateSearch()) {
+            String name = txtSearch.getText().trim();
+            ArrayList<PN_SanPhamViewModel> ls =  pnService.searchByName(name);
+            loadTableSP(ls);
+            txtSearch.setText("");
+        }
+    }//GEN-LAST:event_btnSearchMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1061,8 +1119,9 @@ public class QLNH_add extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnNhapHang;
     private javax.swing.JButton btnPrint;
+    private javax.swing.JButton btnScan;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnUpdate3;
     private javax.swing.JComboBox<String> cboNCC;
     private javax.swing.JComboBox<String> cboPhuongThuc;
     private javax.swing.JComboBox<String> cboTenNV;
@@ -1089,7 +1148,6 @@ public class QLNH_add extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblTax;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tblNhapHang;
@@ -1098,6 +1156,7 @@ public class QLNH_add extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaPhieu;
     private javax.swing.JTextField txtMaSP;
     private javax.swing.JTextArea txtMoTa;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSoL;
     private javax.swing.JTextField txtTenSP;
     private javax.swing.JTextField txtThue;

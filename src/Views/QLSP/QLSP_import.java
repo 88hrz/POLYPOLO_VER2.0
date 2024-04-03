@@ -8,11 +8,13 @@ import Models.SanPham;
 import Services.SanPhamService;
 import Utils.SVGImage;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,6 +44,8 @@ public class QLSP_import extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         btnImport.setIcon(svgSet.createSVGIcon("Images/SVG/g-excel.svg", 20, 20));
         btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
 
     public boolean validateData() {

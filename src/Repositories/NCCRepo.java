@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class NCCRepo {
     DbConnection dbConnection;
     
+    
     //GETLIST
     public ArrayList<NCC> getList(){
         String sql = "SELECT * FROM NhaCungCap WHERE Deleted != 1";
@@ -123,7 +124,7 @@ public class NCCRepo {
     }
     
     //SEARCH
-    public ArrayList<NCC> searchByName(String name){
+    public ArrayList<NCC> searchByNameNCC(String name){
         String sql = "SELECT * FROM NhaCungCap WHERE Deleted!=1 AND TenNhaCungCap LIKE '%"+name+"%'";
         ArrayList<NCC> ls = new ArrayList<>();
         

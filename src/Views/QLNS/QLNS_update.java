@@ -35,8 +35,12 @@ public class QLNS_update extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        btnCancel = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -50,9 +54,7 @@ public class QLNS_update extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
-        btnCancel = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,44 +85,6 @@ public class QLNS_update extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 80));
-
-        jPanel4.setBackground(new java.awt.Color(250, 250, 250));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin Nhân Viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 16), new java.awt.Color(51, 51, 51))); // NOI18N
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setText("Mã Nhân Viên:");
-        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 40, -1, -1));
-
-        jLabel8.setText("Tên Nhân Viên:");
-        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 108, 100, -1));
-
-        jLabel12.setText("Giới Tính:");
-        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 224, -1));
-        jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 31, 64, -1));
-
-        jLabel17.setText("Số Điện Thoại:");
-        jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 88, -1));
-
-        jTextField2.setEnabled(false);
-        jPanel4.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 68, 178, -1));
-        jPanel4.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 136, 241, -1));
-
-        jRadioButton1.setText("Nam");
-        jPanel4.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 98, -1));
-
-        jRadioButton2.setText("Nữ");
-        jPanel4.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, 98, -1));
-
-        jLabel22.setText("Ngày Sinh:");
-        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 73, -1));
-        jPanel4.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 68, 205, -1));
-        jPanel4.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 241, -1));
-
-        jLabel23.setText("Địa Chỉ:");
-        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 88, -1));
-        jPanel4.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 241, -1));
-
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 710, 280));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
@@ -156,13 +120,59 @@ public class QLNS_update extends javax.swing.JFrame {
                 .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, 230, 40));
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 400, 230, 40));
+
+        jLabel7.setText("FOTO");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, -1, -1));
+
+        jButton1.setText("ẢNH");
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, -1, -1));
+
+        jPanel4.setBackground(new java.awt.Color(250, 250, 250));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin Nhân Viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 16), new java.awt.Color(51, 51, 51))); // NOI18N
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setText("Tên Nhân Viên:");
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 108, 100, -1));
+
+        jLabel12.setText("Giới Tính:");
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 224, -1));
+        jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 31, 64, -1));
+
+        jLabel17.setText("Số Điện Thoại:");
+        jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 88, -1));
+
+        jTextField2.setEnabled(false);
+        jPanel4.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 68, 178, -1));
+        jPanel4.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 136, 241, -1));
+
+        jRadioButton1.setText("Nam");
+        jPanel4.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 98, -1));
+
+        jRadioButton2.setText("Nữ");
+        jPanel4.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, 98, -1));
+
+        jLabel22.setText("Ngày Sinh:");
+        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 73, -1));
+        jPanel4.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 68, 205, -1));
+        jPanel4.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 220, -1));
+
+        jLabel23.setText("Địa Chỉ:");
+        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 88, -1));
+        jPanel4.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 241, -1));
+
+        jLabel9.setText("Mã Nhân Viên:");
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 40, -1, -1));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 570, 280));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,6 +205,7 @@ public class QLNS_update extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
@@ -204,6 +215,7 @@ public class QLNS_update extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

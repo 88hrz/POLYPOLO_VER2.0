@@ -370,6 +370,9 @@ public class QLSP extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnExportMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnExportMousePressed(evt);
+            }
         });
         jPanel1.add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 480, 130, 40));
 
@@ -731,22 +734,20 @@ public class QLSP extends javax.swing.JInternalFrame {
 
     private void btnUnhideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUnhideMouseClicked
         // UNHIDE
-        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn bỏ ẩn sản phẩm không?", "POLYPOLO thông báo", JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
-            int selectedRow = tblSP.getSelectedRow();
-            if (selectedRow != -1) {
+        int selectedRow = tblSP.getSelectedRow();
+        if (selectedRow != -1) {
+            int result = JOptionPane.showConfirmDialog(this, "Bạn muốn bỏ ẩn sản phẩm không?", "POLYPOLO thông báo", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
                 Integer maSP = Integer.valueOf(tblSP.getModel().getValueAt(selectedRow, 0).toString());
                 SanPham sp = new SanPham();
                 sp.setMaSP(maSP);
                 if (spService.unhideSP(sp)) {
-                    JOptionPane.showMessageDialog(this, "Bỏ ẩn sản phẩm thành công!", "POLYPOLO thông báo", 0);
+                    JOptionPane.showMessageDialog(this, "Bỏ ẩn sản phẩm thành công!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
                     loadTable(spService.getListSPVM());
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm từ bảng!", "POLYPOLO thông báo", 0);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Đã hủy thao tác bỏ ẩn sản phẩm!", "POLYPOLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để bỏ ẩn!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnUnhideMouseClicked
 
@@ -973,14 +974,18 @@ public class QLSP extends javax.swing.JInternalFrame {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                JOptionPane.showMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
             } else {
                 JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JOptionPane.showInternalMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
     }//GEN-LAST:event_btnExportMouseClicked
+
+    private void btnExportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

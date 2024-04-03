@@ -10,6 +10,7 @@ import Models.PhieuNhapChiTiet;
 import ViewModels.PN_PhieuNhapViewModel;
 import ViewModels.PN_SanPhamViewModel;
 import ViewModels.PhieuNhapViewModel;
+import ViewModels.SanPhamViewModel;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class PhieuNhapRepository {
     DbConnection dbConnection;
     
+    //<editor-fold defaultstate="collapsed" desc=" ADD ">
     //PRINT
     public ArrayList<MyPurchase> getListSupplierById(Integer id){
         String sql = "SELECT TOP 1 ncc.NhaCungCapID, ncc.TenNhaCungCap, ncc.SoDT, ncc.Email, ncc.DiaChi, pnct.PhuongThucNhap FROM PhieuNhapKho pn \n" +
@@ -236,7 +238,46 @@ public class PhieuNhapRepository {
         }
         return false;
     }
+    
+    public Boolean heh(Integer idP){
+        String sql = "UPDATE PhieuNhapKho SET Deleted = 0 WHERE PhieuNhapID = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, idP);
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
    
+    //SEARCH 
+    public ArrayList<PN_SanPhamViewModel> searchByName(String name){
+        String sql = "SELECT * FROM SanPhamChiTiet WHERE TenSanPhamChiTiet LIKE N'%"+name+"%'";
+        ArrayList<PN_SanPhamViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maSPCT = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                Integer soL = rs.getInt("SoLuongTon");
+                
+                PN_SanPhamViewModel sp = new PN_SanPhamViewModel(maSPCT, soL, tenSP);
+                ls.add(sp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
     //GETLIST
     public PhieuNhap getModel(){
         String sql = "SELECT TOP 1 * FROM PhieuNhapKho ORDER BY PhieuNhapID DESC;";
@@ -430,5 +471,82 @@ public class PhieuNhapRepository {
         }
         return pn;
     }
-
+    //</editor-fold>
+    
+    //SEARCH
+    public ArrayList<PhieuNhapViewModel> searchByNameNCC(String name){
+        String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon FROM PhieuNhapKho pn \n" +
+"						INNER JOIN ChiTietPhieuNhap pnct ON pn.PhieuNhapID = pnct.PhieuNhapID\n" +
+"						INNER JOIN NhaCungCap ncc ON ncc.NhaCungCapID = pn.NhaCungCapID\n" +
+"						INNER JOIN NhanVien nv ON pn.NhanVienID = nv.MaNhanVien \n" +
+"									WHERE ncc.TenNhaCungCap = ?";
+        ArrayList<PhieuNhapViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer id = rs.getInt("PhieuNhapID");
+                String nameNCC = rs.getString("TenNhaCungCap");
+                String nameNV = rs.getString("TenNhanVien");
+                Date ngayL = rs.getDate("ThoiGianNhap");
+                Double total = rs.getDouble("TongDon");
+                
+                PhieuNhapViewModel pn = new PhieuNhapViewModel(id, nameNCC, nameNV, ngayL, total);
+                ls.add(pn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByNameNV(String name){
+        String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon FROM PhieuNhapKho pn \n" +
+"						INNER JOIN ChiTietPhieuNhap pnct ON pn.PhieuNhapID = pnct.PhieuNhapID\n" +
+"						INNER JOIN NhaCungCap ncc ON ncc.NhaCungCapID = pn.NhaCungCapID\n" +
+"						INNER JOIN NhanVien nv ON pn.NhanVienID = nv.MaNhanVien \n" +
+"									WHERE nv.TenNhanVien = ?";
+        ArrayList<PhieuNhapViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer id = rs.getInt("PhieuNhapID");
+                String nameNCC = rs.getString("TenNhaCungCap");
+                String nameNV = rs.getString("TenNhanVien");
+                Date ngayL = rs.getDate("ThoiGianNhap");
+                Double total = rs.getDouble("TongDon");
+                
+                PhieuNhapViewModel pn = new PhieuNhapViewModel(id, nameNCC, nameNV, ngayL, total);
+                ls.add(pn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    //GET DETAILS
+//    public ArrayList<SanPhamViewModel> getDetails(){
+//        String sql = "SELECT sp.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc, nh.TenNhanHang, ms.TenMau, sz.TenSize, cl.TenChatLieu\n" +
+//"                                                               , sp.GiaNhap, pnct.SoLuong, pn.ThoiGianNhap, pn.TongDon  FROM SanPham sp \n" +
+//"										INNER JOIN SanPhamChiTiet spct ON sp.MaSanPham = spct.MaSanPham\n" +
+//"										INNER JOIN DanhMuc dm ON sp.MaDanhMuc = dm.MaDanhMuc\n" +
+//"										INNER JOIN NhanHang nh ON spct.NhanHangID = nh.NhanHangID\n" +
+//"										INNER JOIN MauSac ms ON spct.MaMau = ms.MaMau\n" +
+//"										INNER JOIN Size sz ON spct.MaSize = sz.MaSize\n" +
+//"										INNER JOIN KhuVucKho kh ON sp.KhuVucID = kh.KhuVucID\n" +
+//"										INNER JOIN ChatLieu cl ON spct.MaChatLieu = cl.MaChatLieu\n" +
+//"										INNER JOIN ChiTietPhieuNhap pnct ON spct.MaSanPhamChiTiet = pnct.MaSanPhamChiTiet\n" +
+//"										INNER JOIN PhieuNhapKho pn ON pnct.PhieuNhapID = pn.PhieuNhapID\n" +
+//"                                                                                 WHERE sp.Deleted != 1 AND pn.PhieuNhapID = ?";
+//    }
+    
+    
 }

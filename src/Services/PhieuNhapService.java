@@ -46,9 +46,9 @@ public class PhieuNhapService {
     public String addPhieu(PhieuNhap pn){
         Boolean check = pnRepo.addPhieu(pn);
         if (check) {
-            return "Thêm sản phẩm thành công!";
+            return "Tạo phiếu thành công!";
         }else{
-            return "Thêm sản phẩm thất bại!";
+            return "Tạo phiếu thất bại!";
         }
     }
     
@@ -88,6 +88,19 @@ public class PhieuNhapService {
         }else{
             return "Xóa sản phẩm thất bại!";
         }
+    }
+    
+    public String heh(Integer idP){
+        Boolean check = pnRepo.heh(idP);
+        if (check) {
+            return "Nhập hàng thành công!";
+        }else{
+            return "Nhập hàng thất bại! :(";
+        }
+    }
+    
+    public ArrayList<PN_SanPhamViewModel> searchByName(String name){
+        return pnRepo.searchByName(name);
     }
     
     
@@ -132,4 +145,13 @@ public class PhieuNhapService {
         return nccRepo.getListById(id);
     }
     
+    
+    //
+    public ArrayList<PhieuNhapViewModel> searchByNameNCC(String name){
+        return pnRepo.searchByNameNCC(name);
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByNameNV(String name){
+        return pnRepo.searchByNameNV(name);
+    }
 }

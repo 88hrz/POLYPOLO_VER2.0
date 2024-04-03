@@ -18,6 +18,25 @@ public class SanPhamViewModel {
     private String img;
     private Date ngayNhap;
 
+    //PHIEUNHAP
+    private Integer thue;
+    private Double tongT;
+
+    public SanPhamViewModel(Integer idSP, Integer soL, String tenSP, String danhMuc, String nhanHang, String mauSac, String kichCo, String chatLieu, Double giaN, Integer thue, Double tongT) {
+        this.idSP = idSP;
+        this.soL = soL;
+        this.tenSP = tenSP;
+        this.danhMuc = danhMuc;
+        this.nhanHang = nhanHang;
+        this.mauSac = mauSac;
+        this.kichCo = kichCo;
+        this.chatLieu = chatLieu;
+        this.giaN = giaN;
+        this.thue = thue;
+        this.tongT = tongT;
+    }
+
+    
     public SanPhamViewModel() {
     }
 
@@ -164,6 +183,22 @@ public class SanPhamViewModel {
 
     public void setGiaB(Double giaB) {
         this.giaB = giaB;
+    }
+
+    public Integer getThue() {
+        return thue;
+    }
+
+    public void setThue(Integer thue) {
+        this.thue = thue;
+    }
+
+    public Double getTongT() {
+        return tongT;
+    }
+
+    public void setTongT(Double tongT) {
+        this.tongT = tongT;
     }
     
     

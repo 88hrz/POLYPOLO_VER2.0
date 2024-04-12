@@ -7,10 +7,10 @@ package Repositories;
 import Models.MyPurchase;
 import Models.PhieuNhap;
 import Models.PhieuNhapChiTiet;
+import ViewModels.PN_PhieuNhapDetailsViewModel;
 import ViewModels.PN_PhieuNhapViewModel;
 import ViewModels.PN_SanPhamViewModel;
 import ViewModels.PhieuNhapViewModel;
-import ViewModels.SanPhamViewModel;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -93,8 +93,8 @@ public class PhieuNhapRepository {
     }
     
     public Boolean addPhieu(PhieuNhap pn){
-        String sql = "INSERT INTO PhieuNhapKho (NhaCungCapID, NhanVienID, ThoiGianNhap, TongDon, Deleted) \n" +
-"			VALUES (?, ?, ?, ?, 0) ;";
+        String sql = "INSERT INTO PhieuNhapKho (NhaCungCapID, NhanVienID, ThoiGianNhap, TongDon, TrangThai, Deleted) \n" +
+"			VALUES (?, ?, ?, ?, N'Chưa hoàn thành' , 0) ;";
         
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setInt(1, pn.getIdNCC());
@@ -117,7 +117,7 @@ public class PhieuNhapRepository {
     
     public Boolean addPNCT(PhieuNhapChiTiet pn){
         String sql = "INSERT INTO ChiTietPhieuNhap (PhieuNhapID, MaSanPhamChiTiet, SoLuong, DonGia, PhuongThucNhap, MoTa, PhanTramThue, Deleted) VALUES\n" +
-"			(?, ?, ?, ?, ?, ?, ?, 0);";
+"			(?, ?, ?, ?, ?, ?, ?, 1);";
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
             ps.setInt(1, pn.getMaP());
@@ -198,9 +198,9 @@ public class PhieuNhapRepository {
     }
     
     public Boolean updateSPDetails(PhieuNhapChiTiet pn) {
-        String sql = "UPDATE ChiTietPhieuNhap\n" +
+        String sql = "UPDATE ChiTietPhieuNhap \n" +
 "				SET SoLuong = ?, DonGia = ?, PhanTramThue = ?, PhuongThucNhap = ?, MoTa = ? \n" +
-"					WHERE Deleted!=1 AND MaSanPhamChiTiet = ? AND PhieuNhapID = ?";
+"					WHERE MaSanPhamChiTiet = ? AND PhieuNhapID = ?";
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql) ){
             ps.setObject(1, pn.getSoL());
@@ -240,7 +240,7 @@ public class PhieuNhapRepository {
     }
     
     public Boolean heh(Integer idP){
-        String sql = "UPDATE PhieuNhapKho SET Deleted = 0 WHERE PhieuNhapID = ?";
+        String sql = "UPDATE PhieuNhapKho SET TrangThai = N'Hoàn thành' WHERE PhieuNhapID = ?";
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
@@ -256,6 +256,26 @@ public class PhieuNhapRepository {
         return false;
     }
    
+    public Boolean updatetongDon(int id){
+        String sql = "UPDATE PhieuNhapKho\n" +
+"                       SET TongDon = (SELECT SUM(pn.DonGia * pn.SoLuong + (pn.DonGia * pn.SoLuong) * (CAST(pn.PhanTramThue AS FLOAT) / 100.0)) AS 'TOTAL'\n" +
+"				FROM ChiTietPhieuNhap pn INNER JOIN PhieuNhapKho pnk ON pn.PhieuNhapID = pnk.PhieuNhapID\n" +
+"					      WHERE pnk.PhieuNhapID = ? ) \n" +
+"						  WHERE PhieuNhapID = ?";
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            ps.setObject(2, id);
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     //SEARCH 
     public ArrayList<PN_SanPhamViewModel> searchByName(String name){
         String sql = "SELECT * FROM SanPhamChiTiet WHERE TenSanPhamChiTiet LIKE N'%"+name+"%'";
@@ -372,6 +392,41 @@ public class PhieuNhapRepository {
         return pn;
     } 
     
+    public PN_PhieuNhapViewModel getPNCTById(Integer id){
+        String sql = "SELECT pn.PhieuNhapID, spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc\n" +
+"				, pn.DonGia, pn.SoLuong, pn.PhanTramThue\n" +
+"				, pn.DonGia * pn.SoLuong + (pn.DonGia * pn.SoLuong) * (CAST(pn.PhanTramThue AS FLOAT) / 100.0) AS 'TOTAL' FROM ChiTietPhieuNhap pn \n" +
+"				INNER JOIN SanPhamChiTiet spct ON pn.MaSanPhamChiTiet = spct.MaSanPhamChiTiet\n" +
+"				INNER JOIN SanPham sp ON spct.MaSanPham = sp.MaSanPham\n" +
+"				INNER JOIN DanhMuc dm ON sp.MaDanhMuc = dm.MaDanhMuc\n" +
+"				INNER JOIN PhieuNhapKho pnk ON pn.PhieuNhapID = pnk.PhieuNhapID\n" +
+"						WHERE pnk.Deleted!=1 "
+                + "                                         AND pnk.PhieuNhapID = ?";
+        PN_PhieuNhapViewModel pn= new PN_PhieuNhapViewModel();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idP = rs.getInt("PhieuNhapID");
+                Integer idSP = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String tenDM = rs.getString("TenDanhMuc");
+                Double donG = rs.getDouble("DonGia");
+                Integer soL = rs.getInt("SoLuong");
+                Integer thue = rs.getInt("PhanTramThue");
+                Double tongD = rs.getDouble("TOTAL");
+                
+                pn = new PN_PhieuNhapViewModel(idP, idSP, soL, thue, tenSP, tenDM, donG, tongD);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pn;
+    } 
+    
     public ArrayList<PhieuNhapViewModel> getListPN(){
         String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon \n" +
 "			FROM PhieuNhapKho pn INNER JOIN NhaCungCap ncc ON pn.NhaCungCapID = ncc.NhaCungCapID\n" +
@@ -399,7 +454,7 @@ public class PhieuNhapRepository {
     }
     
     public ArrayList<PhieuNhapChiTiet> getListPNCT(){
-        String sql = "SELECT * FROM ChiTietPhieuNhap WHERE Deleted !=1";
+        String sql = "SELECT * FROM ChiTietPhieuNhap";
         ArrayList<PhieuNhapChiTiet> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
@@ -473,6 +528,30 @@ public class PhieuNhapRepository {
     }
     //</editor-fold>
     
+    //AUTOCOMPLETE SEARCH
+    public ArrayList<PN_SanPhamViewModel> getSuggestSearch(String name){
+        String sql = "SELECT TOP 7 TenSanPhamChiTiet FROM SanPhamChiTiet WHERE TenSanPhamChiTiet LIKE ? ";
+        ArrayList<PN_SanPhamViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, "%" + name + "%");
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                
+                PN_SanPhamViewModel sp = new PN_SanPhamViewModel(tenSP);
+                ls.add(sp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    
+    
     //SEARCH
     public ArrayList<PhieuNhapViewModel> searchByNameNCC(String name){
         String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon FROM PhieuNhapKho pn \n" +
@@ -532,21 +611,156 @@ public class PhieuNhapRepository {
         return ls;
     }
     
+    public ArrayList<PhieuNhapViewModel> searchByDate(Date from, Date to){
+        String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon FROM PhieuNhapKho pn \n" +
+"						INNER JOIN ChiTietPhieuNhap pnct ON pn.PhieuNhapID = pnct.PhieuNhapID\n" +
+"						INNER JOIN NhaCungCap ncc ON ncc.NhaCungCapID = pn.NhaCungCapID\n" +
+"						INNER JOIN NhanVien nv ON pn.NhanVienID = nv.MaNhanVien \n" +
+"								WHERE pn.ThoiGianNhap BETWEEN ? AND ? "
+                + "                                                 GROUP BY pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon"
+                + "                                                     ORDER BY ThoiGianNhap ASC";
+        ArrayList<PhieuNhapViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, from);
+            ps.setObject(2, to);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer id = rs.getInt("PhieuNhapID");
+                String nameNCC = rs.getString("TenNhaCungCap");
+                String nameNV = rs.getString("TenNhanVien");
+                Date ngayL = rs.getDate("ThoiGianNhap");
+                Double total = rs.getDouble("TongDon");
+                
+                PhieuNhapViewModel pn = new PhieuNhapViewModel(id, nameNCC, nameNV, ngayL, total);
+                ls.add(pn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByPriceASC(){
+        String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon FROM PhieuNhapKho pn \n" +
+"						INNER JOIN ChiTietPhieuNhap pnct ON pn.PhieuNhapID = pnct.PhieuNhapID\n" +
+"						INNER JOIN NhaCungCap ncc ON ncc.NhaCungCapID = pn.NhaCungCapID\n" +
+"						INNER JOIN NhanVien nv ON pn.NhanVienID = nv.MaNhanVien \n" +
+"								GROUP BY pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon\n" +
+"								ORDER BY pn.TongDon ASC";
+        ArrayList<PhieuNhapViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer id = rs.getInt("PhieuNhapID");
+                String nameNCC = rs.getString("TenNhaCungCap");
+                String nameNV = rs.getString("TenNhanVien");
+                Date ngayL = rs.getDate("ThoiGianNhap");
+                Double total = rs.getDouble("TongDon");
+                
+                PhieuNhapViewModel pn = new PhieuNhapViewModel(id, nameNCC, nameNV, ngayL, total);
+                ls.add(pn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByPriceDESC(){
+        String sql = "SELECT pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon FROM PhieuNhapKho pn \n" +
+"						INNER JOIN ChiTietPhieuNhap pnct ON pn.PhieuNhapID = pnct.PhieuNhapID\n" +
+"						INNER JOIN NhaCungCap ncc ON ncc.NhaCungCapID = pn.NhaCungCapID\n" +
+"						INNER JOIN NhanVien nv ON pn.NhanVienID = nv.MaNhanVien \n" +
+"								GROUP BY pn.PhieuNhapID, ncc.TenNhaCungCap, nv.TenNhanVien, pn.ThoiGianNhap, pn.TongDon\n" +
+"								ORDER BY pn.TongDon DESC";
+        ArrayList<PhieuNhapViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer id = rs.getInt("PhieuNhapID");
+                String nameNCC = rs.getString("TenNhaCungCap");
+                String nameNV = rs.getString("TenNhanVien");
+                Date ngayL = rs.getDate("ThoiGianNhap");
+                Double total = rs.getDouble("TongDon");
+                
+                PhieuNhapViewModel pn = new PhieuNhapViewModel(id, nameNCC, nameNV, ngayL, total);
+                ls.add(pn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
     //GET DETAILS
-//    public ArrayList<SanPhamViewModel> getDetails(){
-//        String sql = "SELECT sp.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc, nh.TenNhanHang, ms.TenMau, sz.TenSize, cl.TenChatLieu\n" +
-//"                                                               , sp.GiaNhap, pnct.SoLuong, pn.ThoiGianNhap, pn.TongDon  FROM SanPham sp \n" +
-//"										INNER JOIN SanPhamChiTiet spct ON sp.MaSanPham = spct.MaSanPham\n" +
-//"										INNER JOIN DanhMuc dm ON sp.MaDanhMuc = dm.MaDanhMuc\n" +
-//"										INNER JOIN NhanHang nh ON spct.NhanHangID = nh.NhanHangID\n" +
-//"										INNER JOIN MauSac ms ON spct.MaMau = ms.MaMau\n" +
-//"										INNER JOIN Size sz ON spct.MaSize = sz.MaSize\n" +
-//"										INNER JOIN KhuVucKho kh ON sp.KhuVucID = kh.KhuVucID\n" +
-//"										INNER JOIN ChatLieu cl ON spct.MaChatLieu = cl.MaChatLieu\n" +
-//"										INNER JOIN ChiTietPhieuNhap pnct ON spct.MaSanPhamChiTiet = pnct.MaSanPhamChiTiet\n" +
-//"										INNER JOIN PhieuNhapKho pn ON pnct.PhieuNhapID = pn.PhieuNhapID\n" +
-//"                                                                                 WHERE sp.Deleted != 1 AND pn.PhieuNhapID = ?";
-//    }
+    public ArrayList<PN_PhieuNhapDetailsViewModel> getDetailsPN(int id){
+        String sql = "SELECT spct.MaSanPhamChiTiet,spct.TenSanPhamChiTiet,dm.TenDanhMuc,nh.TenNhanHang,ms.TenMau,sz.TenSize,cl.TenChatLieu,"
+                + "pnct.DonGia,pnct.SoLuong,pnct.PhanTramThue,\n" +
+"    (pnct.DonGia * pnct.SoLuong * (1 + pnct.PhanTramThue / 100.0)) AS 'TOTAL'\n" +
+"			FROM PhieuNhapKho pnk \n" +
+"				INNER JOIN ChiTietPhieuNhap pnct ON pnk.PhieuNhapID = pnct.PhieuNhapID\n" +
+"				INNER JOIN SanPhamChiTiet spct ON pnct.MaSanPhamChiTiet = spct.MaSanPhamChiTiet\n" +
+"				INNER JOIN SanPham sp ON spct.MaSanPham = sp.MaSanPham\n" +
+"				INNER JOIN DanhMuc dm ON sp.MaDanhMuc = dm.MaDanhMuc\n" +
+"				INNER JOIN NhanHang nh ON spct.NhanHangID = nh.NhanHangID\n" +
+"				INNER JOIN MauSac ms ON spct.MaMau = ms.MaMau\n" +
+"				INNER JOIN Size sz ON spct.MaSize = sz.MaSize\n" +
+"				INNER JOIN ChatLieu cl ON spct.MaChatLieu = cl.MaChatLieu\n" +
+"						WHERE pnk.PhieuNhapID = ?";
+        ArrayList<PN_PhieuNhapDetailsViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idSP = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String danhM = rs.getString("TenDanhMuc");
+                String brand = rs.getString("TenNhanHang");
+                String mauS = rs.getString("TenMau");
+                String sz = rs.getString("TenSize");
+                String chatL = rs.getString("TenChatLieu");
+                Double donG = rs.getDouble("DonGia");
+                Integer soL = rs.getInt("SoLuong");
+                Integer thue = rs.getInt("PhanTramThue");
+                Double total = rs.getDouble("TOTAL");
+                
+                PN_PhieuNhapDetailsViewModel pn = new PN_PhieuNhapDetailsViewModel(idSP, soL, thue, tenSP, danhM, mauS, sz, brand, chatL, donG, total);
+                ls.add(pn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
     
-    
+    public Boolean deletePhieuNhap(int id){
+        String sql  = "DELETE FROM ChiTietPhieuNhap WHERE PhieuNhapID = ? ;\n" +
+                            "DELETE FROM PhieuNhapKho WHERE PhieuNhapID = ?";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            ps.setObject(2, id);
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

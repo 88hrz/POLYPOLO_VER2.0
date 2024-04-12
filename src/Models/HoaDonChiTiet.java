@@ -10,7 +10,7 @@ package Models;
  * @author X1
  */
 public class HoaDonChiTiet {
-    private Integer maHD, maSPCT, soLuong;
+    private Integer maHD, maHDCT, maSPCT, soLuong;
     private Double donGia;
 
     public HoaDonChiTiet() {
@@ -21,6 +21,22 @@ public class HoaDonChiTiet {
         this.maSPCT = maSPCT;
         this.soLuong = soLuong;
         this.donGia = donGia;
+    }
+
+    public HoaDonChiTiet(Integer maHD, Integer maHDCT, Integer maSPCT, Integer soLuong, Double donGia) {
+        this.maHD = maHD;
+        this.maHDCT = maHDCT;
+        this.maSPCT = maSPCT;
+        this.soLuong = soLuong;
+        this.donGia = donGia;
+    }
+
+    public Integer getMaHDCT() {
+        return maHDCT;
+    }
+
+    public void setMaHDCT(Integer maHDCT) {
+        this.maHDCT = maHDCT;
     }
 
     public Integer getMaHD() {

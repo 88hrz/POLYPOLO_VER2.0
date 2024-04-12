@@ -4,21 +4,22 @@
  */
 package Services;
 
-import Models.SP_DanhMuc;
-import Repositories.HoaDonRepository;
-import ViewModels.HD_GioHangViewModel;
-import Models.HoaDon;
 import Models.HoaDonChiTiet;
-import Models.MyReceipts;
+import Models.HoaDon;
+import Models.KhachHang;
 import Models.NhanSu;
 import Models.SanPhamChiTiet;
-//import Models.NhanSu;
-//import Models.SanPhamChiTiet;
+import Repositories.HoaDonRepository;
+import Repositories.KhachHangRepository;
 import Repositories.NhanSuRepo;
+import Repositories.PhieuNhapRepository;
 import Repositories.SanPhamRepository;
-import ViewModels.HD_HoaDonViewModel;
+import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
+import ViewModels.KhachHangViewModel;
+import ViewModels.PN_SanPhamViewModel;
+import ViewModels.SanPhamViewModel;
 import java.util.ArrayList;
 
 /**
@@ -27,98 +28,47 @@ import java.util.ArrayList;
  */
 public class HoaDonService {
     HoaDonRepository hdRepo = new HoaDonRepository();
-    SanPhamRepository spRepo = new SanPhamRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
+    SanPhamRepository spRepo = new SanPhamRepository();
+    PhieuNhapRepository pnRepo = new PhieuNhapRepository();
+    KhachHangRepository khRepo = new KhachHangRepository();
     
-    //EXPORT 
-    public ArrayList<MyReceipts> getMyReceipts(){
-        return hdRepo.getMyReceipts();
-    }
-    //PRINT INVOICE
+    //INVOICE 
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
         return hdRepo.getListKHById(id);
     }
     public ArrayList<HD_GioHangViewModel> printInvoiceById(Integer id) {
         return hdRepo.printInvoiceById(id);
     }
-    //GET TOTAL
-    public HoaDon getTotal(Integer id) {
-        return hdRepo.getTotal(id);
-    }
-    //SEARCH customer
-    public ArrayList<HD_HoaDonViewModel> searchTel(String tel){
-        return hdRepo.searchCustomer(tel);
+    
+    //ACTION
+    public Boolean checkExists(Integer idSPCT, Integer id){
+        return hdRepo.checkExists(idSPCT, id);
     }
     
-    //DELETE
-    public String deleteProduct(int mahd){
-        Boolean check = hdRepo.deleteProduct(mahd);
+    public Integer getTotalP(int id) {
+        return hdRepo.getTotalP(id);
+    }
+    
+    public String mergeSP(Integer soL, Integer id, Integer idSPCT){
+        Boolean check = hdRepo.mergeSP(soL, id, idSPCT);
         if (check) {
-            return "Xoá sản phẩm thành công!";
+            return "Thêm sản phẩm vào giỏ hàng thành công!!";
         }else{
-            return "Xóa sản phẩm thất bại :(";
+            return "Thêm sản phẩm vào giỏ hàng thất bại :(";
         }
     }
-    //GET LIST HOADON
-    public ArrayList<HD_HoaDonViewModel> getListHoaDon(){
-        return hdRepo.getListHoaDon();
-    }
-    //GETCBO_DM
-    public ArrayList<SP_DanhMuc> getListDM(){
-        return spRepo.getList();
-    }
-    public ArrayList<HD_SanPhamViewModel> getListByDanhMuc(String dm) {
-        return hdRepo.getListByDanhMuc(dm);
-    }
-    //GET LIST
-    public ArrayList<HoaDon> getList(){
-        return hdRepo.getList();
-    }
-    //SP BY ID
-//    public SanPhamChiTiet getIdSP(String name){
-//        return spRepo.getName(name);
-//    }
-    public SanPhamChiTiet getById(Integer id){
-        return spRepo.getListById(id);
-    }
-//    //GET tenv
-//    public ArrayList<NhanSu> getListTenNV(){
-//        return nsRepo.getListTenNV();
-//    } 
-    //GETLIST VIEW MODEL
-    public ArrayList<HD_HoaDonViewModel> getListByTrangThai(String trangThai){
-        return hdRepo.getListByTrangThai(trangThai);
-    }
-    //GETLIST VIEW MODEL
-    public HD_HoaDonViewModel getListHDById(Integer id){
-        return hdRepo.getListHDById(id);
-    }
-    //GETLIST SANPHAMVIEW
-    public ArrayList<HD_SanPhamViewModel> getListSanPham() {
-        return hdRepo.getListSanPham();
-    }
-    //GETLIST GH
-    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id) {
-        return hdRepo.getListGioHangById(id);
-    }
-    //GETLIST SP_SEARCHBYNAME
-    public ArrayList<HD_SanPhamViewModel> getListBySearchName(String name){
-        return hdRepo.getListSearchByName(name);
-    }
-    public ArrayList<HD_SanPhamViewModel> getListById(Integer id){
-        return hdRepo.getListById(id);
-    }
-    //GETNAME
-    public NhanSu getIdByName(String name){
-        return nsRepo.getIdByName(name);
-    }
-   //GETLIST BY ID
-    public HoaDon getListByID(Integer id){
-        return hdRepo.getListByID(id);
+    
+    public String addHD(HoaDon hd){
+        Boolean check = hdRepo.addHD(hd);
+        if (check) {
+            return "Tạo hóa đơn mới thành công!";
+        }else{
+            return "Tạo hóa đơn mới thất bại :(";
+        }
     }
     
-    //ADD
-    public String addHDCT(HoaDonChiTiet hdct){
+    public String addHDCT(HoaDonChiTiet hdct) {
         Boolean check = hdRepo.addHDCT(hdct);
         if (check) {
             return "Thêm sản phẩm vào giỏ hàng thành công!";
@@ -127,46 +77,116 @@ public class HoaDonService {
         }
     }
     
-    //ADD SP -> UPDATE SL
-    public Boolean  updateSPTon(int soL, int id){
-        return hdRepo.updateSP(soL, id);
+    public String updateSP(Integer id, Integer soL){
+        Boolean check = hdRepo.updateSP(id, soL);
+        if (check) {
+            return "Thêm sản phẩm vào giỏ hàng thành công!!";
+        }else{
+            return "Thêm sản phẩm vào giỏ hàng thất bại :(";
+        }
+    }
     
+    public HoaDon getTotal(Integer id){
+        return hdRepo.getTotal(id);
     }
-    public String updateSP(int soL, int id){
-        Boolean check = hdRepo.updateSP(soL, id);
+    public Double getVATFee(Integer id) {
+        return hdRepo.getVATFee(id);
+    }
+    
+    public Boolean setTongT (int idHD){
+        return hdRepo.setTongT(idHD);
+    }
+    
+    public Boolean checkKH(String sdt){
+        return hdRepo.checkKH(sdt);
+    }
+    
+    public KhachHang getKHBySDT(String sdt){
+        return khRepo.getKHBySDT(sdt);
+    }
+    
+    public String delSingle(int id, int idSPCT){
+        Boolean check = hdRepo.delSingle(id, idSPCT);
         if (check) {
-            return "Thêm sản phẩm vào giỏ hàng thành công!";
+            return "Xóa sản phẩm thành công!";
         }else{
-            return "Thêm sản phẩm thất bại :(";
+            return "Xóa sản phẩm thất bại!";
         }
     }
-    public String mergeSP(int soL, int maHD, int maSPCT){
-        Boolean check = hdRepo.mergeSP(soL, maHD, maSPCT);
+    
+    public String emptyBasket(int id){
+        Boolean check = hdRepo.emptyBasket(id);
         if (check) {
-            return "Thêm sản phẩm vào giỏ hàng thành công!";
+            return "Xóa giỏ hàng thành công!";
         }else{
-            return "Thêm sản phẩm thất bại :(";
+            return "Xóa giỏ hàng thất bại :(";
         }
     }
-    public Boolean checkSPExists(int maHD, int maSPCT){
-        return hdRepo.checkSPExists(maHD, maSPCT);
-    }
-
-   public String add(HoaDon hd){
-        Boolean check = hdRepo.addHoaDon(hd);
+    
+    public String updateThanhToan(int id){
+        Boolean check = hdRepo.updateThanhToan(id);
         if (check) {
-            return "Thêm hóa đơn thành công!";
-        }else{
-            return "Thêm hóa đơn thất bại :(";
-        }
-    }
-    public String thanhToan(HoaDon hd) {
-        boolean check = hdRepo.thanhToan(hd);
-        if (check == true) {
             return "Thanh toán thành công!";
-        } else {
-            return "Thanh toán thất bại!";
+        }else{
+            return "Thanh toán thất bại :(";
         }
+    }
+    
+    public SanPhamChiTiet getSPById(Integer id){
+        return spRepo.getListById(id);
+    }
+    
+    //SEARCH
+    public KhachHang getListKHBySDT(String sdt){
+        return hdRepo.getListKHBySDT(sdt);
+    }
+    
+    //GETMODEL
+    public HoaDon getModel(){
+        return hdRepo.getModel();
+    }
+    public ArrayList<HoaDonChiTiet> getListHDCT(){
+        return hdRepo.getListHDCT();
+    }
+    public ArrayList<KhachHang> getListKH(){
+        return khRepo.getListKH();
+    }
+    public NhanSu getNSById(Integer id) {
+        return nsRepo.getListById(id);
+    }
+    public HoaDon getByHoaDon(Integer id){
+        return hdRepo.getByHoaDon(id);
+    }
+    public HoaDonChiTiet getByHDCT(int id){
+        return hdRepo.getByHDCT(id);
+    }
+    
+    //GETLIST
+    public ArrayList<HoaDonChiTiet> getListHDCTById(int id){
+        return hdRepo.getListHDCTById(id);
+    }
+    public ArrayList<NhanSu> getListNS(){
+        return nsRepo.getListNS();
+    }
+    public ArrayList<HoaDon> getAllHoaDon(){
+        return hdRepo.getAllHoaDon();
+    }
+    public NhanSu getIdByNameNS(String name) {
+        return nsRepo.getIdByName(name);
+    }
+    public ArrayList<HoaDon> getHD(String trangT){
+        return hdRepo.getHoaDon(trangT);
+    }
+    public ArrayList<HD_SanPhamViewModel> getListSanPham(){
+        return hdRepo.getListSanPham();
+    }
+    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id){
+        return hdRepo.getListGioHangById(id);
+    }
+    public SanPhamViewModel getSPByIdSP(Integer id) {
+        return spRepo.getSPByIdSPCT(id);
+    }
+    public ArrayList<PN_SanPhamViewModel> getListSPViewModel(){
+        return pnRepo.getListSPViewModel();
     }
 }
-

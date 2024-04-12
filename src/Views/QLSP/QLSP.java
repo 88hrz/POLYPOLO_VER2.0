@@ -717,13 +717,13 @@ public class QLSP extends javax.swing.JInternalFrame {
             int result = JOptionPane.showConfirmDialog(this, "Bạn muốn ẩn sản phẩm không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 spService.hideSP(getModelSP());
-                JOptionPane.showMessageDialog(this, "Ẩn sản phẩm thành công!", "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, "Ẩn sản phẩm thành công!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTable(spService.getListSPVM());
             } else if (result == JOptionPane.NO_OPTION) {
-                JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn sản phẩm!", "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, "Đã hủy thao tác ẩn sản phẩm!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm trên bảng để ẩn!", "POLYPOLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm trên bảng để ẩn!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnHiddenMouseClicked
 
@@ -974,9 +974,9 @@ public class QLSP extends javax.swing.JInternalFrame {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                JOptionPane.showMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();

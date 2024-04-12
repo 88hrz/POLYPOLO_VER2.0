@@ -17,6 +17,7 @@ import Validator.MyValidate;
 import ViewModels.PN_PhieuNhapViewModel;
 import ViewModels.PN_SanPhamViewModel;
 import Views.Login;
+import Views.QLSP.QLSP_add;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
@@ -38,6 +39,9 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -77,6 +81,14 @@ public class QLNH_add extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         load();
         setButtonIcon();
+//        txtSearch.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String name = txtSearch.getText().trim();
+//                txtSearch.setText(pnService.getSuggestSearch(name).toString());
+//            }
+//        });
+
     }
     
     void load(){
@@ -84,8 +96,11 @@ public class QLNH_add extends javax.swing.JFrame {
         loadCboNV(pnService.getListNS());
         loadCboNCC(nccservice.getList());
         loadTableSP(pnService.getListSPViewModel());
-//        PhieuNhap pnNew = pnService.getModel();
-//        loadDataToForm(pnNew);
+        
+        btnNhapHang.setEnabled(false);
+        btnPrint.setEnabled(false);
+        PhieuNhap pnNew = pnService.getModel();
+        loadDataToForm(pnNew);
     }
     
     void setButtonIcon() {
@@ -97,6 +112,7 @@ public class QLNH_add extends javax.swing.JFrame {
         btnAddPhieu.setIcon(svgSet.createSVGIcon("Images/SVG/add.svg", 20, 20));
         btnNhapHang.setIcon(svgSet.createSVGIcon("Images/SVG/add-sp.svg", 25, 25));
         btnScan.setIcon(svgSet.createSVGIcon("Images/SVG/barcode.svg", 17, 17));
+        btnNewProduct.setIcon(svgSet.createSVGIcon("Images/SVG/add-nhap.svg", 15, 15));
         getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
     }
     
@@ -205,7 +221,7 @@ public class QLNH_add extends javax.swing.JFrame {
     //GETMODEL
     public PhieuNhapChiTiet getModelPNCT(){
         Integer maP = Integer.valueOf(txtMaPhieu.getText());
-        Integer maSPCT = Integer.valueOf(txtMaSP.getText());
+        Integer maSPCT = Integer.valueOf(txtMaSP.getText().trim());
         
         Integer soL = Integer.valueOf(txtSoL.getText().trim());
         Integer thue = Integer.valueOf(txtThue.getText().trim());
@@ -227,7 +243,6 @@ public class QLNH_add extends javax.swing.JFrame {
         Integer maNV = pnService.getIdByNameNS(tenNv).getMaNhanVien();
         
         Date ngayN = dcsNgayNhap.getDate();
-    //    Double tongD = Double.valueOf(lblTotal.getText());
         String tongDText = lblTotal.getText();
         Double tongD = 0.0;
         DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance();
@@ -334,7 +349,7 @@ public class QLNH_add extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSP = new javax.swing.JTable();
         btnScan = new javax.swing.JButton();
-        btnSearch = new javax.swing.JButton();
+        btnNewProduct = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtMaSP = new javax.swing.JTextField();
@@ -410,10 +425,10 @@ public class QLNH_add extends javax.swing.JFrame {
             }
         });
 
-        btnSearch.setText("SEARCH");
-        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnNewProduct.setText(" NEW");
+        btnNewProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnSearchMouseClicked(evt);
+                btnNewProductMouseClicked(evt);
             }
         });
 
@@ -424,31 +439,30 @@ public class QLNH_add extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnScan, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnScan, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearch))
                 .addGap(15, 15, 15))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnScan, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnScan, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(btnNewProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 15, 380, 300));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 15, 390, 300));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông Tin Sản Phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 14))); // NOI18N
 
@@ -774,25 +788,48 @@ public class QLNH_add extends javax.swing.JFrame {
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // DELETE
         int pos = tblNhapHang.getSelectedRow();
-        Integer maP = Integer.valueOf(tblNhapHang.getValueAt(pos, 0).toString());
-        Integer maSP = Integer.valueOf(tblNhapHang.getValueAt(pos, 1).toString());
-        if (pos != 1) {
-            JOptionPane.showMessageDialog(this, pnService.deleteSP(maSP,maP), "POLYPOLO thông báo", 0);
-            loadTablePhieu(pnService.getListPhieuById(maP));
-        }else{
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóa!", "POLYPOLO thông báo", 0);
+        if (pos != -1) {
+            int result = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa sản phẩm này?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                Integer maP = Integer.valueOf(tblNhapHang.getValueAt(pos, 0).toString());
+                Integer maSP = Integer.valueOf(tblNhapHang.getValueAt(pos, 1).toString());
+                
+                JOptionPane.showMessageDialog(this, pnService.deleteSP(maSP, maP), "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+                loadTablePhieu(pnService.getListPhieuById(maP));
+            } else {
+                JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa sản phẩm!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóa!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
         // UPDATE
         int pos = tblNhapHang.getSelectedRow();
-        Integer maP = Integer.valueOf(tblNhapHang.getValueAt(pos, 0).toString());
+        int result = JOptionPane.showConfirmDialog(this, "Bạn muốn sửa sản phẩm này?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
         if (pos != -1) {
-            JOptionPane.showMessageDialog(this, pnService.updateSPDetails(getModelPNCT()), "POLYPOLO thông báo", 0);
-            loadTablePhieu(pnService.getListPhieuById(maP));
-        }else{
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để sửa!", "POLYPOLO thông báo", 0);
+            Integer maP = Integer.valueOf(txtMaPhieu.getText());
+            if (result == JOptionPane.YES_OPTION) {
+                String kq = pnService.updateSPDetails(getModelPNCT());
+
+                JOptionPane.showMessageDialog(this, kq, "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+                loadTablePhieu(pnService.getListPhieuById(maP));
+                
+                //SET TOTAL
+                Integer tongTax = pnService.getTaxById(maP).getThue();
+                String formatTax = formatter.format(tongTax);
+                Double tongT = pnService.getTotalByID(maP).getTongD();
+                String formatTotal = formatter.format(tongT);
+
+                lblTotal.setText(formatTotal);
+                lblTax.setText(formatTax);
+                
+            } else if (result == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Đã hủy thao tác sửa sản phẩm!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để sửa!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnUpdateMouseClicked
 
@@ -817,11 +854,13 @@ public class QLNH_add extends javax.swing.JFrame {
                 //MERGE
                 Integer soLDaNhap = Integer.valueOf(pnService.checkPN(idSPCT, idPhieu).getSoL().toString());
                 pnService.mergeSP(idSPCT, soLuongNhap + soLDaNhap, idPhieu);
-                JOptionPane.showMessageDialog(this, "SP này đã được thêm vào phiếu!", "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, "Lỗi! SP này đã được thêm vào phiếu!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
                 btnAdd.setEnabled(false);
+                clearFormSP();
             } else{
                 PhieuNhapChiTiet pn = new PhieuNhapChiTiet(idPhieu, idSPCT, soLuongNhap, tax, giaN, phuongT, moT);
-                JOptionPane.showMessageDialog(this, pnService.addPNCT(pn), "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, pnService.addPNCT(pn), "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+                clearFormSP();
             }
             //ADD
             PN_SanPhamViewModel sp = pnService.getListSPViewModel().get(pos);
@@ -832,6 +871,8 @@ public class QLNH_add extends javax.swing.JFrame {
             adjustWidths(tblNhapHang);
         //    loadTableSP(pnService.getListSPViewModel());
 
+            btnNhapHang.setEnabled(true);
+            
             //SET TOTAL
             Integer tongTax = pnService.getTaxById(idPhieu).getThue();
             String formatTax = formatter.format(tongTax);
@@ -841,7 +882,7 @@ public class QLNH_add extends javax.swing.JFrame {
             lblTotal.setText(formatTotal);
             lblTax.setText(formatTax);
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để nhập!");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để nhập!","POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnAddMouseClicked
 
@@ -866,7 +907,7 @@ public class QLNH_add extends javax.swing.JFrame {
             if (pnNew != null) {
                 loadDataToForm(pnNew);
             } else {
-                JOptionPane.showMessageDialog(this, "Không thể lấy thông tin phiếu nhập mới nhất!");
+                JOptionPane.showMessageDialog(this, "Không thể lấy thông tin phiếu nhập mới nhất!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnAddPhieuMouseClicked
@@ -879,7 +920,9 @@ public class QLNH_add extends javax.swing.JFrame {
     private void btnNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNhapHangMouseClicked
         // NHAPHANG
         Integer idP = Integer.valueOf(txtMaPhieu.getText());
-        JOptionPane.showMessageDialog(this, pnService.heh(idP), "POLYPOLO thông báo", 0);
+        pnService.updatetongDon(idP);
+        JOptionPane.showMessageDialog(this, pnService.heh(idP), "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+        btnPrint.setEnabled(true);
     }//GEN-LAST:event_btnNhapHangMouseClicked
 
     private void btnPrintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPrintMouseClicked
@@ -890,9 +933,8 @@ public class QLNH_add extends javax.swing.JFrame {
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn nơi lưu hóa đơn");
-
+        fileChooser.setSelectedFile(new File("stockupdate.pdf"));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Documents", "pdf");
         fileChooser.setFileFilter(filter);
 
@@ -1082,15 +1124,11 @@ public class QLNH_add extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblNhapHangMouseClicked
 
-    private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
-        // SEARCH
-        if (validateSearch()) {
-            String name = txtSearch.getText().trim();
-            ArrayList<PN_SanPhamViewModel> ls =  pnService.searchByName(name);
-            loadTableSP(ls);
-            txtSearch.setText("");
-        }
-    }//GEN-LAST:event_btnSearchMouseClicked
+    private void btnNewProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewProductMouseClicked
+        // ADD
+        QLSP_add spAdd = new QLSP_add();
+        spAdd.setVisible(true);
+    }//GEN-LAST:event_btnNewProductMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1117,10 +1155,10 @@ public class QLNH_add extends javax.swing.JFrame {
     private javax.swing.JButton btnAddPhieu;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnNhapHang;
     private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnScan;
-    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cboNCC;
     private javax.swing.JComboBox<String> cboPhuongThuc;

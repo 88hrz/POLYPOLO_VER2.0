@@ -9,44 +9,25 @@ package ViewModels;
  * @author X1
  */
 public class HD_InvoiceViewModel {
-    private Integer maHD;
-    private String tenNhanVien, tenKhachHang, soDT, diaChi, phuongThuc, loaiKH;
+    private Integer idHD;
+    private String tenKhachHang, phuongThuc, loaiKH;
 
     public HD_InvoiceViewModel() {
     }
 
-    public HD_InvoiceViewModel(Integer maHD, String tenNhanVien, String tenKhachHang, String soDT, String diaChi, String phuongThuc, String loaiKH) {
-        this.maHD = maHD;
-        this.tenNhanVien = tenNhanVien;
+    public HD_InvoiceViewModel(Integer idHD, String tenKhachHang, String phuongThuc, String loaiKH) {
+        this.idHD = idHD;
         this.tenKhachHang = tenKhachHang;
-        this.soDT = soDT;
-        this.diaChi = diaChi;
         this.phuongThuc = phuongThuc;
         this.loaiKH = loaiKH;
     }
 
-    public String getLoaiKH() {
-        return loaiKH;
+    public Integer getIdHD() {
+        return idHD;
     }
 
-    public void setLoaiKH(String loaiKH) {
-        this.loaiKH = loaiKH;
-    }
-
-    public Integer getMaHD() {
-        return maHD;
-    }
-
-    public void setMaHD(Integer maHD) {
-        this.maHD = maHD;
-    }
-
-    public String getTenNhanVien() {
-        return tenNhanVien;
-    }
-
-    public void setTenNhanVien(String tenNhanVien) {
-        this.tenNhanVien = tenNhanVien;
+    public void setIdHD(Integer idHD) {
+        this.idHD = idHD;
     }
 
     public String getTenKhachHang() {
@@ -57,22 +38,6 @@ public class HD_InvoiceViewModel {
         this.tenKhachHang = tenKhachHang;
     }
 
-    public String getSoDT() {
-        return soDT;
-    }
-
-    public void setSoDT(String soDT) {
-        this.soDT = soDT;
-    }
-
-    public String getDiaChi() {
-        return diaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
     public String getPhuongThuc() {
         return phuongThuc;
     }
@@ -80,7 +45,15 @@ public class HD_InvoiceViewModel {
     public void setPhuongThuc(String phuongThuc) {
         this.phuongThuc = phuongThuc;
     }
-    
-    
+
+    public String getLoaiKH() {
+        return loaiKH;
+    }
+
+    public void setLoaiKH(String loaiKH) {
+        this.loaiKH = loaiKH;
+    }
+
+   
     
 }

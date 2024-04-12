@@ -15,6 +15,10 @@ public class PN_SanPhamViewModel {
     public PN_SanPhamViewModel() {
     }
 
+    public PN_SanPhamViewModel(String tenSP) {
+        this.tenSP = tenSP;
+    }
+
     public PN_SanPhamViewModel(Integer maSPCT, Integer soL, String tenSP) {
         this.maSPCT = maSPCT;
         this.soL = soL;

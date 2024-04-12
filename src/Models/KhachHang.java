@@ -17,8 +17,15 @@ public class KhachHang {
     private String soDT;
     private String diaChi;
     private Date ngaySinh;
+    private String loaiK;
     
     public KhachHang() {
+    }
+
+    public KhachHang(Integer maKH, String tenKH, String loaiK) {
+        this.maKH = maKH;
+        this.tenKH = tenKH;
+        this.loaiK = loaiK;
     }
 
     public KhachHang(Integer maKH, String tenKH, String gioiTinh, String soDT, String diaChi, Date ngaySinh) {
@@ -28,6 +35,24 @@ public class KhachHang {
         this.soDT = soDT;
         this.diaChi = diaChi;
         this.ngaySinh = ngaySinh;
+    }
+
+    public KhachHang(Integer maKH, String tenKH, String gioiTinh, String soDT, String diaChi, Date ngaySinh, String loaiK) {
+        this.maKH = maKH;
+        this.tenKH = tenKH;
+        this.gioiTinh = gioiTinh;
+        this.soDT = soDT;
+        this.diaChi = diaChi;
+        this.ngaySinh = ngaySinh;
+        this.loaiK = loaiK;
+    }
+
+    public String getLoaiK() {
+        return loaiK;
+    }
+
+    public void setLoaiK(String loaiK) {
+        this.loaiK = loaiK;
     }
 
     public Date getNgaySinh() {

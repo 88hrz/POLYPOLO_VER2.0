@@ -11,10 +11,11 @@ import Views.QLTT.QLTT;
 import Views.QLTK.QLTK;
 import Views.QLSP.QLSP;
 import Models.User;
+import Utils.SVGImage;
 import Views.QLBH.QLBH;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
-import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 
 /**
  *
@@ -22,29 +23,26 @@ import javax.swing.JOptionPane;
  */
 public class Admin_View extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
-
+    SVGImage svgSet = new SVGImage();
+    
     public Admin_View(User u){
         initComponents();
         setLocationRelativeTo(null);
         DefaultColor = new Color(13, 36, 51);
         ClickedColor = new Color(170,117,10);
+        btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
         dashBoard();
         
         lbl_UserID.setText(u.getUserName());
        
         menuName.setText("| Trang Chủ");
         
-//        QuanLyThongKe tk = new QuanLyThongKe();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(tk).setVisible(true);
-        
         QLNH nhapXuat = new QLNH();
         jGUIForms.removeAll();
         jGUIForms.add(nhapXuat).setVisible(true);
 
-//        QLSP qlsp = new QLSP();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(qlsp).setVisible(true);
     }
 
     
@@ -75,6 +73,7 @@ public class Admin_View extends javax.swing.JFrame {
         lbl_UserID = new javax.swing.JLabel();
         txtUser_ID = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JButton();
         horizontalMenu = new javax.swing.JPanel();
         trangChu = new javax.swing.JPanel();
         lblTrangChu = new javax.swing.JLabel();
@@ -100,6 +99,7 @@ public class Admin_View extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1100, 690));
+        setUndecorated(true);
 
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -109,26 +109,34 @@ public class Admin_View extends javax.swing.JFrame {
         menuName.setFont(new java.awt.Font("Montserrat", 3, 12)); // NOI18N
         menuName.setForeground(new java.awt.Color(255, 255, 255));
         menuName.setText("mono");
-        verticalLayout.add(menuName, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, -1, 30));
+        verticalLayout.add(menuName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, -1, 30));
 
         logo.setFont(new java.awt.Font("Montserrat ExtraBold", 3, 20)); // NOI18N
         logo.setForeground(new java.awt.Color(255, 255, 255));
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PNG/user-polo.png"))); // NOI18N
         logo.setText("PolyPolo");
-        verticalLayout.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 50));
+        verticalLayout.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 50));
 
         lbl_UserID.setFont(new java.awt.Font("Montserrat Medium", 1, 12)); // NOI18N
         lbl_UserID.setText("stallion");
-        verticalLayout.add(lbl_UserID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 30, 60, 20));
+        verticalLayout.add(lbl_UserID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 20, 60, 20));
 
         txtUser_ID.setBackground(new java.awt.Color(224, 224, 224));
         txtUser_ID.setEnabled(false);
-        verticalLayout.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 30, 120, 20));
+        verticalLayout.add(txtUser_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 20, 120, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/PNG/user-icon20.png"))); // NOI18N
-        verticalLayout.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 20, 40, 40));
+        verticalLayout.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 10, 40, 40));
 
-        bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 80));
+        btnClose.setText("EXIT");
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCloseMouseClicked(evt);
+            }
+        });
+        verticalLayout.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 0, -1, 29));
+
+        bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 60));
 
         horizontalMenu.setBackground(new java.awt.Color(13, 36, 51));
         horizontalMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -433,11 +441,11 @@ public class Admin_View extends javax.swing.JFrame {
 
         horizontalMenu.add(nhapHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 140, 30));
 
-        bg.add(horizontalMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 140, 640));
+        bg.add(horizontalMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 140, 650));
 
         jGUIForms.setBackground(new java.awt.Color(255, 255, 255));
-        jGUIForms.setMaximumSize(new java.awt.Dimension(1090, 630));
-        jGUIForms.setMinimumSize(new java.awt.Dimension(1090, 630));
+        jGUIForms.setMaximumSize(new java.awt.Dimension(1090, 680));
+        jGUIForms.setMinimumSize(new java.awt.Dimension(1090, 680));
         jGUIForms.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout jGUIFormsLayout = new javax.swing.GroupLayout(jGUIForms);
@@ -448,10 +456,10 @@ public class Admin_View extends javax.swing.JFrame {
         );
         jGUIFormsLayout.setVerticalGroup(
             jGUIFormsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
+            .addGap(0, 680, Short.MAX_VALUE)
         );
 
-        bg.add(jGUIForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, -1, 630));
+        bg.add(jGUIForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, -1, 650));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -596,9 +604,9 @@ public class Admin_View extends javax.swing.JFrame {
         khachHang.setBackground(DefaultColor);
         taiKhoan.setBackground(DefaultColor);
         
-        QuanLyThongKe tk = new QuanLyThongKe();
-        jGUIForms.removeAll();
-        jGUIForms.add(tk).setVisible(true);
+//        QuanLyThongKe tk = new QuanLyThongKe();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(tk).setVisible(true);
     }//GEN-LAST:event_thongKeMouseClicked
 
     private void thuocTinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_thuocTinhMouseClicked
@@ -652,6 +660,11 @@ public class Admin_View extends javax.swing.JFrame {
         jGUIForms.add(nhapXuat).setVisible(true);
     }//GEN-LAST:event_nhapHangMouseClicked
 
+    private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
+        // EXIT
+        System.exit(0);
+    }//GEN-LAST:event_btnCloseMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -680,6 +693,7 @@ public class Admin_View extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel banHang;
     private javax.swing.JPanel bg;
+    private javax.swing.JButton btnClose;
     private javax.swing.JPanel horizontalMenu;
     private javax.swing.JDesktopPane jGUIForms;
     private javax.swing.JLabel jLabel1;

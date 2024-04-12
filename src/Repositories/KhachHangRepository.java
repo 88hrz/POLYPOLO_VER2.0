@@ -96,6 +96,30 @@ public class KhachHangRepository {
     }
 
     /////Tìm theo SĐT
+    public KhachHang getKHBySDT(String sdt){
+       String sql = "SELECT * FROM KhachHang WHERE KhachHang.SoDienThoai = ?";
+        KhachHang kh = new KhachHang();
+
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, sdt);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maKH = rs.getInt("MaKhachHang");
+                String tenKh = rs.getString("TenKhachHang");
+                String gioiTinh = rs.getString("GioiTinh");
+                String soDT = rs.getString("SoDienThoai");
+                String diaChi = rs.getString("DiaChi");
+                Date ngaySinh = rs.getDate("NgaySinh");
+
+                kh = new KhachHang(maKH, tenKh, gioiTinh, soDT, diaChi, ngaySinh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return kh;  
+    }
     public ArrayList<KhachHangViewModel> getListSearchSDT(String sdt) {
         String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang "
                 + "LEFT JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.SoDienThoai = ?";
@@ -125,7 +149,8 @@ public class KhachHangRepository {
 
         String sql = "INSERT INTO KhachHang ( TenKhachHang, GioiTinh, SoDienThoai,NgaySinh, DiaChi,LoaiKhachHang,Deleted) VALUES (?, ?, ?, ?,?,N'Thành Viên', 0)";
 
-        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, kh.getTenKH());
             ps.setString(2, kh.getGioiTinh());
@@ -279,5 +304,31 @@ public class KhachHangRepository {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    //GETLIST
+    public ArrayList<KhachHang> getListKH(){
+        String sql = "SELECT * FROM KhachHang";
+        ArrayList<KhachHang> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer maKH = rs.getInt("MaKhachHang");
+                String tenKH = rs.getString("TenKhachHang");
+                String gioiT = rs.getString("GioiTinh");
+                Date ngayS = rs.getDate("NgaySinh");
+                String sdt = rs.getString("SoDienThoai");
+                String diaC = rs.getString("DiaChi");
+                String loaiK = rs.getString("LoaiKhachHang");
+                
+                KhachHang kh = new KhachHang(maKH, tenKH, gioiT, sdt, diaC, ngayS, loaiK);
+                ls.add(kh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
     }
 }

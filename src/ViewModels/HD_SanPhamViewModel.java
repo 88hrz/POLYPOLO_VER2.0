@@ -9,35 +9,39 @@ package ViewModels;
  * @author X1
  */
 public class HD_SanPhamViewModel {
-    private Integer maSP;
-    private String tenSP;
-    private String tenDM;
-    private String maSac;
-    private String kichCo;    
-    private Double donGia;
-    private Integer soLuong;
-    private String trangThai;
+    private Integer idSP, soL;
+    private String tenSP, danhM, nhanH, mauS, kichC, chatL;
+    private Double donG;
 
     public HD_SanPhamViewModel() {
     }
 
-    public HD_SanPhamViewModel(Integer maSP, String tenSP, String tenDM, String maSac, String kichCo, Double donGia, Integer soLuong, String trangThai) {
-        this.maSP = maSP;
+    public HD_SanPhamViewModel(Integer idSP, Integer soL, String tenSP, String danhM, String nhanH, String mauS, String kichC, String chatL, Double donG) {
+        this.idSP = idSP;
+        this.soL = soL;
         this.tenSP = tenSP;
-        this.tenDM = tenDM;
-        this.maSac = maSac;
-        this.kichCo = kichCo;
-        this.donGia = donGia;
-        this.soLuong = soLuong;
-        this.trangThai = trangThai;
+        this.danhM = danhM;
+        this.nhanH = nhanH;
+        this.mauS = mauS;
+        this.kichC = kichC;
+        this.chatL = chatL;
+        this.donG = donG;
     }
 
-    public Integer getMaSP() {
-        return maSP;
+    public Integer getIdSP() {
+        return idSP;
     }
 
-    public void setMaSP(Integer maSP) {
-        this.maSP = maSP;
+    public void setIdSP(Integer idSP) {
+        this.idSP = idSP;
+    }
+
+    public Integer getSoL() {
+        return soL;
+    }
+
+    public void setSoL(Integer soL) {
+        this.soL = soL;
     }
 
     public String getTenSP() {
@@ -48,57 +52,53 @@ public class HD_SanPhamViewModel {
         this.tenSP = tenSP;
     }
 
-    public String getTenDM() {
-        return tenDM;
+    public String getDanhM() {
+        return danhM;
     }
 
-    public void setTenDM(String tenDM) {
-        this.tenDM = tenDM;
+    public void setDanhM(String danhM) {
+        this.danhM = danhM;
     }
 
-    public String getMaSac() {
-        return maSac;
+    public String getNhanH() {
+        return nhanH;
     }
 
-    public void setMaSac(String maSac) {
-        this.maSac = maSac;
+    public void setNhanH(String nhanH) {
+        this.nhanH = nhanH;
     }
 
-    public String getKichCo() {
-        return kichCo;
+    public String getMauS() {
+        return mauS;
     }
 
-    public void setKichCo(String kichCo) {
-        this.kichCo = kichCo;
+    public void setMauS(String mauS) {
+        this.mauS = mauS;
     }
 
-    public Double getDonGia() {
-        return donGia;
+    public String getKichC() {
+        return kichC;
     }
 
-    public void setDonGia(Double donGia) {
-        this.donGia = donGia;
+    public void setKichC(String kichC) {
+        this.kichC = kichC;
     }
 
-    public Integer getSoLuong() {
-        return soLuong;
+    public String getChatL() {
+        return chatL;
     }
 
-    public void setSoLuong(Integer soLuong) {
-        this.soLuong = soLuong;
+    public void setChatL(String chatL) {
+        this.chatL = chatL;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public Double getDonG() {
+        return donG;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setDonG(Double donG) {
+        this.donG = donG;
     }
-    
-    
-    
-    
     
     
 }

@@ -9,60 +9,109 @@ package ViewModels;
  * @author X1
  */
 public class HD_GioHangViewModel {
-    private Integer maHDCT;
-    private Integer maSP;
-    private String tenSP;
-    private String mauSac;
-    private String kichCo;
-    private Integer soLuong;
-    private Double donGia;
-    private Double thanhTien;
+    private Integer idSPCT, soL, thue, idHD;
+    private Double donG, thanhT, tongSauVAT;
+    private String tenSP, danhM;
 
     public HD_GioHangViewModel() {
     }
-    //
-    public HD_GioHangViewModel(Integer soLuong) {
-        this.soLuong = soLuong;
-    }
-    public Integer getSoLuong() {
-        return soLuong;
-    }
-    //
-    public Integer getMaHDCT() {
-        return maHDCT;
+
+    public Integer getIdHD() {
+        return idHD;
     }
 
-    public void setMaHDCT(Integer maHDCT) {
-        this.maHDCT = maHDCT;
+    public void setIdHD(Integer idHD) {
+        this.idHD = idHD;
     }
 
-    public HD_GioHangViewModel(Integer maHDCT, Integer maSP, String tenSP, String mauSac, String kichCo, Integer soLuong, Double donGia, Double thanhTien) {
-        this.maHDCT = maHDCT;
-        this.maSP = maSP;
+    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Integer idHD, Double donG, Double thanhT, Double tongSauVAT, String tenSP, String danhM) {
+        this.idSPCT = idSPCT;
+        this.soL = soL;
+        this.thue = thue;
+        this.idHD = idHD;
+        this.donG = donG;
+        this.thanhT = thanhT;
+        this.tongSauVAT = tongSauVAT;
         this.tenSP = tenSP;
-        this.mauSac = mauSac;
-        this.kichCo = kichCo;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
+        this.danhM = danhM;
     }
 
-    public HD_GioHangViewModel(Integer maSP, String tenSP, String mauSac, String kichCo, Integer soLuong, Double donGia, Double thanhTien) {
-        this.maSP = maSP;
+    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, Double tongSauVAT, String tenSP, String danhM) {
+        this.idSPCT = idSPCT;
+        this.soL = soL;
+        this.thue = thue;
+        this.donG = donG;
+        this.thanhT = thanhT;
+        this.tongSauVAT = tongSauVAT;
         this.tenSP = tenSP;
-        this.mauSac = mauSac;
-        this.kichCo = kichCo;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
+        this.danhM = danhM;
     }
 
-    public Integer getMaSP() {
-        return maSP;
+    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, String tenSP) {
+        this.idSPCT = idSPCT;
+        this.soL = soL;
+        this.thue = thue;
+        this.donG = donG;
+        this.thanhT = thanhT;
+        this.tenSP = tenSP;
     }
 
-    public void setMaSP(Integer maSP) {
-        this.maSP = maSP;
+    public Double getTongSauVAT() {
+        return soL * thanhT;
+    }
+
+    public void setTongSauVAT(Double tongSauVAT) {
+        this.tongSauVAT = tongSauVAT;
+    }
+
+    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, String tenSP, String danhM) {
+        this.idSPCT = idSPCT;
+        this.soL = soL;
+        this.thue = thue;
+        this.donG = donG;
+        this.thanhT = thanhT;
+        this.tenSP = tenSP;
+        this.danhM = danhM;
+    }
+
+    public Integer getIdSPCT() {
+        return idSPCT;
+    }
+
+    public void setIdSPCT(Integer idSPCT) {
+        this.idSPCT = idSPCT;
+    }
+
+    public Integer getSoL() {
+        return soL;
+    }
+
+    public void setSoL(Integer soL) {
+        this.soL = soL;
+    }
+
+    public Integer getThue() {
+        return thue;
+    }
+
+    public void setThue(Integer thue) {
+        this.thue = thue;
+    }
+
+    public Double getDonG() {
+        return donG;
+    }
+
+    public void setDonG(Double donG) {
+        this.donG = donG;
+    }
+
+    public Double getThanhT() {
+        return thanhT;
+    }
+
+    public void setThanhT(Double thanhT) {
+        this.thanhT = thanhT;
     }
 
     public String getTenSP() {
@@ -73,43 +122,13 @@ public class HD_GioHangViewModel {
         this.tenSP = tenSP;
     }
 
-    public String getMauSac() {
-        return mauSac;
+    public String getDanhM() {
+        return danhM;
     }
 
-    public void setMauSac(String mauSac) {
-        this.mauSac = mauSac;
+    public void setDanhM(String danhM) {
+        this.danhM = danhM;
     }
 
-    public String getKichCo() {
-        return kichCo;
-    }
-
-    public void setKichCo(String kichCo) {
-        this.kichCo = kichCo;
-    }
-
-    public void setSoLuong(Integer soLuong) {
-        this.soLuong = soLuong;
-    }
-
-    public Double getDonGia() {
-        return donGia;
-    }
-
-    public void setDonGia(Double donGia) {
-        this.donGia = donGia;
-    }
-
-    public Double getThanhTien() {
-        return donGia*soLuong;
-    }
-
-    public void setThanhTien(Double thanhTien) {
-        this.thanhTien = thanhTien;
-    }
-
-    
-    
     
 }

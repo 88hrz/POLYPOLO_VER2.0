@@ -4,10 +4,35 @@
  */
 package Views.QLNH;
 
+import Services.PhieuNhapService;
+import Services.UserService;
 import Utils.SVGImage;
+import ViewModels.PN_PhieuNhapDetailsViewModel;
+import Views.Login;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -15,7 +40,9 @@ import javax.swing.BorderFactory;
  */
 public class QLNH_details extends javax.swing.JFrame {
     SVGImage svgSet = new SVGImage();
-    
+    DecimalFormat formatter = new DecimalFormat("#,###");
+    PhieuNhapService pnService = new PhieuNhapService();
+    UserService uService = new UserService();
     /**
      * Creates new form QLTT_Brand
      */
@@ -23,13 +50,28 @@ public class QLNH_details extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setSVGIcon();
+        
     }
     
     void setSVGIcon() {
         btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 19, 19));
         btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
         btnClose.setBorderPainted(false);
-        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true));
+    }
+    
+    void loadTableCTPN(ArrayList<PN_PhieuNhapDetailsViewModel> ls){
+        DefaultTableModel model = (DefaultTableModel) tblNhapDetails.getModel();
+        model.setRowCount(0);
+        for (PN_PhieuNhapDetailsViewModel pn : ls) {
+            String formatdonG = formatter.format(pn.getDonG());
+            String formatTotal = formatter.format(pn.getThanhT());
+            
+            model.addRow(new Object[]{
+                pn.getId(), pn.getTenSP(), pn.getTenDM(), pn.getTenBrand(), pn.getTenMau(), pn.getTenSz()
+                    , pn.getTenCL(), formatdonG, pn.getSoL(), pn.getThue(), formatTotal
+            });
+        }
     }
 
 
@@ -93,7 +135,7 @@ public class QLNH_details extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã SP", "Danh Mục", "Brand", "Màu Sắc", "Kích Cỡ", "Chất Liệu", "Giá Nhập", "Số Lượng", "Thuế", "Tổng Tiền"
+                "Mã SP", "Tên SP", "Danh Mục", "Brand", "Màu Sắc", "Kích Cỡ", "Chất Liệu", "Giá Nhập", "Số Lượng", "Thuế", "Tổng Tiền"
             }
         ));
         jScrollPane1.setViewportView(tblNhapDetails);
@@ -163,20 +205,20 @@ public class QLNH_details extends javax.swing.JFrame {
                 txtNCCActionPerformed(evt);
             }
         });
-        getContentPane().add(txtNCC, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, 210, -1));
+        getContentPane().add(txtNCC, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, 270, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 950, 10));
 
         jLabel28.setText("Tên Nhân Viên:");
         getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 88, 20));
 
         txtTenNV.setEnabled(false);
-        getContentPane().add(txtTenNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 210, -1));
+        getContentPane().add(txtTenNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, 140, -1));
 
         jLabel27.setText("Nhà Cung Cấp:");
-        getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 88, 20));
+        getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, 88, 20));
 
         txtMaPhieu.setEnabled(false);
-        getContentPane().add(txtMaPhieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 100, -1));
+        getContentPane().add(txtMaPhieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 90, -1));
 
         jLabel29.setText("Ngày Lập:");
         getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 120, 88, 20));
@@ -185,9 +227,19 @@ public class QLNH_details extends javax.swing.JFrame {
         btnCancel.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("QUAY LẠI");
+        btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCancelMouseClicked(evt);
+            }
+        });
         getContentPane().add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 490, 100, 40));
 
         btnExport.setText("EXPORT");
+        btnExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportMouseClicked(evt);
+            }
+        });
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportActionPerformed(evt);
@@ -195,7 +247,7 @@ public class QLNH_details extends javax.swing.JFrame {
         });
         getContentPane().add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 490, 110, 40));
 
-        jLabel30.setText("Tổng:");
+        jLabel30.setText("Tổng (VND):");
         getContentPane().add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 120, 88, 20));
 
         txtTong.setEnabled(false);
@@ -220,6 +272,232 @@ public class QLNH_details extends javax.swing.JFrame {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+        // RETURN
+        this.dispose();
+    }//GEN-LAST:event_btnCancelMouseClicked
+
+    private void btnExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportMouseClicked
+        // EXPORT
+        try {
+            XSSFWorkbook workBook = new XSSFWorkbook();
+            XSSFSheet sheet = workBook.createSheet("Phiếu Nhập POLYPOLO");
+            Integer id = Integer.valueOf(txtMaPhieu.getText());
+            //STYLE TITLE
+            XSSFRow titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Chi Tiết Phiếu Nhập POLYPOLO"); 
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0,0,0,11)); 
+            XSSFFont font = workBook.createFont();
+            font.setFontHeightInPoints((short) 19);
+            font.setBold(true);
+            XSSFCellStyle style = workBook.createCellStyle();
+            style.setFont(font);
+            style.setAlignment(HorizontalAlignment.CENTER);
+            style.setVerticalAlignment(org.apache.poi.ss.usermodel.VerticalAlignment.CENTER);
+            titleCell.setCellStyle(style);
+           
+            //DATE
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+            
+            SimpleDateFormat sdfHrs = new SimpleDateFormat("HH:mm:ss");
+            String currentTime = sdfHrs.format(new Date());
+            
+            XSSFRow dateRow = sheet.createRow(1);
+            org.apache.poi.ss.usermodel.Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày: " + currentDate + " | Giờ: " +currentTime);
+            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 11)); 
+            XSSFCellStyle dateStyle = workBook.createCellStyle();
+            dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+            dateCell.setCellStyle(dateStyle);
+            
+            //STYLE FONT
+            XSSFFont headerFont = workBook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 11);
+            
+            CellStyle headerStyle = workBook.createCellStyle();
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+            //ADD
+            XSSFRow row = null;
+            Cell cell = null;
+            row = sheet.createRow(3);
+
+            cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("STT");
+
+            cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.STRING);
+            Sheet s = cell.getSheet();
+            cell.setCellValue("Mã Sản Phẩm");
+            s.autoSizeColumn(1);
+
+            cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Tên Sản Phẩm");
+            
+            cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Danh Mục");
+            
+            cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Nhãn Hàng");
+
+            cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Màu Sắc");
+
+            cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Kích Cỡ");
+            
+            cell = row.createCell(7, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Chất Liệu");
+
+            cell = row.createCell(8, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Giá Nhập");
+
+            cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Số Lượng");
+
+            cell = row.createCell(10, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Thuế");
+
+            cell = row.createCell(11, org.apache.poi.ss.usermodel.CellType.STRING);
+            cell.setCellValue("Tổng Tiền");
+
+            for (int i = 0; i < 12; i++) {
+                cell = row.getCell(i);
+                cell.setCellStyle(headerStyle);
+            }
+
+            ArrayList<PN_PhieuNhapDetailsViewModel> ls = pnService.getDetailsPN(id);
+            for (int i = 0; i < ls.size(); i++) {
+                row = sheet.createRow(4 + i);
+
+                //STYLE FONT
+                CellStyle docuStyle = workBook.createCellStyle();
+                docuStyle.setAlignment(HorizontalAlignment.CENTER);
+                
+                CellStyle cellStyleFormatNumber = null;
+
+                if (cellStyleFormatNumber == null) {
+                    short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
+                    Workbook workbook = row.getSheet().getWorkbook();
+                    cellStyleFormatNumber = workbook.createCellStyle();
+                    cellStyleFormatNumber.setDataFormat(format);
+                }
+
+                cell = row.createCell(0, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(i + 1);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(1, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue("SP" + ls.get(i).getId());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(2, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenSP());
+                s.autoSizeColumn(2);
+
+                cell = row.createCell(3, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenDM());
+                s.autoSizeColumn(3);
+
+                cell = row.createCell(4, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenBrand());
+                s.autoSizeColumn(4);
+
+                cell = row.createCell(5, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenMau());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(6, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenSz());
+                cell.setCellStyle(docuStyle);   
+
+                cell = row.createCell(7, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getTenCL());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(8, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getDonG());
+                s.autoSizeColumn(8);
+                cell.setCellStyle(cellStyleFormatNumber);
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(9, org.apache.poi.ss.usermodel.CellType.NUMERIC);
+                cell.setCellValue(ls.get(i).getSoL());
+                cell.setCellStyle(docuStyle);
+                
+                cell = row.createCell(10, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getThue());
+                cell.setCellStyle(docuStyle);
+
+                cell = row.createCell(11, org.apache.poi.ss.usermodel.CellType.STRING);
+                cell.setCellValue(ls.get(i).getThanhT());
+                cell.setCellStyle(cellStyleFormatNumber);
+                cell.setCellStyle(docuStyle);
+                s.autoSizeColumn(11);
+            }
+            
+            //STYLE
+            CellStyle footerStyle = workBook.createCellStyle();
+            footerStyle.setFont(headerFont);
+            footerStyle.setAlignment(HorizontalAlignment.LEFT);
+            
+            //ROW CUỐI
+            int rowS = 5 + ls.size();
+
+            XSSFRow tongSPRow = sheet.createRow(rowS);
+            org.apache.poi.ss.usermodel.Cell tongSPCell = tongSPRow.createCell(1);
+
+            tongSPCell.setCellValue("Tổng Sản Phẩm:");
+            tongSPCell.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell tongSPCelll = tongSPRow.createCell(2);
+            tongSPCelll.setCellValue(ls.size());
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+
+            org.apache.poi.ss.usermodel.Cell ngX = tongSPRow.createCell(7);
+            ngX.setCellValue("Người Xuất:");
+            ngX.setCellStyle(footerStyle);
+            org.apache.poi.ss.usermodel.Cell thongT = tongSPRow.createCell(8);
+            thongT.setCellValue(uService.getName(Login.dataStatic));
+            sheet.autoSizeColumn(7);
+            sheet.autoSizeColumn(8);
+            
+            String defaultCurrentDirectoryPath = "C:\\Users\\X1\\OneDrive\\Documents\\Custom Office Templates";
+            JFileChooser fileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+            fileChooser.setDialogTitle("Chọn nơi lưu file");
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx", "xls");
+            fileChooser.addChoosableFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(null);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                String filePath = fileToSave.getAbsolutePath();
+                if (!filePath.endsWith(".xlsx")) {
+                    filePath += ".xlsx";
+                }
+
+            File file = new File(filePath);
+                try {
+                    FileOutputStream fis = new FileOutputStream(file);
+                    workBook.write(fis);
+                    fis.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(this, "Đã in danh sách thành công!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportMouseClicked
 
     /**
      * @param args the command line arguments
@@ -258,7 +536,7 @@ public class QLNH_details extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable tblNhapDetails;
+    public javax.swing.JTable tblNhapDetails;
     public javax.swing.JTextField txtMaPhieu;
     private javax.swing.JTextField txtMaTT;
     public javax.swing.JTextField txtNCC;

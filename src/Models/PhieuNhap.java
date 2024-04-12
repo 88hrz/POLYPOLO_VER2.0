@@ -14,12 +14,17 @@ public class PhieuNhap {
     private Integer idPhieu, idNCC, idNV;
     private Date ngayN;
     private Double tongD;
+    private String trangT;
 
     public PhieuNhap() {
     }
 
     public PhieuNhap(Double tongD) {
         this.tongD = tongD;
+    }
+
+    public PhieuNhap(String trangT) {
+        this.trangT = trangT;
     }
 
     public PhieuNhap(Integer idPhieu, Integer idNCC, Integer idNV, Date ngayN, Double tongD) {
@@ -29,6 +34,16 @@ public class PhieuNhap {
         this.ngayN = ngayN;
         this.tongD = tongD;
     }
+
+    public PhieuNhap(Integer idPhieu, Integer idNCC, Integer idNV, Date ngayN, Double tongD, String trangT) {
+        this.idPhieu = idPhieu;
+        this.idNCC = idNCC;
+        this.idNV = idNV;
+        this.ngayN = ngayN;
+        this.tongD = tongD;
+        this.trangT = trangT;
+    }
+    
 
     public Integer getIdPhieu() {
         return idPhieu;
@@ -68,6 +83,14 @@ public class PhieuNhap {
 
     public void setTongD(Double tongD) {
         this.tongD = tongD;
+    }
+
+    public String getTrangT() {
+        return trangT;
+    }
+
+    public void setTrangT(String trangT) {
+        this.trangT = trangT;
     }
     
     

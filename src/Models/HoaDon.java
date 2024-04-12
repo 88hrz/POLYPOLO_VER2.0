@@ -4,123 +4,95 @@
  */
 package Models;
 
-import java.sql.Date;
-
+import java.util.Date;
 
 /**
  *
  * @author X1
  */
 public class HoaDon {
-    private Integer maHD, maNV;
-    private String tenNV, tenKH, phuongThuc, soDT;
-    private Double tongTien;
-    private Date ngayLap;
-    private String trangThai;
-
-    public HoaDon(Integer maNV, String tenNV, String tenKH, String phuongThuc, Date ngayLap) {
-        this.maNV = maNV;
-        this.tenNV = tenNV;
-        this.tenKH = tenKH;
-        this.phuongThuc = phuongThuc;
-        this.ngayLap = ngayLap;
-    }
-
-    public HoaDon(Integer maNV, String tenKH, String phuongThuc, Date ngayLap) {
-        this.maNV = maNV;
-        this.tenKH = tenKH;
-        this.phuongThuc = phuongThuc;
-        this.ngayLap = ngayLap;
-    }
-    //
-
-    public HoaDon(String tenNV, String tenKH, String phuongThuc, Date ngayLap) {
-        this.tenNV = tenNV;
-        this.tenKH = tenKH;
-        this.phuongThuc = phuongThuc;
-        this.ngayLap = ngayLap;
-    }
-
-    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, String soDT, Double tongTien, Date ngayLap, String trangThai) {
-        this.maHD = maHD;
-        this.maNV = maNV;
-        this.tenNV = tenNV;
-        this.tenKH = tenKH;
-        this.phuongThuc = phuongThuc;
-        this.soDT = soDT;
-        this.tongTien = tongTien;
-        this.ngayLap = ngayLap;
-        this.trangThai = trangThai;
-    }
-
-
-    public HoaDon(String soDT, String tenKH) {
-        this.soDT = soDT;
-        this.tenKH = tenKH;
-    }
-
-    public String getSoDT() {
-        return soDT;
-    }
-
-    public void setSoDT(String soDT) {
-        this.soDT = soDT;
-    }
-
-    public HoaDon(Double tongTien) {
-        this.tongTien = tongTien;
-    }
+    private Integer idHD, idKH, idNV;
+    private String trangT, tenKH, phuongT, loaiKH, sdt;
+    private Double tongT;
+    private Date ngayL;
 
     public HoaDon() {
     }
 
-    public HoaDon(String trangThai) {
-        this.trangThai = trangThai;
+    public String getSdt() {
+        return sdt;
     }
 
-    public HoaDon(Integer maHD, Integer maNV, String tenNV, String tenKH, String phuongThuc, Double tongTien, Date ngayLap, String trangThai) {
-        this.maHD = maHD;
-        this.maNV = maNV;
-        this.tenNV = tenNV;
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public HoaDon(Integer idHD, Integer idKH, Integer idNV, String trangT, String tenKH, String phuongT, String loaiKH, String sdt, Double tongT, Date ngayL) {
+        this.idHD = idHD;
+        this.idKH = idKH;
+        this.idNV = idNV;
+        this.trangT = trangT;
         this.tenKH = tenKH;
-        this.phuongThuc = phuongThuc;
-        this.tongTien = tongTien;
-        this.ngayLap = ngayLap;
-        this.trangThai = trangThai;
+        this.phuongT = phuongT;
+        this.loaiKH = loaiKH;
+        this.sdt = sdt;
+        this.tongT = tongT;
+        this.ngayL = ngayL;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public HoaDon(Double tongT) {
+        this.tongT = tongT;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public HoaDon(Integer idHD, String tenKH, String phuongT, Double tongT) {
+        this.idHD = idHD;
+        this.tenKH = tenKH;
+        this.phuongT = phuongT;
+        this.tongT = tongT;
     }
 
-    
-
-    public Integer getMaHD() {
-        return maHD;
+    public HoaDon(Integer idHD, Integer idKH, Integer idNV, String trangT, String tenKH, String phuongT, String loaiKH, Double tongT, Date ngayL) {
+        this.idHD = idHD;
+        this.idKH = idKH;
+        this.idNV = idNV;
+        this.trangT = trangT;
+        this.tenKH = tenKH;
+        this.phuongT = phuongT;
+        this.loaiKH = loaiKH;
+        this.tongT = tongT;
+        this.ngayL = ngayL;
     }
 
-    public void setMaHD(Integer maHD) {
-        this.maHD = maHD;
+    public Integer getIdHD() {
+        return idHD;
     }
 
-    public Integer getMaNV() {
-        return maNV;
+    public void setIdHD(Integer idHD) {
+        this.idHD = idHD;
     }
 
-    public void setMaNV(Integer maNV) {
-        this.maNV = maNV;
+    public Integer getIdKH() {
+        return idKH;
     }
 
-    public String getTenNV() {
-        return tenNV;
+    public void setIdKH(Integer idKH) {
+        this.idKH = idKH;
     }
 
-    public void setTenNV(String tenNV) {
-        this.tenNV = tenNV;
+    public Integer getIdNV() {
+        return idNV;
+    }
+
+    public void setIdNV(Integer idNV) {
+        this.idNV = idNV;
+    }
+
+    public String getTrangT() {
+        return trangT;
+    }
+
+    public void setTrangT(String trangT) {
+        this.trangT = trangT;
     }
 
     public String getTenKH() {
@@ -131,28 +103,36 @@ public class HoaDon {
         this.tenKH = tenKH;
     }
 
-    public String getPhuongThuc() {
-        return phuongThuc;
+    public String getPhuongT() {
+        return phuongT;
     }
 
-    public void setPhuongThuc(String phuongThuc) {
-        this.phuongThuc = phuongThuc;
+    public void setPhuongT(String phuongT) {
+        this.phuongT = phuongT;
     }
 
-    public Double getTongTien() {
-        return tongTien;
+    public String getLoaiKH() {
+        return loaiKH;
     }
 
-    public void setTongTien(Double tongTien) {
-        this.tongTien = tongTien;
+    public void setLoaiKH(String loaiKH) {
+        this.loaiKH = loaiKH;
     }
 
-    public Date getNgayLap() {
-        return ngayLap;
+    public Double getTongT() {
+        return tongT;
     }
 
-    public void setNgayLap(Date ngayLap) {
-        this.ngayLap = ngayLap;
+    public void setTongT(Double tongT) {
+        this.tongT = tongT;
+    }
+
+    public Date getNgayL() {
+        return ngayL;
+    }
+
+    public void setNgayL(Date ngayL) {
+        this.ngayL = ngayL;
     }
     
     

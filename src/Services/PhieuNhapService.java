@@ -12,9 +12,11 @@ import Models.PhieuNhapChiTiet;
 import Repositories.NCCRepo;
 import Repositories.NhanSuRepo;
 import Repositories.PhieuNhapRepository;
+import ViewModels.PN_PhieuNhapDetailsViewModel;
 import ViewModels.PN_PhieuNhapViewModel;
 import ViewModels.PN_SanPhamViewModel;
 import ViewModels.PhieuNhapViewModel;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -34,6 +36,12 @@ public class PhieuNhapService {
     public PhieuNhap getModel(){
         return pnRepo.getModel();
     }
+    
+    //AUTOCOMPLETE SEARCH
+    public ArrayList<PN_SanPhamViewModel> getSuggestSearch(String name){
+        return pnRepo.getSuggestSearch(name);
+    }
+    
     
     //ACTION
     public Boolean checkExists(Integer idPhieu, Integer idSP){
@@ -71,6 +79,9 @@ public class PhieuNhapService {
     public PhieuNhap getTotalByID(Integer idP){
         return pnRepo.getTotalByID(idP);
     }
+    public Boolean updatetongDon(int id){
+        return pnRepo.updatetongDon(id);
+    }
     
     public String updateSPDetails(PhieuNhapChiTiet pn) {
         Boolean check = pnRepo.updateSPDetails(pn);
@@ -99,10 +110,22 @@ public class PhieuNhapService {
         }
     }
     
+    public String deletePhieuNhap(int id){
+        Boolean check = pnRepo.deletePhieuNhap(id);
+        if (check) {
+            return "Xóa phiếu nhập thành công :)";
+        }else{
+            return "Xóa phiếu nhập thất bại :(";
+        }
+    }
+    
     public ArrayList<PN_SanPhamViewModel> searchByName(String name){
         return pnRepo.searchByName(name);
     }
     
+    public PN_PhieuNhapViewModel getPNCTById(Integer id){
+        return pnRepo.getPNCTById(id);
+    }
     
     public PN_PhieuNhapViewModel getDataToLoad(Integer id, Integer idPhieu){
         return pnRepo.getDataToLoad(id, idPhieu);
@@ -146,12 +169,28 @@ public class PhieuNhapService {
     }
     
     
-    //
+    //PHIEUNHAP MAIN
     public ArrayList<PhieuNhapViewModel> searchByNameNCC(String name){
         return pnRepo.searchByNameNCC(name);
     }
     
     public ArrayList<PhieuNhapViewModel> searchByNameNV(String name){
         return pnRepo.searchByNameNV(name);
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByDate(Date from, Date to){
+        return pnRepo.searchByDate(from, to);
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByPriceASC(){
+        return pnRepo.searchByPriceASC();
+    }
+    
+    public ArrayList<PhieuNhapViewModel> searchByPriceDESC(){
+        return pnRepo.searchByPriceDESC();
+    }
+    
+    public ArrayList<PN_PhieuNhapDetailsViewModel> getDetailsPN(int id){
+        return pnRepo.getDetailsPN(id);
     }
 }

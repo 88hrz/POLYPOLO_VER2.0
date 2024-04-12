@@ -910,7 +910,9 @@ public class SanPhamRepository {
     
     //GETLIST
     public SanPhamChiTiet getListById(Integer id){
-        String sql = "SELECT MaSanPhamChiTiet,TenSanPhamChiTiet,SoLuongTon FROM SanPhamChiTiet WHERE Deleted!=1 AND MaSanPhamChiTiet = ?";
+        String sql = "SELECT MaSanPhamChiTiet,TenSanPhamChiTiet,SoLuongTon "
+                + "FROM SanPhamChiTiet WHERE Deleted!=1 AND MaSanPhamChiTiet = ?";
+        
         SanPhamChiTiet spct = new SanPhamChiTiet();
         
         try (Connection conn = dbConnection.getConnection();
@@ -1051,6 +1053,49 @@ public class SanPhamRepository {
                 + "										INNER JOIN ChatLieu cl ON spct.MaChatLieu = cl.MaChatLieu\n"
                 + "										INNER JOIN KhuVucKho kh ON sp.KhuVucID = kh.KhuVucID\n"
                 + "											WHERE sp.Deleted!=1 AND sp.MaSanPham = ?";
+        SanPhamViewModel sp = new SanPhamViewModel();
+
+        try (Connection conn = dbConnection.getConnection(); 
+                PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer idSP = rs.getInt("MaSanPham");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String danhM = rs.getString("TenDanhMuc");
+                String brand = rs.getString("TenNhanHang");
+                String color = rs.getString("TenMau");
+                String sz = rs.getString("TenSize");
+                String material = rs.getString("TenChatLieu");
+                Double giaN = rs.getDouble("GiaNhap");
+                Double giaB = rs.getDouble("GiaBan");
+                String status = rs.getString("TrangThai");
+                Integer soL = rs.getInt("SoLuongTon");
+                String area = rs.getString("TenKhuVuc");
+                String img = rs.getString("HinhAnh");
+                Date ngayN = rs.getDate("NgayNhapKho");
+
+                sp = new SanPhamViewModel(idSP, soL, tenSP, danhM, brand, color, sz, material, status, area, giaN, giaB, img, ngayN);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sp;
+    }
+    
+    public SanPhamViewModel getSPByIdSPCT(Integer id) {
+        String sql = "SELECT sp.MaSanPham, spct.TenSanPhamChiTiet, dm.TenDanhMuc, nh.TenNhanHang, ms.TenMau, sz.TenSize, cl.TenChatLieu\n"
+                + "			, sp.GiaNhap, sp.GiaBan, sp.TrangThai, spct.SoLuongTon, kh.TenKhuVuc\n"
+                + "							,spct.HinhAnh, spct.NgayNhapKho FROM SanPham sp \n"
+                + "										INNER JOIN SanPhamChiTiet spct ON sp.MaSanPham = spct.MaSanPham\n"
+                + "										INNER JOIN DanhMuc dm ON sp.MaDanhMuc = dm.MaDanhMuc\n"
+                + "										INNER JOIN NhanHang nh ON spct.NhanHangID = nh.NhanHangID\n"
+                + "										INNER JOIN MauSac ms ON spct.MaMau = ms.MaMau\n"
+                + "										INNER JOIN Size sz ON spct.MaSize = sz.MaSize\n"
+                + "										INNER JOIN ChatLieu cl ON spct.MaChatLieu = cl.MaChatLieu\n"
+                + "										INNER JOIN KhuVucKho kh ON sp.KhuVucID = kh.KhuVucID\n"
+                + "											WHERE sp.Deleted!=1 AND spct.MaSanPhamChiTiet = ?";
         SanPhamViewModel sp = new SanPhamViewModel();
 
         try (Connection conn = dbConnection.getConnection(); 

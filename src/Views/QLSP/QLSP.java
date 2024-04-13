@@ -10,6 +10,7 @@ import Services.UserService;
 import Utils.SVGImage;
 import ViewModels.SanPhamViewModel;
 import Views.Login;
+import com.barcodelib.barcode.Linear;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -73,6 +74,8 @@ public class QLSP extends javax.swing.JInternalFrame {
         btnLoad.setIcon(svgSet.createSVGIcon("Images/SVG/reload.svg", 18, 18));
         btnUnhide.setIcon(svgSet.createSVGIcon("Images/SVG/unhide.svg", 18, 18));
         btnHidden.setIcon(svgSet.createSVGIcon("Images/SVG/w-view-fill.svg", 15, 15));
+        
+        btnBarcode.setIcon(svgSet.createSVGIcon("Images/SVG/sp-qr-solid.svg", 20, 20));
         btnImport.setIcon(svgSet.createSVGIcon("Images/SVG/g-excel.svg", 20, 20));
         btnExport.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 20, 20));
         btnHidden.setIcon(svgSet.createSVGIcon("Images/SVG/hide-regular.svg", 20, 20));
@@ -186,6 +189,7 @@ public class QLSP extends javax.swing.JInternalFrame {
         btnLoad = new javax.swing.JButton();
         btnUnhide = new javax.swing.JButton();
         btnExport = new javax.swing.JButton();
+        btnBarcode = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         txtMaDanhMuc = new javax.swing.JTextField();
@@ -228,7 +232,7 @@ public class QLSP extends javax.swing.JInternalFrame {
                 btnImportMouseClicked(evt);
             }
         });
-        jPanel1.add(btnImport, new org.netbeans.lib.awtextra.AbsoluteConstraints(774, 480, 120, 40));
+        jPanel1.add(btnImport, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 480, 120, 40));
 
         tblSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -248,7 +252,7 @@ public class QLSP extends javax.swing.JInternalFrame {
         });
         jScrollPane5.setViewportView(tblSP);
 
-        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 85, 1040, 380));
+        jPanel1.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 85, 1030, 380));
 
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         jPanel5.setAlignmentX(1.0F);
@@ -375,6 +379,14 @@ public class QLSP extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnExport, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 480, 130, 40));
+
+        btnBarcode.setText("LƯU");
+        btnBarcode.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBarcodeMouseClicked(evt);
+            }
+        });
+        jPanel1.add(btnBarcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 120, 40));
 
         jTabbedPane1.addTab("Thông Tin Sản Phẩm", jPanel1);
 
@@ -987,10 +999,41 @@ public class QLSP extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExportMousePressed
 
+    private void btnBarcodeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBarcodeMouseClicked
+        // BARCODE
+        int pos = tblSP.getSelectedRow();
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để lưu barcode!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showSaveDialog(null);
+            Integer id = Integer.valueOf(tblSP.getValueAt(pos, 0).toString());
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                String fname = selectedFile.getAbsolutePath();
+
+                try {
+                    Linear barcode = new Linear();
+                    barcode.setType(Linear.CODE128B);
+                    barcode.setData("SP0" + id + "_" + "POLY_POLO");
+                    barcode.setI(11.0f);
+                    barcode.renderBarcode(fname + ".png");
+
+                    JOptionPane.showMessageDialog(null, "Lưu barcode thành công!");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Lưu barcode thất bại: " + ex.getMessage(), "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnBarcodeMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAnDM;
+    private javax.swing.JButton btnBarcode;
     private javax.swing.JButton btnClearDM;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnHidden;

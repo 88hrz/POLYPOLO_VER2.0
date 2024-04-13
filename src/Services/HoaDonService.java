@@ -12,14 +12,13 @@ import Models.SanPhamChiTiet;
 import Repositories.HoaDonRepository;
 import Repositories.KhachHangRepository;
 import Repositories.NhanSuRepo;
-import Repositories.PhieuNhapRepository;
 import Repositories.SanPhamRepository;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
-import ViewModels.KhachHangViewModel;
-import ViewModels.PN_SanPhamViewModel;
+import ViewModels.HoaDonViewModel;
 import ViewModels.SanPhamViewModel;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -30,9 +29,9 @@ public class HoaDonService {
     HoaDonRepository hdRepo = new HoaDonRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
     SanPhamRepository spRepo = new SanPhamRepository();
-    PhieuNhapRepository pnRepo = new PhieuNhapRepository();
     KhachHangRepository khRepo = new KhachHangRepository();
     
+    //<editor-fold defaultstate="collapsed" desc=" ADD ">
     //INVOICE 
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
         return hdRepo.getListKHById(id);
@@ -186,7 +185,35 @@ public class HoaDonService {
     public SanPhamViewModel getSPByIdSP(Integer id) {
         return spRepo.getSPByIdSPCT(id);
     }
-    public ArrayList<PN_SanPhamViewModel> getListSPViewModel(){
-        return pnRepo.getListSPViewModel();
+    //</editor-fold>
+    
+    //SEARCH
+    public ArrayList<HoaDonViewModel> getListViewModel(){
+        return hdRepo.getListViewModel();
+    }
+    public ArrayList<HoaDonViewModel> getListByNV(String name){
+        return hdRepo.getListByNV(name);
+    }
+    public ArrayList<HoaDonViewModel> getListByPhuongT(String name){
+        return hdRepo.getListByPhuongT(name);
+    }
+    public ArrayList<HoaDonViewModel> getListByTrangT(String name){
+        return hdRepo.getListByTrangT(name);
+    }
+    public ArrayList<HoaDonViewModel> getListByDate(Date from, Date to){
+        return hdRepo.getListByDate(from, to);
+    }
+    public ArrayList<HoaDonViewModel> getListByTenKH(String name){
+        return hdRepo.getListByTenKH(name);
+    }
+    
+    //DEL
+    public String deleteHD(int id){
+        Boolean check = hdRepo.deleteHD(id);
+        if (check) {
+            return "Xóa hóa đơn thành công!";
+        }else{
+            return "Xóa hóa đơn thất bại :(";
+        }
     }
 }

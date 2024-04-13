@@ -10,6 +10,7 @@ import Models.KhachHang;
 import ViewModels.HD_GioHangViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
+import ViewModels.HoaDonViewModel;
 import java.sql.*;
 import java.util.ArrayList;
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class HoaDonRepository {
     DbConnection dbConnection;
     
+    //<editor-fold defaultstate="collapsed" desc=" ADD ">
     //INVOICE
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
         String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, hd.LoaiKhachHang, hd.PhuongThucThanhToan\n" +
@@ -602,6 +604,207 @@ public class HoaDonRepository {
         }
         return ls;
     }
+    //</editor-fold>
     
+    //SEARCH
+    public ArrayList<HoaDonViewModel> getListViewModel(){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, nv.TenNhanVien, hd.LoaiKhachHang, hd.PhuongThucThanhToan, hd.NgayLap, hd.TongTien, hd.TrangThai FROM HoaDon hd \n" +
+"										INNER JOIN NhanVien nv ON hd.MaNhanVien = nv.MaNhanVien \n" +
+"													";
+        ArrayList<HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idHD = rs.getInt("MaHoaDon");
+                String hoTen = rs.getString("TenKhachHang");
+                String nVien = rs.getString("TenNhanVien");
+                String loaiK = rs.getString("LoaiKhachHang");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                Date ngayL = rs.getDate("NgayLap");
+                Double tongT = rs.getDouble("TongTien");
+                String trangT = rs.getString("TrangThai");
+                
+                HoaDonViewModel hd = new HoaDonViewModel(idHD, hoTen, nVien, loaiK, phuongT, trangT, ngayL, tongT);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<HoaDonViewModel> getListByNV(String name){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, nv.TenNhanVien, hd.LoaiKhachHang, hd.PhuongThucThanhToan, hd.NgayLap, hd.TongTien, hd.TrangThai FROM HoaDon hd \n" +
+"										INNER JOIN NhanVien nv ON hd.MaNhanVien = nv.MaNhanVien \n" +
+"											WHERE nv.TenNhanVien = ?		";
+        ArrayList<HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idHD = rs.getInt("MaHoaDon");
+                String hoTen = rs.getString("TenKhachHang");
+                String nVien = rs.getString("TenNhanVien");
+                String loaiK = rs.getString("LoaiKhachHang");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                Date ngayL = rs.getDate("NgayLap");
+                Double tongT = rs.getDouble("TongTien");
+                String trangT = rs.getString("TrangThai");
+                
+                HoaDonViewModel hd = new HoaDonViewModel(idHD, hoTen, nVien, loaiK, phuongT, trangT, ngayL, tongT);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<HoaDonViewModel> getListByPhuongT(String name){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, nv.TenNhanVien, hd.LoaiKhachHang, hd.PhuongThucThanhToan, hd.NgayLap, hd.TongTien, hd.TrangThai FROM HoaDon hd \n" +
+"										INNER JOIN NhanVien nv ON hd.MaNhanVien = nv.MaNhanVien \n" +
+"											WHERE hd.PhuongThucThanhToan = ?		";
+        ArrayList<HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idHD = rs.getInt("MaHoaDon");
+                String hoTen = rs.getString("TenKhachHang");
+                String nVien = rs.getString("TenNhanVien");
+                String loaiK = rs.getString("LoaiKhachHang");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                Date ngayL = rs.getDate("NgayLap");
+                Double tongT = rs.getDouble("TongTien");
+                String trangT = rs.getString("TrangThai");
+                
+                HoaDonViewModel hd = new HoaDonViewModel(idHD, hoTen, nVien, loaiK, phuongT, trangT, ngayL, tongT);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<HoaDonViewModel> getListByTrangT(String name){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, nv.TenNhanVien, hd.LoaiKhachHang, hd.PhuongThucThanhToan, hd.NgayLap, hd.TongTien, hd.TrangThai FROM HoaDon hd \n" +
+"										INNER JOIN NhanVien nv ON hd.MaNhanVien = nv.MaNhanVien \n" +
+"											WHERE hd.TrangThai = ?";
+        ArrayList<HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, name);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idHD = rs.getInt("MaHoaDon");
+                String hoTen = rs.getString("TenKhachHang");
+                String nVien = rs.getString("TenNhanVien");
+                String loaiK = rs.getString("LoaiKhachHang");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                Date ngayL = rs.getDate("NgayLap");
+                Double tongT = rs.getDouble("TongTien");
+                String trangT = rs.getString("TrangThai");
+                
+                HoaDonViewModel hd = new HoaDonViewModel(idHD, hoTen, nVien, loaiK, phuongT, trangT, ngayL, tongT);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<HoaDonViewModel> getListByDate(Date from, Date to){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, nv.TenNhanVien, hd.LoaiKhachHang, hd.PhuongThucThanhToan, hd.NgayLap, hd.TongTien, hd.TrangThai FROM HoaDon hd \n" +
+"										INNER JOIN NhanVien nv ON hd.MaNhanVien = nv.MaNhanVien \n" +
+"											WHERE hd.NgayLap BETWEEN ? AND ?		";
+        ArrayList<HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, from);
+            ps.setObject(2, to);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idHD = rs.getInt("MaHoaDon");
+                String hoTen = rs.getString("TenKhachHang");
+                String nVien = rs.getString("TenNhanVien");
+                String loaiK = rs.getString("LoaiKhachHang");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                Date ngayL = rs.getDate("NgayLap");
+                Double tongT = rs.getDouble("TongTien");
+                String trangT = rs.getString("TrangThai");
+                
+                HoaDonViewModel hd = new HoaDonViewModel(idHD, hoTen, nVien, loaiK, phuongT, trangT, ngayL, tongT);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public ArrayList<HoaDonViewModel> getListByTenKH(String name){
+        String sql = "SELECT hd.MaHoaDon, hd.TenKhachHang, nv.TenNhanVien, hd.LoaiKhachHang, hd.PhuongThucThanhToan, hd.NgayLap, hd.TongTien, hd.TrangThai FROM HoaDon hd \n" +
+"										INNER JOIN NhanVien nv ON hd.MaNhanVien = nv.MaNhanVien \n" +
+"											WHERE hd.TenKhachHang LIKE '%" + name + "%'";
+        ArrayList<HoaDonViewModel> ls = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Integer idHD = rs.getInt("MaHoaDon");
+                String hoTen = rs.getString("TenKhachHang");
+                String nVien = rs.getString("TenNhanVien");
+                String loaiK = rs.getString("LoaiKhachHang");
+                String phuongT = rs.getString("PhuongThucThanhToan");
+                Date ngayL = rs.getDate("NgayLap");
+                Double tongT = rs.getDouble("TongTien");
+                String trangT = rs.getString("TrangThai");
+                
+                HoaDonViewModel hd = new HoaDonViewModel(idHD, hoTen, nVien, loaiK, phuongT, trangT, ngayL, tongT);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    //DELETE
+    public Boolean deleteHD(int id){
+        String sql = "DELETE FROM HoaDonChiTiet\n" +
+                                    "WHERE MaHoaDon = ? ; 													\n" +
+                                    "DELETE FROM HoaDon \n" +
+                                    "WHERE MaHoaDon = ? ;";
+        
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, id);
+            ps.setObject(2, id);
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
 }

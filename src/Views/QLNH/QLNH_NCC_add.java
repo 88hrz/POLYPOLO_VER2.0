@@ -285,13 +285,13 @@ public class QLNH_NCC_add extends javax.swing.JFrame {
         String checkName = txtNCC.getText().trim();
         int result = JOptionPane.showConfirmDialog(this, "Bạn muốn thêm nhà cung cấp?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
         if (nccService.checkName(checkName)) {
-            JOptionPane.showMessageDialog(this, "Tên nhà cung cấp bị trùng, không thể thêm!", "POLY POLO thông báo", 0);
+            JOptionPane.showMessageDialog(this, "Tên nhà cung cấp bị trùng, không thể thêm!", "POLY POLO thông báo", JOptionPane.WARNING_MESSAGE);
             clearForm();
         } else {
             if (validateSanPham() && result == JOptionPane.YES_OPTION) {
                 JOptionPane.showMessageDialog(this, nccService.addNCC(getModel()));
             } else {
-                JOptionPane.showMessageDialog(this, "Đã hủy thao tác thêm nhà cung cấp!", "POLYPOLO thông báo", 0);
+                JOptionPane.showMessageDialog(this, "Đã hủy thao tác thêm nhà cung cấp!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
             }
         }
         clearForm();

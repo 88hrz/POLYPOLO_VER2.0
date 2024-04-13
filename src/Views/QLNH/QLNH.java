@@ -65,6 +65,7 @@ public class QLNH extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
         BasicInternalFrameUI ui = (BasicInternalFrameUI) this.getUI();
         ui.setNorthPane(null);
+        
         setButtonIcon();
         loadCboNV(pnService.getListNS());
         loadCboNCC(nccservice.getList());
@@ -86,6 +87,7 @@ public class QLNH extends javax.swing.JInternalFrame {
         btnLoadNCC.setIcon(svgSet.createSVGIcon("Images/SVG/reload.svg", 18, 18));
         btnHideNCC.setIcon(svgSet.createSVGIcon("Images/SVG/delete.svg", 18, 18));
         btnExportNCC.setIcon(svgSet.createSVGIcon("Images/SVG/pdf-color.svg", 19, 19));
+        
         btnASC.setIcon(svgSet.createSVGIcon("Images/SVG/up.svg", 20, 20));
         btnDSC.setIcon(svgSet.createSVGIcon("Images/SVG/down.svg", 20, 20));
         btnSearchDate.setIcon(svgSet.createSVGIcon("Images/SVG/search.svg", 20, 20));

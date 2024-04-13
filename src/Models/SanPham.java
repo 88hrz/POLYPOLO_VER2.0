@@ -11,12 +11,38 @@ import java.util.Date;
  * @author X1
  */
 public class SanPham {
-    private Integer maSP, maDM, soL, maSz, maMau, maChatL, maBrand, maKho;
+    private Integer maSP, maDM, soL, maSz, maMau, maChatL, maBrand, maKho, thue;
     private String tenSP, trangT, img;
     private Double giaN, giaB;
     private Date ngayNhap;
 
     public SanPham() {
+    }
+
+    public SanPham(Integer maSP, Integer maDM, Integer soL, Integer maSz, Integer maMau, Integer maChatL, Integer maBrand, Integer maKho, Integer thue, String tenSP, String trangT, String img, Double giaN, Double giaB, Date ngayNhap) {
+        this.maSP = maSP;
+        this.maDM = maDM;
+        this.soL = soL;
+        this.maSz = maSz;
+        this.maMau = maMau;
+        this.maChatL = maChatL;
+        this.maBrand = maBrand;
+        this.maKho = maKho;
+        this.thue = thue;
+        this.tenSP = tenSP;
+        this.trangT = trangT;
+        this.img = img;
+        this.giaN = giaN;
+        this.giaB = giaB;
+        this.ngayNhap = ngayNhap;
+    }
+
+    public Integer getThue() {
+        return thue;
+    }
+
+    public void setThue(Integer thue) {
+        this.thue = thue;
     }
     
     //IMPORT

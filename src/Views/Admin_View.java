@@ -4,6 +4,7 @@
  */
 package Views;
 
+import Views.KHOHANG.QuanLyKhoHang;
 import Views.QLNH.QLNH;
 import Views.QLKH.QLKHACHHANG;
 import Views.QLNS.QLNS;
@@ -35,13 +36,20 @@ public class Admin_View extends javax.swing.JFrame {
         getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
         dashBoard();
         
-        lbl_UserID.setText(u.getUserName());
-       
+        lbl_UserID.setText(u.getUserName());  
         menuName.setText("| Trang Chủ");
         
-        QLNH nhapXuat = new QLNH();
+//        QuanLyKhoHang qlkh = new QuanLyKhoHang();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(qlkh).setVisible(true);
+
+//        QLSP sp = new QLSP();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(sp).setVisible(true);
+
+        QLBH bh = new QLBH();
         jGUIForms.removeAll();
-        jGUIForms.add(nhapXuat).setVisible(true);
+        jGUIForms.add(bh).setVisible(true);
 
     }
 

@@ -10,9 +10,23 @@ package Models;
  */
 public class KhoHang {
     private Integer maKho;
-    private String tenKho;
+    private String tenKho, moTa;
 
     public KhoHang() {
+    }
+
+    public KhoHang(Integer maKho, String tenKho, String moTa) {
+        this.maKho = maKho;
+        this.tenKho = tenKho;
+        this.moTa = moTa;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
     }
 
     public KhoHang(Integer maKho, String tenKho) {

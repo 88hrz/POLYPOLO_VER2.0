@@ -1237,8 +1237,8 @@ public class SanPhamRepository {
     
     //CRUD
     public Boolean addSP(SanPham sp){
-        String sql = "INSERT INTO SanPham(MaDanhMuc, TrangThai, GiaNhap, GiaBan, KhuVucID, Deleted) \n" +
-"				VALUES (?, ?, ?, ?, ?, 0);"
+        String sql = "INSERT INTO SanPham(MaDanhMuc, TrangThai, GiaNhap, GiaBan, KhuVucID, PhanTramThue, Deleted) \n" +
+"				VALUES (?, ?, ?, ?, ?, ?, 0);"
                 + "INSERT INTO SanPhamChiTiet (MaSanPham, TenSanPhamChiTiet, HinhAnh, MaSize, MaMau, MaChatLieu, TrangThai, SoLuongTon, NgayNhapKho, NhanHangID, Deleted) VALUES \n" +
 "							(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);";
         
@@ -1249,20 +1249,21 @@ public class SanPhamRepository {
             ps.setDouble(3, sp.getGiaN());
             ps.setDouble(4, sp.getGiaB());
             ps.setInt(5, sp.getMaKho());
+            ps.setInt(6, sp.getThue());
             
-            ps.setInt(6, sp.getMaSP());
-            ps.setString(7, sp.getTenSP());
-            ps.setString(8, sp.getImg());
-            ps.setInt(9, sp.getMaSz());
-            ps.setInt(10, sp.getMaMau());
-            ps.setInt(11, sp.getMaChatL());
-            ps.setString(12, sp.getTrangT());
-            ps.setInt(13, sp.getSoL());
-            ps.setInt(15, sp.getMaBrand());
+            ps.setInt(7, sp.getMaSP());
+            ps.setString(8, sp.getTenSP());
+            ps.setString(9, sp.getImg());
+            ps.setInt(10, sp.getMaSz());
+            ps.setInt(11, sp.getMaMau());
+            ps.setInt(12, sp.getMaChatL());
+            ps.setString(13, sp.getTrangT());
+            ps.setInt(14, sp.getSoL());
+            ps.setInt(16, sp.getMaBrand());
             
             java.util.Date utilDate = sp.getNgayNhap();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getDate());
-            ps.setDate(14, sqlDate);
+            ps.setDate(15, sqlDate);
             
             int check = ps.executeUpdate();
             if (check > 0) {
@@ -1278,7 +1279,7 @@ public class SanPhamRepository {
         String sql = "UPDATE SanPhamChiTiet SET TenSanPhamChiTiet = ?, HinhAnh = ?, MaSize = ?, MaMau = ?, MaChatLieu = ?, TrangThai = ?,SoLuongTon = ?\n" +
 "						, NgayNhapKho = ?, NhanHangID = ? \n" +
 "								WHERE Deleted!=1 AND MaSanPham = ?;\n" +
-                    "UPDATE SanPham SET MaDanhMuc = ?, TrangThai = ?, GiaNhap = ?, GiaBan = ?, KhuVucID = ? \n" +
+                    "UPDATE SanPham SET MaDanhMuc = ?, TrangThai = ?, GiaNhap = ?, GiaBan = ?, KhuVucID = ? , PhanTramThue = ? \n" +
                     "					WHERE Deleted !=1 AND MaSanPham = ?;";
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
@@ -1300,6 +1301,7 @@ public class SanPhamRepository {
             ps.setObject(14, sp.getGiaB());
             ps.setObject(15, sp.getMaKho());
             ps.setObject(16, sp.getMaSP());
+            ps.setObject(17, sp.getThue());
             
             int check = ps.executeUpdate();
             if (check>0) {

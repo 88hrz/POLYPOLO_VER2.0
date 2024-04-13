@@ -11,7 +11,7 @@ import Models.SP_KichCo;
 import Models.SP_MauSac;
 import Models.SP_NhanHang;
 import Models.SanPham;
-import Repositories.KhoHangRepo;
+import Repositories.KhoHangRepository;
 import Repositories.SanPhamRepository;
 import ViewModels.SanPhamViewModel;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class SanPhamService {
     SanPhamRepository spRepo = new SanPhamRepository();
-    KhoHangRepo khRepo = new KhoHangRepo();
+    KhoHangRepository khRepo = new KhoHangRepository();
     
     //CHECK ID
     public Boolean checkId(Integer id) {

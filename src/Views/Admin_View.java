@@ -47,10 +47,13 @@ public class Admin_View extends javax.swing.JFrame {
 //        jGUIForms.removeAll();
 //        jGUIForms.add(sp).setVisible(true);
 
-        QLBH bh = new QLBH();
-        jGUIForms.removeAll();
-        jGUIForms.add(bh).setVisible(true);
+//        QLBH bh = new QLBH();
+//        jGUIForms.removeAll();
+//        jGUIForms.add(bh).setVisible(true);
 
+        TrangChu tc = new TrangChu();
+        jGUIForms.removeAll();
+        jGUIForms.add(tc).setVisible(true);
     }
 
     
@@ -144,7 +147,7 @@ public class Admin_View extends javax.swing.JFrame {
         });
         verticalLayout.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 0, -1, 29));
 
-        bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 60));
+        bg.add(verticalLayout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 60));
 
         horizontalMenu.setBackground(new java.awt.Color(13, 36, 51));
         horizontalMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -452,22 +455,22 @@ public class Admin_View extends javax.swing.JFrame {
         bg.add(horizontalMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 140, 650));
 
         jGUIForms.setBackground(new java.awt.Color(255, 255, 255));
-        jGUIForms.setMaximumSize(new java.awt.Dimension(1090, 680));
-        jGUIForms.setMinimumSize(new java.awt.Dimension(1090, 680));
+        jGUIForms.setMaximumSize(new java.awt.Dimension(1100, 680));
+        jGUIForms.setMinimumSize(new java.awt.Dimension(1100, 680));
         jGUIForms.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout jGUIFormsLayout = new javax.swing.GroupLayout(jGUIForms);
         jGUIForms.setLayout(jGUIFormsLayout);
         jGUIFormsLayout.setHorizontalGroup(
             jGUIFormsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1090, Short.MAX_VALUE)
+            .addGap(0, 1100, Short.MAX_VALUE)
         );
         jGUIFormsLayout.setVerticalGroup(
             jGUIFormsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 680, Short.MAX_VALUE)
         );
 
-        bg.add(jGUIForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, -1, 650));
+        bg.add(jGUIForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 1100, 650));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

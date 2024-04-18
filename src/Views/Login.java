@@ -8,6 +8,9 @@ import Models.User;
 import Services.UserService;
 import Utils.QRScanner;
 import Utils.SVGImage;
+import Validator.MyValidate;
+import Views.Lg.ForgotPass;
+import Views.Lg.SignUp;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import java.io.File;
@@ -19,6 +22,7 @@ import javax.swing.JOptionPane;
  * @author X1
  */
 public class Login extends javax.swing.JFrame {
+
     UserService uService = new UserService();
     SVGImage svgSet = new SVGImage();
     public static String dataStatic;
@@ -26,57 +30,46 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    
     public Login() {
         initComponents();
         txtID.requestFocus();
         setLocationRelativeTo(null);
         setSVGICon();
     }
-    
-    void setSVGICon(){
+
+    void setSVGICon() {
         lblUser.setIcon(svgSet.createSVGIcon("Images/SVG/login-user.svg", 20, 20));
         lblPass.setIcon(svgSet.createSVGIcon("Images/SVG/login-pass.svg", 20, 20));
         btnScanQR.setIcon(svgSet.createSVGIcon("Images/SVG/login-qr.svg", 12, 12));
         btnGoogleLogin.setIcon(svgSet.createSVGIcon("Images/SVG/login-gg.svg", 12, 12));
         lblCopyright.setIcon(svgSet.createSVGIcon("Images/SVG/login-copyright.svg", 13, 13));
     }
-    
+
     //VALIDATOR
     public Boolean validateLogin() {
-        if (txtID.getText().trim().equals("")
-                && txtPasscode.getText().trim().equals("")) {
-            txtID.setBackground(Color.red);
-            txtPasscode.setBackground(Color.red);
-            JOptionPane.showMessageDialog(this, "ID và mật khẩu trống!!");
-            return false;
-        }
+        StringBuilder stb = new StringBuilder();
+        MyValidate v = new MyValidate();
+        v.isEmpty(txtID, stb, "Tên đăng nhập trống!");
+        v.isEmpty(txtPasscode, stb, "Mật khẩu trống!");
+        v.isLimit(txtID, stb, "Tên đăng nhập vượt quá số ký tự cho phép!", 10);
+        v.isLimit(txtPasscode, stb, "Mật khẩu vượt quá số ký tự cho phép!", 10);
         txtID.setBackground(Color.white);
         txtPasscode.setBackground(Color.white);
+        if (stb.length() > 0) {
 
-        if (txtID.getText().trim().equals("")) {
-            txtID.setBackground(Color.red);
-            JOptionPane.showMessageDialog(this, "ID trống!");
+            JOptionPane.showMessageDialog(this, stb, "POLYPOLO thông báo!", HEIGHT);
             return false;
+        } else {
+            return true;
         }
-        txtID.setBackground(Color.white);
-
-        if (txtPasscode.getText().trim().equals("")) {
-            txtPasscode.setBackground(Color.red);
-            JOptionPane.showMessageDialog(this, "Mật khẩu trống!!");
-            return false;
-        }
-        txtPasscode.setBackground(Color.white);
-
-        return true;
 
     }
-    
-    public void clearForm(){
+
+    public void clearForm() {
         txtID.setText("");
         txtPasscode.setText("");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,10 +153,20 @@ public class Login extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Poppins", 0, 9)); // NOI18N
         jButton2.setForeground(new java.awt.Color(102, 102, 102));
         jButton2.setText("SIGN UP");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
 
         btnforgotPass.setFont(new java.awt.Font("Poppins", 0, 9)); // NOI18N
         btnforgotPass.setForeground(new java.awt.Color(102, 102, 102));
         btnforgotPass.setText("FORGOT PASSWORD");
+        btnforgotPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnforgotPassMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -305,14 +308,14 @@ public class Login extends javax.swing.JFrame {
                 u.setRole(uService.getListByUserId(userID).getRole());
 
                 dataStatic = txtID.getText();
-                JOptionPane.showMessageDialog(this,"Đăng nhập thành công!","POLYPOLO thông báo", 0);
-                
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "POLYPOLO thông báo", 0);
+
                 Admin_View mainView = new Admin_View(u);
                 mainView.setVisible(true);
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
-                clearForm();
+                JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+
             }
         }
     }//GEN-LAST:event_btnLoginMouseClicked
@@ -320,8 +323,8 @@ public class Login extends javax.swing.JFrame {
     private void chkShowHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkShowHideMouseClicked
         // SHOW HIDE
         if (chkShowHide.isSelected()) {
-            txtPasscode.setEchoChar((char)0);
-        }else{
+            txtPasscode.setEchoChar((char) 0);
+        } else {
             txtPasscode.setEchoChar('*');
         }
     }//GEN-LAST:event_chkShowHideMouseClicked
@@ -333,7 +336,7 @@ public class Login extends javax.swing.JFrame {
     private void btnScanQRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnScanQRMouseClicked
         // SCAN QR
         JFileChooser fileChooser = new JFileChooser();
-        
+
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
@@ -353,23 +356,37 @@ public class Login extends javax.swing.JFrame {
                         u.setRole(uService.getListByUserId(userID).getRole());
 
                         dataStatic = userID;
-                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!","POLYPOLO thông báo", JOptionPane.PLAIN_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "POLYPOLO thông báo", JOptionPane.PLAIN_MESSAGE);
                         Admin_View mainView = new Admin_View(u);
                         mainView.setVisible(true);
                         this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "ID hoặc mật khẩu sai!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
                         clearForm();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ảnh không đúng định dạng!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Ảnh không đúng định dạng!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi khi xử lý mã QR!","POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi khi xử lý mã QR!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnScanQRMouseClicked
+
+    private void btnforgotPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnforgotPassMouseClicked
+        // TODO add your handling code here:
+        ForgotPass forgotPass = new ForgotPass();
+        forgotPass.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnforgotPassMouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+        SignUp signUp = new SignUp();
+        signUp.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments

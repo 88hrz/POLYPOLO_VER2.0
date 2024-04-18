@@ -4,10 +4,9 @@
  */
 package Services;
 
-import Models.User;
 import Models.NhanSu;
 import Repositories.NhanSuRepo;
-//import ViewModels.NhanSuViewModel;
+import ViewModels.NhanSuViewModel;
 import java.util.ArrayList;
 
 /**
@@ -15,9 +14,6 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class NhanSuService {
-//
-//    Hoa_NhanSuRepo spr = new Hoa_NhanSuRepo();
-//    Huong_TaiKhoanRepository kmr = new Huong_TaiKhoanRepository();
     NhanSuRepo nsRepo = new NhanSuRepo();
     
     public NhanSu getNhanSu(){
@@ -29,56 +25,51 @@ public class NhanSuService {
     public ArrayList<NhanSu> getListNS(){
         return nsRepo.getListNS();
     }
-    //GETLIST BY ID
-//    public NhanSuViewModel getListById(Integer id) {
-//        return spr.getListById(id);
+ 
+    public ArrayList<NhanSuViewModel> getList() {
+        return nsRepo.getList();
     }
-//
-//    public ArrayList<NhanSu> getList() {
-//        return spr.getList();
-//    }
-//
-//    public ArrayList<User> getListGV() {
-//        return kmr.getListGV();
-//    }
-//
-//    public ArrayList<NhanSuViewModel> SearchByName(String name) {
-//        return spr.searchByName(name);
-//    }
-//
-//    public User getByID(String tenGV) {
-//        return kmr.findID(tenGV);
-//    }
-//
-//    public String AddNew(NhanSu sp) {
-//        Boolean check = spr.AddNew(sp);
-//        if (check == true) {
-//            return "Them Thanh Cong";
-//        } else {
-//            return "Them That Bai";
-//        }
-//    }
-//
-//    public String delete(String maNV) {
-//        Boolean check = spr.delete(maNV);
-//        if (check) {
-//            return "Xóa thành công";
-//        } else {
-//            return "Xóa thất bại";
-//        }
-//    }
-//
-//    public String updateNew(NhanSu ns) {
-//        Boolean check = spr.updateNew(ns);
-//        if (check) {
-//            return "Cập nhật thành công";
-//        } else {
-//            return "Cập nhật thất bại";
-//        }
-//    }
-//
-//    public Boolean checkName(Integer maND) {
-//        return spr.checkName(maND);
-//    }
+     public NhanSuViewModel NSByID(Integer id) {
+        return nsRepo.getListBy(id);
+    }
+     public String delete(Integer ID){
+         boolean check = nsRepo.delete(ID);
+         if(check){
+             return "Xóa thành công";
+         }else{
+             return "Xóa thất bại";
+         }
+     }
+     
+     public String AddNew(NhanSu ns){
+         boolean check = nsRepo.AddNew(ns);
+         if(check){
+             return "Thêm thành công";
+         }else{
+             return "Thêm thất bại";
+         }
+     } 
+     public String UpdateNew(NhanSu ns){
+         boolean check = nsRepo.updateNew(ns);
+         if(check){
+             return "Sửa thành công";
+         }else{
+             return "Sửa thất bại";
+         }
+     } 
+     public ArrayList<NhanSuViewModel> searchByName(String name) {
+        return nsRepo.searchByNameVM(name);
+    }
+     public ArrayList<NhanSuViewModel> searchSDT(String sdt) {
+        return nsRepo.searchBySDT(sdt);
+    }
+     public boolean Check(String sdt) {
+        return nsRepo.soDienThoaiCheck(sdt);
+    }
+      public Boolean checkName(Integer maND) {
+        return nsRepo.checkName(maND);
+    }
+
+}
 
 

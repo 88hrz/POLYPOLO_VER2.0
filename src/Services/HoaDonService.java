@@ -216,4 +216,18 @@ public class HoaDonService {
             return "Xóa hóa đơn thất bại :(";
         }
     }
+    
+    //SCAN
+    public ArrayList<HD_SanPhamViewModel> getListSanPhamCODE(String code){
+        return hdRepo.getListSanPhamCode(code);
+    }
+    
+    public String updateSPCode(String id, Integer soL){
+        Boolean check = hdRepo.updateSPCode(id, soL);
+        if (check) {
+            return "Thêm sản phẩm vào giỏ hàng thành công!!";
+        }else{
+            return "Thêm sản phẩm vào giỏ hàng thất bại :(";
+        }
+    }
 }

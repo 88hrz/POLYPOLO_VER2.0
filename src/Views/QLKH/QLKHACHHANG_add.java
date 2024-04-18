@@ -9,6 +9,8 @@ import Services.KhachHangService;
 import Utils.SVGImage;
 import Validator.MyValidate;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,16 +19,27 @@ import javax.swing.JOptionPane;
  */
 public class QLKHACHHANG_add extends javax.swing.JFrame {
     SVGImage svgSet = new SVGImage();
-     KhachHangService khService = new KhachHangService();
+    KhachHangService khService = new KhachHangService();
+    
     /**
      * Creates new form SP
      */
+    
     public QLKHACHHANG_add() {
         initComponents();
         setLocationRelativeTo(null);
-        btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/w-add.svg", 15, 15));
-        btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 15, 15));
+        setSVGIcon();
     }
+    
+    void setSVGIcon() {
+        btnAdd.setIcon(svgSet.createSVGIcon("Images/SVG/w-add.svg", 20, 20));
+        btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 20, 20));
+        btnNew.setIcon(svgSet.createSVGIcon("Images/SVG/clean.svg", 20, 20));
+        btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,2, true));
+    }
+    
     public Boolean validateKhachHang() {
         StringBuilder stb = new StringBuilder();
         MyValidate v = new MyValidate();
@@ -35,6 +48,10 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
         v.isEmpty(txtDiaChi, stb, "Chưa nhập số điện thoại!");
         v.isEmpty(txtDiaChi, stb, "Chưa nhập địa chỉ!");
         v.isPhoneNumber(txtSDT, "Vui lòng nhập đúng định dạng SĐT!", stb);
+        v.isDateSelected(dcsNgaySinh, stb, "Vui lòng nhập ngày sinh");
+        v.isDateAbove5(dcsNgaySinh, stb, "Ngày Sinh không hợp lệ");
+        v.isRadioButtonSelected(buttonGroup1, stb, "Vui lòng chọn giới tính");
+        
         if (stb.length() > 0) {
             JOptionPane.showMessageDialog(this, stb);
             return false;
@@ -49,7 +66,7 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
         String soDT = txtSDT.getText();
         String gioi = rdoNam.isSelected() ? "Nam" : "Nữ";
         String dia = txtDiaChi.getText();
-        java.util.Date utilDate = dscNgaySinh.getDate();
+        java.util.Date utilDate = dcsNgaySinh.getDate();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         KhachHang kh = new KhachHang(maKH, tenKh, gioi, soDT, dia, utilDate);
@@ -63,7 +80,7 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
         txtSDT.setText("");
         txtDiaChi.setText("");
         rdoNam.setSelected(true);
-        dscNgaySinh.setDate(null);
+        dcsNgaySinh.setDate(null);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,6 +91,7 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -88,22 +106,25 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
         rdoNam = new javax.swing.JRadioButton();
         rdoNu = new javax.swing.JRadioButton();
         jLabel22 = new javax.swing.JLabel();
-        dscNgaySinh = new com.toedter.calendar.JDateChooser();
+        dcsNgaySinh = new com.toedter.calendar.JDateChooser();
         txtDiaChi = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
-        btnCancel1 = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(220, 117, 28));
+        jPanel2.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel1.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -114,19 +135,19 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(224, 224, 224)
+                .addGap(189, 189, 189)
                 .addComponent(jLabel1)
-                .addContainerGap(474, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 80));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 80));
 
         jPanel4.setBackground(new java.awt.Color(250, 250, 250));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin Khách Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 16), new java.awt.Color(51, 51, 51))); // NOI18N
@@ -149,25 +170,27 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
         jPanel4.add(txtMaKH, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 68, 178, -1));
         jPanel4.add(txtTenKH, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 136, 241, -1));
 
+        buttonGroup1.add(rdoNam);
         rdoNam.setText("Nam");
         jPanel4.add(rdoNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 98, -1));
 
+        buttonGroup1.add(rdoNu);
         rdoNu.setText("Nữ");
         jPanel4.add(rdoNu, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, 98, -1));
 
         jLabel22.setText("Ngày Sinh:");
         jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 73, -1));
-        jPanel4.add(dscNgaySinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 68, 205, -1));
+        jPanel4.add(dcsNgaySinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 68, 205, -1));
         jPanel4.add(txtDiaChi, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 241, -1));
 
         jLabel23.setText("Địa Chỉ:");
         jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 88, -1));
         jPanel4.add(txtSDT, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 241, -1));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 710, 280));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 620, 280));
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
         btnCancel.setBackground(new java.awt.Color(204, 0, 51));
         btnCancel.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
@@ -189,82 +212,105 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
             }
         });
 
-        btnCancel1.setBackground(new java.awt.Color(204, 0, 51));
-        btnCancel1.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        btnCancel1.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancel1.setText("CLEAR");
-        btnCancel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnNew.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        btnNew.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnCancel1MouseClicked(evt);
+                btnNewMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(btnAdd)
                 .addGap(18, 18, 18)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(btnCancel)
+                .addGap(18, 18, 18)
+                .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel)
-                    .addComponent(btnAdd)
-                    .addComponent(btnCancel1))
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 320, 40));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(7, 7, 7))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnNew, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 6, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+
+        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, 270, 50));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 700, 460));
+
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCloseMouseClicked(evt);
+            }
+        });
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 650, Short.MAX_VALUE)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+    private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
+        // CLOSE
+        this.dispose();
+    }//GEN-LAST:event_btnCloseMouseClicked
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
-        int confirmation = JOptionPane.showConfirmDialog(this, "Bạn muốn hủy thêm khách hàng?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
-        if (confirmation == JOptionPane.YES_OPTION) {
-            clearForm();
-        }
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+        // CANCEL
+        clearForm();
+        txtTenKH.setBackground(Color.white);
+        txtDiaChi.setBackground(Color.white);
+        txtSDT.setBackground(Color.white);
+        dcsNgaySinh.setBackground(Color.WHITE);
     }//GEN-LAST:event_btnCancelMouseClicked
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
-        // TODO add your handling code here:
+        // ADD
         if (validateKhachHang()) {
             JOptionPane.showMessageDialog(this, khService.addNew(getModel()));
             clearForm();
         }
-        
     }//GEN-LAST:event_btnAddMouseClicked
 
-    private void btnCancel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancel1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancel1MouseClicked
+    private void btnNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewMouseClicked
+        // NEW
+        clearForm();
+    }//GEN-LAST:event_btnNewMouseClicked
 
     /**
      * @param args the command line arguments
@@ -289,8 +335,10 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnCancel1;
-    private com.toedter.calendar.JDateChooser dscNgaySinh;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnNew;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private com.toedter.calendar.JDateChooser dcsNgaySinh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
@@ -301,8 +349,9 @@ public class QLKHACHHANG_add extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
     private javax.swing.JTextField txtDiaChi;

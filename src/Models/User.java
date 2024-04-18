@@ -10,13 +10,20 @@ package Models;
  */
 public class User {
     Integer userID;
-    String userName, passCode, role;
+    String userName, passCode, role,email;
 
     public User() {
     }
 
     public User(Integer userID) {
         this.userID = userID;
+    }
+
+    public User(String userName, String passCode, String role, String email) {
+        this.userName = userName;
+        this.passCode = passCode;
+        this.role = role;
+        this.email = email;
     }
     
     public User(Integer userID, String userName, String passCode, String role) {
@@ -37,6 +44,22 @@ public class User {
         this.passCode = passCode;
     }
 
+    public User(Integer userID, String userName, String passCode, String role, String email) {
+        this.userID = userID;
+        this.userName = userName;
+        this.passCode = passCode;
+        this.role = role;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public String getUserName() {
         return userName;
     }

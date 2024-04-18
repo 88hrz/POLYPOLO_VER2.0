@@ -193,4 +193,9 @@ public class PhieuNhapService {
     public ArrayList<PN_PhieuNhapDetailsViewModel> getDetailsPN(int id){
         return pnRepo.getDetailsPN(id);
     }
+    
+    //BARCODE
+    public ArrayList<PN_SanPhamViewModel> SearchCode(String code){
+        return pnRepo.searchCode(code);
+    }
 }

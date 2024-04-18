@@ -9,6 +9,8 @@ import Services.KhachHangService;
 import Utils.SVGImage;
 import Validator.MyValidate;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,23 +20,37 @@ import javax.swing.JOptionPane;
 public class QLKHACHHANG_update extends javax.swing.JFrame {
     SVGImage svgSet = new SVGImage();
     KhachHangService khService = new KhachHangService();
+    
     /**
      * Creates new form SP
      */
+    
     public QLKHACHHANG_update() {
         initComponents();
         setLocationRelativeTo(null);
-        btnEdit.setIcon(svgSet.createSVGIcon("Images/SVG/w-edit.svg", 15, 15));
-        btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 15, 15));
+        setSVGIcon();
     }
+
+    void setSVGIcon() {
+        btnEdit.setIcon(svgSet.createSVGIcon("Images/SVG/w-edit.svg", 20, 20));
+        btnCancel.setIcon(svgSet.createSVGIcon("Images/SVG/w-cancel.svg", 20, 20));
+        btnClose.setIcon(svgSet.createSVGIcon("Images/SVG/close.svg", 15, 15));
+        btnClose.setBorderPainted(false);
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true));
+    }
+
     public Boolean validateKhachHang() {
         StringBuilder stb = new StringBuilder();
         MyValidate v = new MyValidate();
 
         v.isEmpty(txtTenKH, stb, "Chưa nhập tên khách hàng!");
-        v.isEmpty(txtSDT, stb, "Chưa nhập số điện thoại!");
+        v.isEmpty(txtDiaChi, stb, "Chưa nhập số điện thoại!");
         v.isEmpty(txtDiaChi, stb, "Chưa nhập địa chỉ!");
         v.isPhoneNumber(txtSDT, "Vui lòng nhập đúng định dạng SĐT!", stb);
+        v.isDateSelected(dcsNgaySinh, stb, "Vui lòng nhập ngày sinh");
+        v.isDateAbove5(dcsNgaySinh, stb, "Ngày Sinh không hợp lệ");
+        v.isRadioButtonSelected(buttonGroup1, stb, "Vui lòng chọn giới tính");
+        
         if (stb.length() > 0) {
             JOptionPane.showMessageDialog(this, stb);
             return false;
@@ -51,6 +67,7 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
         String dia = txtDiaChi.getText();
         java.util.Date utilDate = dcsNgaySinh.getDate();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
         KhachHang kh = new KhachHang(maKH, tenKh, gioi, soDT, dia, utilDate);
 
         return kh;
@@ -64,6 +81,7 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
         rdoNam.setSelected(true);
         dcsNgaySinh.setDate(null);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,6 +92,7 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -92,19 +111,19 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
         txtDiaChi = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
-        btnCancel1 = new javax.swing.JButton();
-        btnEdit1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(220, 117, 28));
+        jPanel2.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel1.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -115,19 +134,17 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(227, 227, 227)
+                .addGap(189, 189, 189)
                 .addComponent(jLabel1)
-                .addContainerGap(469, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 80));
 
         jPanel4.setBackground(new java.awt.Color(250, 250, 250));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin Khách Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 16), new java.awt.Color(51, 51, 51))); // NOI18N
@@ -140,87 +157,53 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
         jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 108, 100, -1));
 
         jLabel12.setText("Giới Tính:");
-        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 224, -1));
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 110, 224, -1));
         jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 31, 64, -1));
 
         jLabel17.setText("Số Điện Thoại:");
         jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 88, -1));
+
+        txtMaKH.setEnabled(false);
         jPanel4.add(txtMaKH, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 68, 178, -1));
         jPanel4.add(txtTenKH, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 136, 241, -1));
 
+        buttonGroup1.add(rdoNam);
         rdoNam.setText("Nam");
-        jPanel4.add(rdoNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 98, -1));
+        jPanel4.add(rdoNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 140, 98, -1));
 
+        buttonGroup1.add(rdoNu);
         rdoNu.setText("Nữ");
-        jPanel4.add(rdoNu, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, 98, -1));
+        jPanel4.add(rdoNu, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 140, 98, -1));
 
         jLabel22.setText("Ngày Sinh:");
-        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 73, -1));
-        jPanel4.add(dcsNgaySinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 68, 205, -1));
-        jPanel4.add(txtDiaChi, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 241, -1));
+        jPanel4.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 40, 73, -1));
+        jPanel4.add(dcsNgaySinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, 205, -1));
+        jPanel4.add(txtDiaChi, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 210, 241, -1));
 
         jLabel23.setText("Địa Chỉ:");
-        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 88, -1));
+        jPanel4.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 88, -1));
         jPanel4.add(txtSDT, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 241, -1));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 710, 280));
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
         btnCancel.setBackground(new java.awt.Color(204, 0, 51));
         btnCancel.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("HỦY");
+        btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCancelMouseClicked(evt);
+            }
+        });
 
         btnEdit.setBackground(new java.awt.Color(255, 220, 11));
         btnEdit.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("LƯU");
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel)
-                    .addComponent(btnEdit))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 230, 40));
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
-
-        btnCancel1.setBackground(new java.awt.Color(204, 0, 51));
-        btnCancel1.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        btnCancel1.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancel1.setText("HỦY");
-        btnCancel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnCancel1MouseClicked(evt);
-            }
-        });
-
-        btnEdit1.setBackground(new java.awt.Color(255, 220, 11));
-        btnEdit1.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        btnEdit1.setForeground(new java.awt.Color(255, 255, 255));
-        btnEdit1.setText("LƯU");
-        btnEdit1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnEdit1MouseClicked(evt);
+                btnEditMouseClicked(evt);
             }
         });
 
@@ -230,53 +213,99 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnEdit1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(btnCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel1)
-                    .addComponent(btnEdit1))
-                .addContainerGap(9, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, 230, 40));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(222, 222, 222)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE)
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 700, 460));
+
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCloseMouseClicked(evt);
+            }
+        });
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 650, Short.MAX_VALUE)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancel1MouseClicked
-        // TODO add your handling code here:
-        int confirmation = JOptionPane.showConfirmDialog(this, "Bạn muốn hủy thêm khách hàng?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
-        if (confirmation == JOptionPane.YES_OPTION) {
-            clearForm();
-        }
-    }//GEN-LAST:event_btnCancel1MouseClicked
+    private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
+        // CLOSE
+        this.dispose();
+    }//GEN-LAST:event_btnCloseMouseClicked
 
-    private void btnEdit1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEdit1MouseClicked
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+        // CANCEL
+        this.dispose();
+    }//GEN-LAST:event_btnCancelMouseClicked
+
+    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
+        // UPDATE
         if (validateKhachHang()) {
             KhachHang kh = getModel();
             String rs = khService.update(kh);
             JOptionPane.showMessageDialog(this, rs);
+            clearForm();
+            this.dispose();
         }
-    }//GEN-LAST:event_btnEdit1MouseClicked
+    }//GEN-LAST:event_btnEditMouseClicked
 
     /**
      * @param args the command line arguments
@@ -300,10 +329,10 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnCancel1;
+    private javax.swing.JButton btnClose;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton btnEdit1;
-    private com.toedter.calendar.JDateChooser dcsNgaySinh;
+    private javax.swing.ButtonGroup buttonGroup1;
+    public com.toedter.calendar.JDateChooser dcsNgaySinh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
@@ -314,14 +343,14 @@ public class QLKHACHHANG_update extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JRadioButton rdoNam;
-    private javax.swing.JRadioButton rdoNu;
-    private javax.swing.JTextField txtDiaChi;
-    private javax.swing.JTextField txtMaKH;
-    private javax.swing.JTextField txtSDT;
-    private javax.swing.JTextField txtTenKH;
+    public javax.swing.JRadioButton rdoNam;
+    public javax.swing.JRadioButton rdoNu;
+    public javax.swing.JTextField txtDiaChi;
+    public javax.swing.JTextField txtMaKH;
+    public javax.swing.JTextField txtSDT;
+    public javax.swing.JTextField txtTenKH;
     // End of variables declaration//GEN-END:variables
 }

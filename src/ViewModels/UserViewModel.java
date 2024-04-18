@@ -21,7 +21,8 @@ public class UserViewModel {
     private String diaC;
     private String gioiT;
     private Date ngayS;
-
+    private String email;
+    
     public UserViewModel() {
     }
 
@@ -72,6 +73,35 @@ public class UserViewModel {
         this.ngayS = ngayS;
     }
 
+    public UserViewModel(Integer maNV, Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro, String diaC, String gioiT, Date ngayS, String email) {
+        this.maNV = maNV;
+        this.id = id;
+        this.tenDN = tenDN;
+        this.tenNV = tenNV;
+        this.matKhau = matKhau;
+        this.soDT = soDT;
+        this.vaiTro = vaiTro;
+        this.diaC = diaC;
+        this.gioiT = gioiT;
+        this.ngayS = ngayS;
+        this.email = email;
+    }
+
+    public UserViewModel(Integer maNV, Integer id, String tenDN, String tenNV, String matKhau, String soDT, String vaiTro, String diaC, String gioiT, String email) {
+        this.maNV = maNV;
+        this.id = id;
+        this.tenDN = tenDN;
+        this.tenNV = tenNV;
+        this.matKhau = matKhau;
+        this.soDT = soDT;
+        this.vaiTro = vaiTro;
+        this.diaC = diaC;
+        this.gioiT = gioiT;
+        this.email = email;
+    }
+    
+    
+
     public Integer getMaNV() {
         return maNV;
     }
@@ -86,6 +116,14 @@ public class UserViewModel {
 //    }
     public void setMaNV(Integer maNV) {
         this.maNV = maNV;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getGioiT() {

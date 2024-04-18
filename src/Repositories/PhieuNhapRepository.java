@@ -763,4 +763,26 @@ public class PhieuNhapRepository {
         }
         return false;
     }
+    
+    //BARCODE
+    public ArrayList<PN_SanPhamViewModel> searchCode(String code) {
+        String sql = "SELECT * FROM SanPhamChiTiet WHERE Deleted != 1 AND Barcode = ?";
+        ArrayList<PN_SanPhamViewModel> ls = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, code);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int maSPCT = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                int soL = rs.getInt("SoLuongTon");
+
+                PN_SanPhamViewModel sp = new PN_SanPhamViewModel(maSPCT, soL, tenSP);
+                ls.add(sp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
 }

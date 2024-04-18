@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author hmail
  */
-public class KhachHangViewBang2 {
+public class KH_HoaDonViewModel {
 
     private Integer maHD;
     private String tenSP;
@@ -20,10 +20,10 @@ public class KhachHangViewBang2 {
     private Double thanhTien;
     private Date ngayMua;
 
-    public KhachHangViewBang2() {
+    public KH_HoaDonViewModel() {
     }
 
-    public KhachHangViewBang2(Integer maHD, String tenSP, String tenKH, Integer soLuong, Double donGia, Double thanhTien, Date ngayMua) {
+    public KH_HoaDonViewModel(Integer maHD, String tenSP, String tenKH, Integer soLuong, Double donGia, Double thanhTien, Date ngayMua) {
         this.maHD = maHD;
         this.tenSP = tenSP;
         this.tenKH = tenKH;

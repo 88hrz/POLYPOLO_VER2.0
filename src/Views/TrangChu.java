@@ -152,7 +152,7 @@ public class TrangChu extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Top Lợi Nhuận của Tháng");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-        jPanel1.add(donutProfit, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 300, 270));
+        jPanel1.add(donutProfit, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 300, 260));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 60, 350, 280));
 

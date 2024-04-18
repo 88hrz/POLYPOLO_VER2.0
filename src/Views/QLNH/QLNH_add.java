@@ -18,7 +18,15 @@ import ViewModels.PN_PhieuNhapViewModel;
 import ViewModels.PN_SanPhamViewModel;
 import Views.Login;
 import Views.QLSP.QLSP_add;
+import Views.ReadORCode;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -41,7 +49,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -49,6 +59,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
@@ -782,7 +793,56 @@ public class QLNH_add extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnScanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnScanMouseClicked
-        // TODO add your handling code here:
+        // SCAN
+        ReadORCode qr = new ReadORCode();
+        qr.setVisible(true);
+        this.dispose();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn ảnh barcode");
+
+        // Chỉ chấp nhận các tệp hình ảnh
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Ảnh", "jpg", "jpeg", "png");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showOpenDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            // Lấy đường dẫn tệp ảnh được chọn
+            File selectedFile = fileChooser.getSelectedFile();
+            String filePath = selectedFile.getAbsolutePath();
+
+            try {
+                // Đọc ảnh từ đường dẫn đã chọn
+                BufferedImage image = ImageIO.read(new File(filePath));
+
+                // Đọc mã vạch từ ảnh barcode
+                String code = readBarcode(image);
+
+                if (code != null) {
+                    // Nếu mã vạch được đọc thành công, tiến hành tìm kiếm và cập nhật bảng
+                    ArrayList<PN_SanPhamViewModel> ls = pnService.SearchCode(code);
+                    loadTableSP(ls);
+                } else {
+                    System.out.println("Không thể đọc mã vạch từ ảnh.");
+                }
+            } catch (IOException ex) {
+                System.out.println("Không thể đọc ảnh.");
+            }
+        }
+    }
+
+    private String readBarcode(BufferedImage image) {
+        LuminanceSource source = new BufferedImageLuminanceSource(image);
+        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+        try {
+            Result result = new MultiFormatReader().decode(bitmap);
+            return result.getText();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }//GEN-LAST:event_btnScanMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
@@ -1189,7 +1249,7 @@ public class QLNH_add extends javax.swing.JFrame {
     private javax.swing.JLabel lblTax;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tblNhapHang;
-    private javax.swing.JTable tblSP;
+    public javax.swing.JTable tblSP;
     private javax.swing.JTextField txtGiaNhap;
     private javax.swing.JTextField txtMaPhieu;
     private javax.swing.JTextField txtMaSP;

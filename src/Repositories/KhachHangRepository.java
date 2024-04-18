@@ -5,7 +5,7 @@
 package Repositories;
 
 import Models.KhachHang;
-import Models.KhachHangViewBang2;
+import Models.KH_HoaDonViewModel;
 import ViewModels.KhachHangViewModel;
 import java.util.ArrayList;
 import java.sql.*;
@@ -20,7 +20,8 @@ public class KhachHangRepository {
 
     //GETLIST
     public ArrayList<KhachHangViewModel> getList() {
-        String sql = "select MaKhachHang, MaHoaDon, TenKhachHang, GioiTinh, SoDienThoai, DiaChi from KhachHang WHERE Deleted != 1;";
+        String sql = "select KhachHang.MaKhachHang, hd.MaHoaDon, KhachHang.TenKhachHang, GioiTinh, SoDienThoai, DiaChi, NgaySinh from KhachHang\n"
+                + "left join HoaDon hd ON hd.MaKhachHang = KhachHang.MaKhachHang;";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -32,8 +33,8 @@ public class KhachHangRepository {
                 String gioiTinh = rs.getString("GioiTinh");
                 String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
-
-                KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD, null);
+                Date ngayS = rs.getDate("NgaySinh");
+                KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD, ngayS);
                 ls.add(kh);
             }
         } catch (Exception e) {
@@ -43,14 +44,14 @@ public class KhachHangRepository {
     }
 
     ///TABLE HOADON
-    public ArrayList<KhachHangViewBang2> getList_Bang2(Integer MaHD) {
+    public ArrayList<KH_HoaDonViewModel> getList_Bang2(Integer MaHD) {
         String sql = " SELECT HoaDon.MaHoaDon, SanPhamChiTiet.TenSanPhamChiTiet, KhachHang.TenKhachHang, SoLuong, DonGia, HoaDon.NgayLap\n"
                 + "FROM HoaDonChiTiet\n"
                 + "JOIN SanPhamChiTiet ON HoaDonChiTiet.MaSanPhamChiTiet = SanPhamChiTiet.MaSanPhamChiTiet\n"
                 + "JOIN HoaDon ON HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon \n"
-                + "join KhachHang on HoaDon.MaHoaDon = KhachHang.MaHoaDon\n"
+                + "JOIN KhachHang ON HoaDon.MaKhachHang = KhachHang.MaKhachHang\n"
                 + "WHERE HoaDon.MaHoaDon = ?";
-        ArrayList<KhachHangViewBang2> list = new ArrayList<>();
+        ArrayList<KH_HoaDonViewModel> list = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ps.setObject(1, MaHD);
@@ -62,7 +63,7 @@ public class KhachHangRepository {
                 Integer soLuong = rs.getInt("SoLuong");
                 Double DonGia = rs.getDouble("DonGia");
                 Date ngay = rs.getDate("NgayLap");
-                KhachHangViewBang2 kh = new KhachHangViewBang2(maHD, tenSP, tenKh, soLuong, DonGia, DonGia, ngay);
+                KH_HoaDonViewModel kh = new KH_HoaDonViewModel(maHD, tenSP, tenKh, soLuong, DonGia, DonGia, ngay);
                 list.add(kh);
             }
         } catch (Exception e) {
@@ -73,8 +74,9 @@ public class KhachHangRepository {
 
     ////Tìm theo tên khách hàng
     public ArrayList<KhachHangViewModel> getListSearch(String id) {
-        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon,KhachHang.DiaChi,KhachHang.SoDienThoai FROM KhachHang \n"
-                + "left JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.TenKhachHang LIKE '%" + id + "%'";
+        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang,KhachHang.GioiTinh, HoaDon.MaHoaDon, KhachHang.DiaChi, KhachHang.SoDienThoai, KhachHang.NgaySinh \n"
+                + "FROM KhachHang\n"
+                + "LEFT JOIN HoaDon ON HoaDon.MaKhachHang = KhachHang.MaKhachHang  WHERE KhachHang.TenKhachHang LIKE '%" + id + "%'";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -82,11 +84,12 @@ public class KhachHangRepository {
             while (rs.next()) {
                 Integer maKH = rs.getInt("MaKhachHang");
                 String tenKh = rs.getString("TenKhachHang");
+                String GioiT = rs.getString("GioiTinh");
                 Integer maHD = rs.getInt("MaHoaDon");
                 String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
-
-                KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, null, soDT, diaChi, maHD, null);
+                Date ngayS = rs.getDate("NgaySinh");
+                KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, GioiT, soDT, diaChi, maHD, ngayS);
                 ls.add(kh);
             }
         } catch (Exception e) {
@@ -96,14 +99,13 @@ public class KhachHangRepository {
     }
 
     /////Tìm theo SĐT
-    public KhachHang getKHBySDT(String sdt){
-       String sql = "SELECT * FROM KhachHang WHERE KhachHang.SoDienThoai = ?";
+    public KhachHang getKHBySDT(String sdt) {
+        String sql = "SELECT * FROM KhachHang WHERE KhachHang.SoDienThoai = ?";
         KhachHang kh = new KhachHang();
 
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, sdt);
-            
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Integer maKH = rs.getInt("MaKhachHang");
@@ -118,11 +120,13 @@ public class KhachHangRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return kh;  
+        return kh;
     }
+
     public ArrayList<KhachHangViewModel> getListSearchSDT(String sdt) {
-        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang "
-                + "LEFT JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.SoDienThoai = ?";
+        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang,KhachHang.GioiTinh, HoaDon.MaHoaDon, KhachHang.DiaChi, KhachHang.SoDienThoai, KhachHang.NgaySinh \n"
+                + "FROM KhachHang\n"
+                + "LEFT JOIN HoaDon ON HoaDon.MaKhachHang = KhachHang.MaKhachHang WHERE KhachHang.SoDienThoai = ?";
         ArrayList<KhachHangViewModel> ls = new ArrayList<>();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -135,8 +139,8 @@ public class KhachHangRepository {
                 String gioiTinh = rs.getString("GioiTinh");
                 String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
-
-                KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD, null);
+                Date ngaySinh = rs.getDate("NgaySinh");
+                KhachHangViewModel kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD, ngaySinh);
                 ls.add(kh);
             }
         } catch (Exception e) {
@@ -149,8 +153,7 @@ public class KhachHangRepository {
 
         String sql = "INSERT INTO KhachHang ( TenKhachHang, GioiTinh, SoDienThoai,NgaySinh, DiaChi,LoaiKhachHang,Deleted) VALUES (?, ?, ?, ?,?,N'Thành Viên', 0)";
 
-        try (Connection conn = dbConnection.getConnection(); 
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, kh.getTenKH());
             ps.setString(2, kh.getGioiTinh());
@@ -169,17 +172,17 @@ public class KhachHangRepository {
     }
 
     public boolean update(KhachHang kh) {
-
-        String sql = "update KhachHang set TenKhachHang = ? , GioiTinh = ? , SoDienThoai = ?, "
-                + "DiaChi = ? where MaKhachHang = ?";
+        String sql = "UPDATE KhachHang SET TenKhachHang = ?, GioiTinh = ?, SoDienThoai = ?, DiaChi = ?, NgaySinh = ?\n"
+                + "WHERE MaKhachHang = ?";
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setObject(1, kh.getTenKH());
             ps.setObject(2, kh.getGioiTinh());
             ps.setObject(3, kh.getSoDT());
             ps.setObject(4, kh.getDiaChi());
-            ps.setInt(5, kh.getMaKH());
+            ps.setObject(5, kh.getNgaySinh());
+            ps.setObject(6, kh.getMaKH());
+
             int result = ps.executeUpdate();
 
             if (result > 0) {
@@ -267,8 +270,8 @@ public class KhachHangRepository {
 
     ///
     public KhachHangViewModel getListt(Integer id) {
-        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi FROM KhachHang \n"
-                + "left JOIN HoaDon ON HoaDon.MaHoaDon = KhachHang.MaHoaDon WHERE KhachHang.MaKhachHang = ?";
+        String sql = "SELECT KhachHang.MaKhachHang, KhachHang.TenKhachHang, HoaDon.MaHoaDon, KhachHang.GioiTinh,KhachHang.SoDienThoai,KhachHang.DiaChi,KhachHang.NgaySinh FROM KhachHang \n"
+                + "left JOIN HoaDon ON HoaDon.MaKhachHang = KhachHang.MaKhachHang WHERE KhachHang.MaKhachHang = ?";
         KhachHangViewModel kh = new KhachHangViewModel();
 
         try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
@@ -281,8 +284,8 @@ public class KhachHangRepository {
                 String gioiTinh = rs.getString("GioiTinh");
                 String soDT = rs.getString("SoDienThoai");
                 String diaChi = rs.getString("DiaChi");
-
-                kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD, null);
+                Date ngayS = rs.getDate("NgaySinh");
+                kh = new KhachHangViewModel(maKH, tenKh, gioiTinh, soDT, diaChi, maHD, ngayS);
 
             }
         } catch (Exception e) {
@@ -305,16 +308,15 @@ public class KhachHangRepository {
         }
         return false;
     }
-    
+
     //GETLIST
-    public ArrayList<KhachHang> getListKH(){
+    public ArrayList<KhachHang> getListKH() {
         String sql = "SELECT * FROM KhachHang";
         ArrayList<KhachHang> ls = new ArrayList<>();
-        
-        try (Connection conn = dbConnection.getConnection();
-                PreparedStatement ps = conn.prepareCall(sql)){
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Integer maKH = rs.getInt("MaKhachHang");
                 String tenKH = rs.getString("TenKhachHang");
                 String gioiT = rs.getString("GioiTinh");
@@ -322,7 +324,7 @@ public class KhachHangRepository {
                 String sdt = rs.getString("SoDienThoai");
                 String diaC = rs.getString("DiaChi");
                 String loaiK = rs.getString("LoaiKhachHang");
-                
+
                 KhachHang kh = new KhachHang(maKH, tenKH, gioiT, sdt, diaC, ngayS, loaiK);
                 ls.add(kh);
             }

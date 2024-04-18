@@ -337,4 +337,38 @@ public class SanPhamService {
     public ArrayList<SP_MauSac> searchByNameColor(String name){
         return spRepo.searchByNameColor(name);
     }
+    
+    //IMPORT
+    public Integer getMaDanhMuc(String tenDM){
+        return spRepo.getMaDanhMuc(tenDM);
+    }
+    public Integer getMaBrand(String tenBrand){
+        return spRepo.getMaBrand(tenBrand);
+    }
+    public Integer getMaMau(String tenMau){
+        return spRepo.getMaMau(tenMau);
+    }
+    public Integer getMaSize(String tenSize){
+        return spRepo.getMaSize(tenSize);
+    }
+    public Integer getMaChatLieu(String tenChatLieu){
+        return spRepo.getMaChatLieu(tenChatLieu);
+    }
+    public Integer getMaKho(String tenKho){
+        return spRepo.getMaKho(tenKho);
+    }
+    public String getImg(String img){
+        return spRepo.getImg(img);
+    }
+    public String  updateSoLuong(SanPham sp){
+       Boolean check = spRepo. updateSoLuong(sp);
+        if (check) {
+            return "Thành công!";
+        }else{
+            return "Thất bại!";
+        }
+    }
+    public Integer getSoLuong(String ten){
+        return spRepo.getSoLuong(ten);
+    }
 }

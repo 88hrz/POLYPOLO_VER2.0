@@ -8,6 +8,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
@@ -94,15 +95,116 @@ public class MyValidate {
     //JAVA VALIDATE
     public Boolean validPassCode(JPasswordField jpass, String msg, StringBuilder stb) {
         String passCode = new String(jpass.getPassword());
-        if (passCode.matches("\\d{3}")) {
+        String MIN_LENGTH = "5";
+        String MAX_LENGTH = "10";
+        boolean SPECIAL_CHAR_NEEDED = false;
+
+        String ONE_DIGIT = "(?=.*[0-9])";
+        String LOWER_CASE = "(?=.*[a-z])";
+        String UPPER_CASE = "(?=.*[A-Z])";
+        String SPECIAL_CHAR = SPECIAL_CHAR_NEEDED ? "(?=.*[@#$%^&+=])" : "";
+        String NO_SPACE = "(?=\\S+$)";
+
+        String MIN_MAX_CHAR = ".{" + MIN_LENGTH + "," + MAX_LENGTH + "}";
+        String PATTERN = ONE_DIGIT + LOWER_CASE + UPPER_CASE + SPECIAL_CHAR + NO_SPACE + MIN_MAX_CHAR;
+        if (passCode.matches(PATTERN)) {
+
+            jpass.setBackground(Color.white);
             return true;
         } else {
             if (stb != null) {
-                stb.append("Mật khẩu sai định dạng!").append("\n");
-                stb.append(msg);
+                jpass.setBackground(Color.yellow);
+                stb.append(msg).append("\n");
             }
             return false;
         }
+    }
+
+    public Boolean validPassCode(String pass, String msg, StringBuilder stb) {
+        String passCode = new String(pass);
+        String MIN_LENGTH = "5";
+        String MAX_LENGTH = "10";
+        boolean SPECIAL_CHAR_NEEDED = false;
+
+        String ONE_DIGIT = "(?=.*[0-9])";
+        String LOWER_CASE = "(?=.*[a-z])";
+        String UPPER_CASE = "(?=.*[A-Z])";
+        String SPECIAL_CHAR = SPECIAL_CHAR_NEEDED ? "(?=.*[@#$%^&+=])" : "";
+        String NO_SPACE = "(?=\\S+$)";
+
+        String MIN_MAX_CHAR = ".{" + MIN_LENGTH + "," + MAX_LENGTH + "}";
+        String PATTERN = ONE_DIGIT + LOWER_CASE + UPPER_CASE + SPECIAL_CHAR + NO_SPACE + MIN_MAX_CHAR;
+        if (passCode.matches(PATTERN)) {
+            return true;
+        } else {
+            if (stb != null) {
+                stb.append(msg).append("\n");
+            }
+            return false;
+        }
+    }
+    
+    public Boolean isLimit(JTextField txt, StringBuilder stb, String msg, int number) {
+        if (txt.getText().length() > number) {
+            txt.setBackground(Color.YELLOW);
+            stb.append(msg).append("\n");
+            return false;
+        }
+        txt.setBackground(Color.WHITE);
+        return true;
+    }
+    
+    public Boolean isDateAbove5(JDateChooser calendar, StringBuilder stb, String msg) {
+        Date date = calendar.getDate();
+        if (date == null) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n").append("Không được để trống ngày!").append("\n");
+            return false;
+        }
+
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(date);
+        Calendar today = Calendar.getInstance();
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)
+                || (today.get(Calendar.MONTH) == dob.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH))) {
+            age--;
+        }
+
+        if (age < 5) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n").append("Phải trên 5 tuổi!").append("\n");
+            return false;
+        }
+
+        return true;
+    }
+    
+    public Boolean isDateAbove18(JDateChooser calendar, StringBuilder stb, String msg) {
+        Date date = calendar.getDate();
+        if (date == null) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n").append("Không được để trống ngày!").append("\n");
+            return false;
+        }
+
+        // Tính tuổi từ ngày chọn đến ngày hiện tại
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(date);
+        Calendar today = Calendar.getInstance();
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)
+                || (today.get(Calendar.MONTH) == dob.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH))) {
+            age--;
+        }
+
+        if (age < 18) {
+            calendar.setBackground(Color.yellow);
+            stb.append(msg).append("\n").append("Phải trên 18 tuổi!").append("\n");
+            return false;
+        }
+
+        return true;
     }
     
     public Boolean isDateSelected(JDateChooser calendar, StringBuilder stb, String msg) {

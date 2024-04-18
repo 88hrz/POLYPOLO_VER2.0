@@ -1313,5 +1313,143 @@ public class SanPhamRepository {
         return false;
     }
     
+    public Integer getMaDanhMuc(String tenDM) {
+        String sql = "SELECT MaDanhMuc FROM DanhMuc where TenDanhMuc like N'"+tenDM+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setMaDM(rs.getInt("MaDanhMuc"));
+                return sanPham.getMaDM();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
+    public Integer getMaBrand(String tenBrand) {
+        String sql = "SELECT NhanHangID FROM NhanHang where TenNhanHang like N'"+tenBrand+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setMaBrand(rs.getInt("NhanHangID"));
+                return sanPham.getMaBrand();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
+    public Integer getMaMau(String tenMau) {
+        String sql = "SELECT MaMau FROM MauSac where TenMau like N'"+tenMau+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setMaMau(rs.getInt("MaMau"));
+                return sanPham.getMaMau();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
+    public Integer getMaSize(String tenSize) {
+        String sql = "SELECT MaSize FROM Size where TenSize like N'"+tenSize+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setMaSz(rs.getInt("MaSize"));
+                return sanPham.getMaSz();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
+    public Integer getMaChatLieu(String tenChatLieu) {
+        String sql = "SELECT MaChatLieu FROM ChatLieu where TenChatLieu like N'"+tenChatLieu+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setMaChatL(rs.getInt("MaChatLieu"));
+                return sanPham.getMaChatL();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
+    public Integer getMaKho(String tenKho) {
+        String sql = "SELECT KhuVucID FROM KhuVucKho where TenKhuVuc like N'"+tenKho+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setMaKho(rs.getInt("KhuVucID"));
+                return sanPham.getMaKho();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
+    public String getImg(String img) {
+        String sql = "SELECT HinhAnh FROM SanPhamChiTiet where MaSanPham like N'"+img+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setImg(("HinhAnh"));
+                return sanPham.getImg();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return "Loi";
+    }
+    
+    public Boolean updateSoLuong(SanPham sp){
+        String sql = "UPDATE SanPhamChiTiet SET SoLuongTon = ?\n" +
+"					WHERE Deleted!=1 AND TenSanPhamChiTiet = ? \n";
+        try (Connection conn = dbConnection.getConnection();
+                PreparedStatement ps = conn.prepareCall(sql)){
+            ps.setObject(1, sp.getSoL());
+            ps.setObject(2, sp.getTenSP());
+            
+            int check = ps.executeUpdate();
+            if (check>0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Integer getSoLuong(String ten) {
+        String sql = "SELECT SoLuongTon FROM SanPhamChiTiet where TenSanPhamChiTiet like N'"+ten+"'";
+        SanPham sanPham = new SanPham();
+        try (Connection conn = DbConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                sanPham.setSoL(rs.getInt("SoLuongTon"));
+                return sanPham.getSoL();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return 0;
+    }
     
 }

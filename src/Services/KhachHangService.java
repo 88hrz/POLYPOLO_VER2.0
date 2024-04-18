@@ -5,7 +5,7 @@
 package Services;
 
 import Models.KhachHang;
-import Models.KhachHangViewBang2;
+import Models.KH_HoaDonViewModel;
 import Repositories.KhachHangRepository;
 import ViewModels.KhachHangViewModel;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class KhachHangService {
     public ArrayList<KhachHangViewModel> getList(){
         return kHRepo.getList();
     }
-    public ArrayList<KhachHangViewBang2> getList_Bang2(Integer MaHD){
+    public ArrayList<KH_HoaDonViewModel> getList_Bang2(Integer MaHD){
         return kHRepo.getList_Bang2(MaHD);
     }
     public ArrayList<KhachHangViewModel> getListSearch(String id){

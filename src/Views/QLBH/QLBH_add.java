@@ -254,7 +254,7 @@ public class QLBH_add extends javax.swing.JFrame {
         
         v.isEmpty(txtTenKH, stb, "Tên khách hàng bị trống!");
         v.isDateSelected(dcsNgayLap, stb, "Ngày tạo bị trống!");
-        v.isDateValid(dcsNgayLap, stb, "Ngày nhập không hợp lệ!");
+    //    v.isDateValid(dcsNgayLap, stb, "Ngày nhập không hợp lệ!");
         
         if (stb.length() > 0) {
             JOptionPane.showMessageDialog(this, stb);
@@ -1168,18 +1168,18 @@ public class QLBH_add extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel lblPhiVAT;
-    private javax.swing.JLabel lblTienThua;
-    private javax.swing.JLabel lblTongDon;
-    private javax.swing.JLabel lblTongSP;
+    public javax.swing.JLabel lblPhiVAT;
+    public javax.swing.JLabel lblTienThua;
+    public javax.swing.JLabel lblTongDon;
+    public javax.swing.JLabel lblTongSP;
     private javax.swing.JLabel lbllll;
-    private javax.swing.JTable tblGioH;
-    private javax.swing.JTable tblHDTreo;
-    private javax.swing.JTable tblSanPham;
+    public javax.swing.JTable tblGioH;
+    public javax.swing.JTable tblHDTreo;
+    public javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtBrand;
     private javax.swing.JTextField txtChatL;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtIdSP;
+    public javax.swing.JTextField txtId;
+    public javax.swing.JTextField txtIdSP;
     private javax.swing.JTextField txtMau;
     private javax.swing.JTextField txtReceived;
     private javax.swing.JTextField txtSearchSDT;

@@ -4,24 +4,43 @@
  */
 package Views.QLKH;
 
-import Models.KhachHangViewBang2;
+import Models.KH_HoaDonViewModel;
 import Services.KhachHangService;
+import Services.UserService;
 import Utils.SVGImage;
 import Validator.MyValidate;
 import ViewModels.KhachHangViewModel;
+import Views.Login;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
  * @author X1
  */
 public class QLKHACHHANG extends javax.swing.JInternalFrame {
-
     SVGImage svgSet = new SVGImage();
     KhachHangService khs = new KhachHangService();
+    UserService uService = new UserService();
 
     /**
      * Creates new form KHACHHANG
@@ -48,17 +67,17 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
         int i = 1;
         for (KhachHangViewModel kh : ls) {
             model.addRow(new Object[]{
-                i++, kh.getMaKH(), kh.getTenKH(), kh.getMaHD(), kh.getDiaChi(), kh.getSoDT()
+                i++, kh.getMaKH(), kh.getTenKH(), kh.getMaHD(), kh.getGioiTinh(), kh.getDiaChi(), kh.getSoDT(), kh.getNgaySinh()
             });
         }
     }
 
     //LOAD2
-    void loadTable2(ArrayList<KhachHangViewBang2> ls) {
+    void loadTable2(ArrayList<KH_HoaDonViewModel> ls) {
         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
         model.setRowCount(0);
         int i = 1;
-        for (KhachHangViewBang2 kh : ls) {
+        for (KH_HoaDonViewModel kh : ls) {
             model.addRow(new Object[]{
                 i++,
                 kh.getMaHD(),
@@ -107,7 +126,7 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
         btnExport = new javax.swing.JButton();
         cboSearch = new javax.swing.JComboBox<>();
         txtSearch = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         btnDelete1 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(1090, 630));
@@ -214,6 +233,11 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
         });
 
         btnExport.setText("EXPORT");
+        btnExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportMouseClicked(evt);
+            }
+        });
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportActionPerformed(evt);
@@ -227,10 +251,10 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton4.setText("SEARCH");
-        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnSearch.setText("SEARCH");
+        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton4MouseClicked(evt);
+                btnSearchMouseClicked(evt);
             }
         });
 
@@ -261,7 +285,7 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
         jPanel5Layout.setVerticalGroup(
@@ -278,7 +302,7 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(10, Short.MAX_VALUE))
@@ -297,25 +321,55 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
         // UPDATE
-        QLKHACHHANG_update kh = new QLKHACHHANG_update();
-        kh.setVisible(true);
+        int pos = tblKhachHang.getSelectedRow();
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng để cập nhật!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            QLKHACHHANG_update khUpdate = new QLKHACHHANG_update();
+            khUpdate.setVisible(true);
+            khUpdate.pack();
+
+            Integer maKH = (Integer) tblKhachHang.getValueAt(pos, 1);
+            khUpdate.txtMaKH.setText(String.valueOf(maKH.toString()));
+            khUpdate.txtTenKH.setText((String) tblKhachHang.getValueAt(pos, 2));
+            khUpdate.txtSDT.setText((String) tblKhachHang.getValueAt(pos, 6));
+            khUpdate.txtDiaChi.setText((String) tblKhachHang.getValueAt(pos, 5));
+
+            String trangT = (String) tblKhachHang.getValueAt(pos, 4);
+            Date ngayN = khs.getLisstt(maKH).getNgaySinh();
+            khUpdate.dcsNgaySinh.setDate(ngayN);
+            if (trangT != null) {
+                if ("Nam".equals(trangT)) {
+                    khUpdate.rdoNam.setSelected(true);
+                } else {
+                    khUpdate.rdoNu.setSelected(true);
+                }
+            }
+        }
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExportActionPerformed
 
-    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+    private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
         // TODO add your handling code here:
         if (validateTimKiem()) {
-            String id = txtSearch.getText();
-            ArrayList<KhachHangViewModel> ls = khs.getListSearch(id);
-            loadTableKH(ls);
+            if ("Tên".equals(cboSearch.getSelectedItem())) {
+                String id = txtSearch.getText();
+                ArrayList<KhachHangViewModel> ls = khs.getListSearch(id);
+                loadTableKH(ls);
+            } else if ("SĐT".equals(cboSearch.getSelectedItem())) {
+                String sdt = txtSearch.getText();
+                ArrayList<KhachHangViewModel> ls = khs.getListSearchSDT(sdt);
+                loadTableKH(ls);
+            }
         }
         txtSearch.setText("");
         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
         model.setRowCount(0);
-    }//GEN-LAST:event_jButton4MouseClicked
+    }//GEN-LAST:event_btnSearchMouseClicked
 
     private void cboSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboSearchMouseClicked
         // TODO add your handling code here:
@@ -325,7 +379,12 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cboSearchMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
-        // TODO add your handling code here:
+        // DELETE
+        int pos = tblKhachHang.getSelectedRow();
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng để xóa!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }else{
         int result = JOptionPane.showConfirmDialog(this, "Bạn muốn xóa khách hàng không?", "POLYPOLO xác nhận", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             Integer ma = Integer.valueOf(tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 1).toString());
@@ -335,10 +394,11 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Đã hủy thao tác xóa khách hàng!", "POLYPOLO thông báo", 0);
         }
+        }
     }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
-        // TODO add your handling code here:
+        // TCLICK
         int pos = tblKhachHang.getSelectedRow();
         KhachHangViewModel kh = khs.getList().get(pos);
         Integer maHD = Integer.valueOf(tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 3).toString());
@@ -346,8 +406,187 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnDelete1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDelete1MouseClicked
-        // TODO add your handling code here:
+        // 
+        int pos = tblKhachHang.getSelectedRow();
+        if (pos == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng để xem!", "POLYPOLO thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            QLKHACHHANG_view khXem = new QLKHACHHANG_view();
+            khXem.setVisible(true);
+            khXem.pack();
+
+            Integer maKH = (Integer) tblKhachHang.getValueAt(pos, 1);
+            khXem.txtMaKH.setText(String.valueOf(maKH.toString()));
+            khXem.txtTenKH.setText((String) tblKhachHang.getValueAt(pos, 2));
+            khXem.txtSDT.setText((String) tblKhachHang.getValueAt(pos, 6));
+            khXem.txtDiaChi.setText((String) tblKhachHang.getValueAt(pos, 5));
+
+            String trangT = (String) tblKhachHang.getValueAt(pos, 4);
+            Date ngayN = khs.getLisstt(maKH).getNgaySinh();
+            khXem.dcsNgaySinh.setDate(ngayN);
+            if (trangT != null) {
+                if ("Nam".equals(trangT)) {
+                    khXem.rdoNam.setSelected(true);
+                } else {
+                    khXem.rdoNu.setSelected(true);
+                }
+            }
+
+        }
     }//GEN-LAST:event_btnDelete1MouseClicked
+
+    private void btnExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportMouseClicked
+        // EXPORT
+        try {
+            XSSFWorkbook workBook = new XSSFWorkbook();
+            XSSFSheet sheet = workBook.createSheet("Danh Sách Khách Hàng POLYPOLO");
+
+            // Title Style
+            XSSFRow titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Danh Sách Khách Hàng POLYPOLO");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
+            XSSFFont font = workBook.createFont();
+            font.setFontHeightInPoints((short) 19);
+            font.setBold(true);
+            XSSFCellStyle titleStyle = workBook.createCellStyle();
+            titleStyle.setFont(font);
+            titleStyle.setAlignment(HorizontalAlignment.CENTER);
+            titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            titleCell.setCellStyle(titleStyle);
+
+            // Date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = sdf.format(new Date());
+
+            SimpleDateFormat sdfHrs = new SimpleDateFormat("HH:mm:ss");
+            String currentTime = sdfHrs.format(new Date());
+
+            XSSFRow dateRow = sheet.createRow(1);
+            Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Ngày: " + currentDate + " | Giờ: " + currentTime);
+            sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 6));
+            XSSFCellStyle dateStyle = workBook.createCellStyle();
+            dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+            dateCell.setCellStyle(dateStyle);
+
+            // Header Style
+            XSSFFont headerFont = workBook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 11);
+
+            XSSFCellStyle headerStyle = workBook.createCellStyle();
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+            // Adding Header
+            XSSFRow headerRow = sheet.createRow(3);
+
+            String[] headers = {"STT", "Mã Khách Hàng", "Tên Khách Hàng", "Giới Tính", "Địa chỉ", "SĐT", "Ngày Sinh"};
+            for (int i = 0; i < headers.length; i++) {
+                Cell headerCell = headerRow.createCell(i, CellType.STRING);
+                headerCell.setCellValue(headers[i]);
+                headerCell.setCellStyle(headerStyle);
+            }
+
+            // Adding Data
+            ArrayList<KhachHangViewModel> ls = khs.getList();
+            for (int i = 0; i < ls.size(); i++) {
+                KhachHangViewModel khachHang = ls.get(i);
+                XSSFRow dataRow = sheet.createRow(4 + i);
+
+                for (int j = 0; j < headers.length; j++) {
+                    Cell dataCell = dataRow.createCell(j, CellType.STRING);
+                    switch (j) {
+                        case 0:
+                            dataCell.setCellValue(i + 1);
+                            break;
+                        case 1:
+                            dataCell.setCellValue("KH" + khachHang.getMaKH());
+                            break;
+                        case 2:
+                            dataCell.setCellValue(khachHang.getTenKH());
+                            break;
+                        case 3:
+                            dataCell.setCellValue(khachHang.getGioiTinh());
+                            break;
+                        case 4:
+                            dataCell.setCellValue(khachHang.getDiaChi());
+                            break;
+                        case 5:
+                            dataCell.setCellValue(khachHang.getSoDT());
+                            break;
+                        case 6:
+                            // Định dạng lại ngày sinh
+                            Cell dateOfBirthCell = dataRow.createCell(j, CellType.STRING);
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            dateOfBirthCell.setCellValue(dateFormat.format(khachHang.getNgaySinh()));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            // Auto adjust column widths
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Footer Style
+            XSSFCellStyle footerStyle = workBook.createCellStyle();
+            footerStyle.setFont(headerFont);
+            footerStyle.setAlignment(HorizontalAlignment.LEFT);
+
+            // Adding Footer
+            int lastRow = 4 + ls.size();
+            XSSFRow footerRow = sheet.createRow(lastRow +1);
+
+            Cell footerCell1 = footerRow.createCell(1);
+            footerCell1.setCellValue("Tổng Khách Hàng:");
+            footerCell1.setCellStyle(footerStyle);
+
+            Cell footerCell2 = footerRow.createCell(2);
+            footerCell2.setCellValue(ls.size());
+            footerCell2.setCellStyle(footerStyle);
+
+            Cell userCell1 = footerRow.createCell(5);
+            userCell1.setCellValue("Người Xuất:");
+            userCell1.setCellStyle(footerStyle);
+
+            Cell userCell2 = footerRow.createCell(6);
+            userCell2.setCellValue(uService.getName(Login.dataStatic));
+            userCell2.setCellStyle(footerStyle);
+
+            // File Saving
+            JFileChooser fileChooser = new JFileChooser("D:\\");
+            fileChooser.setDialogTitle("Chọn nơi lưu file");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx", "xls");
+            fileChooser.addChoosableFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(null);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                String filePath = fileToSave.getAbsolutePath();
+                if (!filePath.endsWith(".xlsx")) {
+                    filePath += ".xlsx";
+                }
+
+                try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                    workBook.write(fos);
+                    JOptionPane.showMessageDialog(null, "Đã in danh sách thành công!", "POLYPOLO thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Thao tác đã bị hủy!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -355,16 +594,16 @@ public class QLKHACHHANG extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cboSearch;
-    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblHoaDon;
-    private javax.swing.JTable tblKhachHang;
+    public javax.swing.JTable tblKhachHang;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

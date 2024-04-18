@@ -807,4 +807,55 @@ public class HoaDonRepository {
         return false;
     }
     
+    //SCAN
+    public ArrayList<HD_SanPhamViewModel> getListSanPhamCode(String Code) {
+        String sql = "SELECT spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc, br.TenNhanHang\n"
+                + "		, ms.TenMau, sz.TenSize, cl.TenChatLieu, sp.GiaBan, spct.SoLuongTon FROM SanPhamChiTiet spct INNER JOIN SanPham sp ON spct.MaSanPham = sp.MaSanPham\n"
+                + "									INNER JOIN DanhMuc dm ON sp.MaDanhMuc = dm.MaDanhMuc\n"
+                + "									INNER JOIN NhanHang br ON spct.NhanHangID = br.NhanHangID\n"
+                + "									INNER JOIN MauSac ms ON spct.MaMau = ms.MaMau\n"
+                + "									INNER JOIN Size sz ON spct.MaSize = sz.MaSize\n"
+                + "									INNER JOIN ChatLieu cl ON spct.MaChatLieu = cl.MaChatLieu WHERE sp.Deleted!=1 AND spct.Barcode = ?";
+        ArrayList<HD_SanPhamViewModel> ls = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, Code);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer id = rs.getInt("MaSanPhamChiTiet");
+                String tenSP = rs.getString("TenSanPhamChiTiet");
+                String danhM = rs.getString("TenDanhMuc");
+                String brand = rs.getString("TenNhanHang");
+                String mauS = rs.getString("TenMau");
+                String sz = rs.getString("TenSize");
+                String chatL = rs.getString("TenChatLieu");
+                Double giaB = rs.getDouble("GiaBan");
+                Integer soL = rs.getInt("SoLuongTon");
+
+                HD_SanPhamViewModel sp = new HD_SanPhamViewModel(id, soL, tenSP, danhM, brand, mauS, sz, chatL, giaB);
+                ls.add(sp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
+    
+    public Boolean updateSPCode(String code, Integer soL) {
+        String sql = "UPDATE SanPhamChiTiet SET SoLuongTon =? WHERE Barcode =?";
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ps.setObject(1, soL);
+            ps.setObject(2, code);
+
+            int check = ps.executeUpdate();
+            if (check > 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 }

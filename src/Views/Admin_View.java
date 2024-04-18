@@ -615,9 +615,9 @@ public class Admin_View extends javax.swing.JFrame {
         khachHang.setBackground(DefaultColor);
         taiKhoan.setBackground(DefaultColor);
         
-//        QuanLyThongKe tk = new QuanLyThongKe();
-//        jGUIForms.removeAll();
-//        jGUIForms.add(tk).setVisible(true);
+        QuanLyThongKe tk = new QuanLyThongKe();
+        jGUIForms.removeAll();
+        jGUIForms.add(tk).setVisible(true);
     }//GEN-LAST:event_thongKeMouseClicked
 
     private void thuocTinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_thuocTinhMouseClicked

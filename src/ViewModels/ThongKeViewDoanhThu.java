@@ -14,15 +14,20 @@ public class ThongKeViewDoanhThu {
     private Integer tongTien;
     private Integer ngay;
     private String tennv;
+    private Integer loiNhuan;
 
     public ThongKeViewDoanhThu() {
     }
 
-//    public ThongKeViewDoanhThu(Integer soLuong, Integer tongTien, Integer ngay) {
-//        this.soLuong = soLuong;
-//        this.tongTien = tongTien;
-//        this.ngay = ngay;
-//    }
+    public ThongKeViewDoanhThu(Integer thang, Integer nam, Integer soLuong, Integer tongTien, Integer ngay, String tennv, Integer loiNhuan) {
+        this.thang = thang;
+        this.nam = nam;
+        this.soLuong = soLuong;
+        this.tongTien = tongTien;
+        this.ngay = ngay;
+        this.tennv = tennv;
+        this.loiNhuan = loiNhuan;
+    }
 
     public ThongKeViewDoanhThu(Integer thang, Integer soLuong, Integer tongTien) {
         this.thang = thang;
@@ -85,6 +90,14 @@ public class ThongKeViewDoanhThu {
 
     public void setTennv(String tennv) {
         this.tennv = tennv;
+    }
+
+    public Integer getLoiNhuan() {
+        return loiNhuan;
+    }
+
+    public void setLoiNhuan(Integer loiNhuan) {
+        this.loiNhuan = loiNhuan;
     }
 
 }

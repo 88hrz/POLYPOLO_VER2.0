@@ -16,6 +16,30 @@ public class SanPham {
     private Double giaN, giaB;
     private Date ngayNhap;
 
+    //IMPORT
+    public SanPham(Integer soL, String tenSP) {
+        this.soL = soL;
+        this.tenSP = tenSP;
+    }
+    
+    public SanPham(Integer integer, String string, Integer integer0, String string0, String img, Double aDouble, Double aDouble0, Integer integer1, Integer integer2, Integer integer3, Integer integer4, Integer integer5, Integer integer6, Date date) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.maSP = integer;
+        this.maDM = integer0;
+        this.soL = integer3;
+        this.maSz = integer1;
+        this.maMau = integer2;
+        this.maChatL = integer5;
+        this.maBrand = integer4;
+        this.maKho = integer6;
+        this.tenSP = string;
+        this.trangT = string0;
+        this.img = img;
+        this.giaN = aDouble;
+        this.giaB = aDouble0;
+        this.ngayNhap = date;
+    }
+    
     public SanPham() {
     }
 

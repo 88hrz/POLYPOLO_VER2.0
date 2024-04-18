@@ -11,7 +11,7 @@ import Models.SanPhamChiTiet;
 import Services.HoaDonService;
 import Services.UserService;
 import Validator.MyValidate;
-import ViewModels.HD_GioHangViewModel;
+import ViewModels.R_GioHangViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
 import Views.Login;
@@ -133,10 +133,10 @@ public class QLBH_add extends javax.swing.JFrame {
             });
         }
     }
-    void loadTableGioHang(ArrayList<HD_GioHangViewModel> ls){
+    void loadTableGioHang(ArrayList<R_GioHangViewModel> ls){
         DefaultTableModel model = (DefaultTableModel) tblGioH.getModel();
         model.setRowCount(0);
-        for (HD_GioHangViewModel gh : ls) {
+        for (R_GioHangViewModel gh : ls) {
             String giaB = formatter.format(gh.getDonG());
             String total = formatter.format(gh.getThanhT());
             String totalVAT = formatter.format(gh.getTongSauVAT());
@@ -841,7 +841,7 @@ public class QLBH_add extends javax.swing.JFrame {
                     fiveColTable1.addCell(new Cell().add("Thành Tiền").setFont(font).setBold().setFontColor(com.itextpdf.kernel.color.Color.WHITE).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER));
                     doc.add(fiveColTable1);
 
-                    ArrayList<HD_GioHangViewModel> lsHD = hdService.printInvoiceById(maHD);
+                    ArrayList<R_GioHangViewModel> lsHD = hdService.printInvoiceById(maHD);
                     for (int i = 0; i < lsHD.size(); i++) {
                         Table fiveColTable2 = new Table(sixColWidth);
                         fiveColTable2.addCell(new Cell().add(String.valueOf(i + 1)).setTextAlignment(TextAlignment.CENTER));

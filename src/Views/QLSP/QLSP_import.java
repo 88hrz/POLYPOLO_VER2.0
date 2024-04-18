@@ -7,7 +7,6 @@ package Views.QLSP;
 import Models.SanPham;
 import Services.SanPhamService;
 import Utils.SVGImage;
-import ViewModels.SanPhamViewModel;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Color;
 import java.io.BufferedInputStream;
@@ -17,8 +16,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -256,23 +253,23 @@ public class QLSP_import extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi thao tác, bấm vào bảng để import!", "POLYPOLO thông báo", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-//        return new SanPham(
-//                //Integer excelMaSP = Integer.valueOf(spService.getListSP().get(spService.getListSP().size() - 1).getMaSP());
-//                (Integer) Integer.valueOf(spService.getListSP().get(spService.getListSP().size() - 1).getMaSP()), // MaSP
-//                (String) tblImportSP.getValueAt(pos, 10), // TenSP
-//                (Integer) tblImportSP.getValueAt(pos, 1), // MaDM
-//                (String) tblImportSP.getValueAt(pos, 9), // TrangThai
-//                (String) tblImportSP.getValueAt(pos, 12),//img
-//                (Double) Double.parseDouble(giaNhap), // giaN
-//                (Double) Double.parseDouble(giaBan), // giaB
-//                (Integer) tblImportSP.getValueAt(pos, 4), // MaSize
-//                (Integer) tblImportSP.getValueAt(pos, 3), // MaMau
-//                (Integer) tblImportSP.getValueAt(pos, 11), // SoLuong
-//                (Integer) tblImportSP.getValueAt(pos, 2), // MaBrand
-//                (Integer) tblImportSP.getValueAt(pos, 5), // MaChatL
-//                (Integer) tblImportSP.getValueAt(pos, 6), // MaKho,
-//                (Date) tblImportSP.getValueAt(pos, 13) // NgayNhap 
-//        );
+        return new SanPham(
+                //Integer excelMaSP = Integer.valueOf(spService.getListSP().get(spService.getListSP().size() - 1).getMaSP());
+                (Integer) Integer.valueOf(spService.getListSP().get(spService.getListSP().size() - 1).getMaSP()), // MaSP
+                (String) tblImportSP.getValueAt(pos, 10), // TenSP
+                (Integer) tblImportSP.getValueAt(pos, 1), // MaDM
+                (String) tblImportSP.getValueAt(pos, 9), // TrangThai
+                (String) tblImportSP.getValueAt(pos, 12),//img
+                (Double) Double.parseDouble(giaNhap), // giaN
+                (Double) Double.parseDouble(giaBan), // giaB
+                (Integer) tblImportSP.getValueAt(pos, 4), // MaSize
+                (Integer) tblImportSP.getValueAt(pos, 3), // MaMau
+                (Integer) tblImportSP.getValueAt(pos, 11), // SoLuong
+                (Integer) tblImportSP.getValueAt(pos, 2), // MaBrand
+                (Integer) tblImportSP.getValueAt(pos, 5), // MaChatL
+                (Integer) tblImportSP.getValueAt(pos, 6), // MaKho,
+                (Date) tblImportSP.getValueAt(pos, 13) // NgayNhap 
+        );
     }
 
     public SanPham getModelUpdate() {
@@ -436,11 +433,11 @@ public class QLSP_import extends javax.swing.JFrame {
                 } else {
                     if (validateData()) {
                         if (spService.checkName((String) tblImportSP.getValueAt(a, 10))) {
-                            spService.updateSoLuong(getModelUpdate());
+                        //    spService.updateSoLuong(getModelUpdate());
                             check++;
                             a++;
                         } else {
-                            spService.addImport(getModelSP());
+                        //    spService.addImport(getModelSP());
                             check++;
                             a++;
                         }

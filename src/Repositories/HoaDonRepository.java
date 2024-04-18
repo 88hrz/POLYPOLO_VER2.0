@@ -7,7 +7,8 @@ package Repositories;
 import Models.HoaDonChiTiet;
 import Models.HoaDon;
 import Models.KhachHang;
-import ViewModels.HD_GioHangViewModel;
+import ViewModels.HD_HoaDonViewModel;
+import ViewModels.R_GioHangViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
 import ViewModels.HoaDonViewModel;
@@ -47,7 +48,7 @@ public class HoaDonRepository {
         return ls;
     }
     
-    public ArrayList<HD_GioHangViewModel> printInvoiceById(Integer id) {
+    public ArrayList<R_GioHangViewModel> printInvoiceById(Integer id) {
         String sql = "SELECT spct.MaSanPham, spct.TenSanPhamChiTiet\n" +
 "				, hdct.SoLuong, hdct.DonGia, sp.PhanTramThue\n" +
 "				,  SUM(hdct.DonGia * hdct.SoLuong) * (1 + sp.PhanTramThue/100.0) AS 'Total' FROM SanPham sp\n" +
@@ -57,7 +58,7 @@ public class HoaDonRepository {
 "                WHERE hd.MaHoaDon = ? \n" +
 "                			GROUP BY spct.MaSanPham, spct.TenSanPhamChiTiet, hdct.SoLuong, hdct.DonGia, sp.PhanTramThue\n" +
 "                             ;";
-        ArrayList<HD_GioHangViewModel> ls = new ArrayList<>();
+        ArrayList<R_GioHangViewModel> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
@@ -72,7 +73,7 @@ public class HoaDonRepository {
                 Integer thue = rs.getInt("PhanTramThue");
                 Double total = rs.getDouble("Total");
                 
-                HD_GioHangViewModel invoice = new HD_GioHangViewModel(maSP, soL, thue, donG, total, tenSP);
+                R_GioHangViewModel invoice = new R_GioHangViewModel(maSP, soL, thue, donG, total, tenSP);
                 ls.add(invoice);
             }
         } catch (Exception e) {
@@ -523,7 +524,7 @@ public class HoaDonRepository {
         return ls;
     }
     
-    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id){
+    public ArrayList<R_GioHangViewModel> getListGioHangById(Integer id){
         String sql = "SELECT spct.MaSanPhamChiTiet, spct.TenSanPhamChiTiet, dm.TenDanhMuc, sp.GiaBan, hdct.SoLuong, sp.PhanTramThue,  \n" +
 "								(sp.GiaBan + (sp.GiaBan * sp.PhanTramThue / 100)) AS 'TOTAL_VAT'  FROM SanPham sp \n" +
 "										INNER JOIN SanPhamChiTiet spct ON sp.MaSanPham = spct.MaSanPham\n" +
@@ -531,7 +532,7 @@ public class HoaDonRepository {
 "										INNER JOIN HoaDonChiTiet hdct ON spct.MaSanPhamChiTiet = hdct.MaSanPhamChiTiet\n" +
 "										INNER JOIN HoaDon hd ON hdct.MaHoaDon = hd.MaHoaDon\n" +
 "													WHERE sp.Deleted != 1 AND hd.MaHoaDon = ?";
-        ArrayList<HD_GioHangViewModel> ls = new ArrayList<>();
+        ArrayList<R_GioHangViewModel> ls = new ArrayList<>();
         
         try (Connection conn = dbConnection.getConnection();
                 PreparedStatement ps = conn.prepareCall(sql)){
@@ -547,7 +548,7 @@ public class HoaDonRepository {
                 Integer thue = rs.getInt("PhanTramThue");
                 Double total = rs.getDouble("TOTAL_VAT");
                 
-                HD_GioHangViewModel gh = new HD_GioHangViewModel(idSP, soL, thue, donG, total, tenSP, danhM);
+                R_GioHangViewModel gh = new R_GioHangViewModel(idSP, soL, thue, donG, total, tenSP, danhM);
                 ls.add(gh);
             }
         } catch (Exception e) {
@@ -857,5 +858,33 @@ public class HoaDonRepository {
         }
         return false;
     }
+ 
     
+    //LINH
+    public ArrayList<HD_HoaDonViewModel> getListHoaDon() {
+        String sql = "select hd.MaHoaDon, nv.TenNhanVien, hd.TenKhachHang, kh.SoDienThoai, hd.PhuongThucThanhToan, hd.TongTien, hd.NgayLap, hd.TrangThai from HoaDon hd\n"
+                + "left JOIN KhachHang kh ON kh.MaKhachHang = hd.MaKhachHang\n"
+                + "left JOIN NhanVien nv ON nv.MaNhanVien = hd.MaNhanVien";
+        ArrayList<HD_HoaDonViewModel> ls = new ArrayList<>();
+
+        try (Connection conn = dbConnection.getConnection(); PreparedStatement ps = conn.prepareCall(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Integer maHD = rs.getInt("MaHoaDon");
+                String tenNV = rs.getString("TenNhanVien");
+                String tenKH = rs.getString("TenKhachHang");
+                String soDT = rs.getString("SoDienThoai");
+                String phuongThuc = rs.getString("PhuongThucThanhToan");
+                Double tongTien = rs.getDouble("TongTien");
+                Date ngayLap = rs.getDate("NgayLap");
+                String trangT = rs.getString("TrangThai");
+
+                HD_HoaDonViewModel hd = new HD_HoaDonViewModel(maHD, tenKH, soDT, phuongThuc, trangT, tongTien, ngayLap, tenNV);
+                ls.add(hd);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ls;
+    }
 }

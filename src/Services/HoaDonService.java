@@ -13,7 +13,8 @@ import Repositories.HoaDonRepository;
 import Repositories.KhachHangRepository;
 import Repositories.NhanSuRepo;
 import Repositories.SanPhamRepository;
-import ViewModels.HD_GioHangViewModel;
+import ViewModels.HD_HoaDonViewModel;
+import ViewModels.R_GioHangViewModel;
 import ViewModels.HD_InvoiceViewModel;
 import ViewModels.HD_SanPhamViewModel;
 import ViewModels.HoaDonViewModel;
@@ -36,7 +37,7 @@ public class HoaDonService {
     public ArrayList<HD_InvoiceViewModel> getListKHById(Integer id){
         return hdRepo.getListKHById(id);
     }
-    public ArrayList<HD_GioHangViewModel> printInvoiceById(Integer id) {
+    public ArrayList<R_GioHangViewModel> printInvoiceById(Integer id) {
         return hdRepo.printInvoiceById(id);
     }
     
@@ -179,7 +180,7 @@ public class HoaDonService {
     public ArrayList<HD_SanPhamViewModel> getListSanPham(){
         return hdRepo.getListSanPham();
     }
-    public ArrayList<HD_GioHangViewModel> getListGioHangById(Integer id){
+    public ArrayList<R_GioHangViewModel> getListGioHangById(Integer id){
         return hdRepo.getListGioHangById(id);
     }
     public SanPhamViewModel getSPByIdSP(Integer id) {
@@ -229,5 +230,10 @@ public class HoaDonService {
         }else{
             return "Thêm sản phẩm vào giỏ hàng thất bại :(";
         }
+    }
+    
+    //LINH
+    public ArrayList<HD_HoaDonViewModel> getListHoaDon(){
+        return hdRepo.getListHoaDon();
     }
 }

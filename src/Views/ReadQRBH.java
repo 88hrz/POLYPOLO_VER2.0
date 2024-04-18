@@ -6,7 +6,7 @@ package Views;
 
 import Services.HoaDonService;
 import Services.PhieuNhapService;
-import ViewModels.HD_GioHangViewModel;
+import ViewModels.R_GioHangViewModel;
 import ViewModels.HD_SanPhamViewModel;
 import Views.QLBH.QLBH;
 import Views.QLBH.QLBH_add;
@@ -88,10 +88,10 @@ public class ReadQRBH extends javax.swing.JFrame implements Runnable, ThreadFact
             });
         }
     }
-    void loadTableGioHang(ArrayList<HD_GioHangViewModel> ls){
+    void loadTableGioHang(ArrayList<R_GioHangViewModel> ls){
         DefaultTableModel model = (DefaultTableModel) ql.tblGioH.getModel();
         model.setRowCount(0);
-        for (HD_GioHangViewModel gh : ls) {
+        for (R_GioHangViewModel gh : ls) {
             String giaB = formatter.format(gh.getDonG());
             String total = formatter.format(gh.getThanhT());
             String totalVAT = formatter.format(gh.getTongSauVAT());
@@ -261,7 +261,7 @@ public class ReadQRBH extends javax.swing.JFrame implements Runnable, ThreadFact
 //    void loadTableGioHang(ArrayList<HD_GioHangViewModel> ls) {
 //        DefaultTableModel model = (DefaultTableModel) ql.tblGioH.getModel();
 //        model.setRowCount(0);
-//        for (HD_GioHangViewModel gh : ls) {
+//        for (R_GioHangViewModel gh : ls) {
 //            String giaB = formatter.format(gh.getDonG());
 //            String total = formatter.format(gh.getThanhT());
 //            String totalVAT = formatter.format(gh.getTongSauVAT());

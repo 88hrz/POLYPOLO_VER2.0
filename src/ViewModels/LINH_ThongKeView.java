@@ -8,12 +8,12 @@ package ViewModels;
  *
  * @author X1
  */
-public class HD_GioHangViewModel {
+public class LINH_ThongKeView {
     private Integer idSPCT, soL, thue, idHD;
     private Double donG, thanhT, tongSauVAT;
     private String tenSP, danhM;
 
-    public HD_GioHangViewModel() {
+    public LINH_ThongKeView() {
     }
 
     public Integer getIdHD() {
@@ -24,7 +24,11 @@ public class HD_GioHangViewModel {
         this.idHD = idHD;
     }
 
-    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Integer idHD, Double donG, Double thanhT, Double tongSauVAT, String tenSP, String danhM) {
+    public LINH_ThongKeView(int soL) {
+        this.soL = soL;
+    }
+    
+    public LINH_ThongKeView(Integer idSPCT, Integer soL, Integer thue, Integer idHD, Double donG, Double thanhT, Double tongSauVAT, String tenSP, String danhM) {
         this.idSPCT = idSPCT;
         this.soL = soL;
         this.thue = thue;
@@ -36,7 +40,7 @@ public class HD_GioHangViewModel {
         this.danhM = danhM;
     }
 
-    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, Double tongSauVAT, String tenSP, String danhM) {
+    public LINH_ThongKeView(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, Double tongSauVAT, String tenSP, String danhM) {
         this.idSPCT = idSPCT;
         this.soL = soL;
         this.thue = thue;
@@ -47,7 +51,7 @@ public class HD_GioHangViewModel {
         this.danhM = danhM;
     }
 
-    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, String tenSP) {
+    public LINH_ThongKeView(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, String tenSP) {
         this.idSPCT = idSPCT;
         this.soL = soL;
         this.thue = thue;
@@ -64,7 +68,7 @@ public class HD_GioHangViewModel {
         this.tongSauVAT = tongSauVAT;
     }
 
-    public HD_GioHangViewModel(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, String tenSP, String danhM) {
+    public LINH_ThongKeView(Integer idSPCT, Integer soL, Integer thue, Double donG, Double thanhT, String tenSP, String danhM) {
         this.idSPCT = idSPCT;
         this.soL = soL;
         this.thue = thue;
